@@ -44,5 +44,7 @@ tmp-unit-test-data
 *.d.ts
 !gulpfile.js
 !docs/**/*.js
+!webpack.config.js
+!public/quill.min.js
 !test/helpers/getSelection.js
 !test/helpers/MutationObserver.js
