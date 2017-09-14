@@ -1,4 +1,4 @@
-import {Highlight} from './lib/Highlight';
+import {Highlight} from './lib/highlight';
 
 export {
 	Highlight
