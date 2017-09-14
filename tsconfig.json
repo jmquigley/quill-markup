@@ -1,0 +1,25 @@
+{
+	"compileOnSave": true,
+	"compilerOptions": {
+		"alwaysStrict": true,
+		"declaration": true,
+		"experimentalDecorators": true,
+		"inlineSourceMap": true,
+		"lib": ["DOM", "ES6", "ES2016.Array.Include", "ES2017.object"],
+		"noImplicitAny": true,
+		"noImplicitReturns": true,
+		"noUnusedLocals": true,
+		"noUnusedParameters": true,
+		"skipLibCheck": true,
+		"sourceMap": false,
+		"strictNullChecks": false,
+		"suppressImplicitAnyIndexErrors": true,
+		"module": "commonjs",
+		"target": "es6"
+	},
+	"exclude": [
+		"coverage",
+		"docs",
+		"node_modules"
+	]
+}
