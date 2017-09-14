@@ -1,6 +1,6 @@
 {
   "name": "quill-highlight",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "author": "jmquigley <jmquigley@outlook.com>",
   "description": "A highlighting module for the Quill text editor",
   "private": false,
