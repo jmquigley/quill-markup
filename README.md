@@ -24,6 +24,12 @@ To build the app and run all tests:
 $ yarn run all
 ```
 
+To start a web server and view a demo of this module use:
+```
+$ yarn start
+```
+This will start a local express web server @ http://localhost:4000
+
 ## Overview
 TODO: Add overview docs
 

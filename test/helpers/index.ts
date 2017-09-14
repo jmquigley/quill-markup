@@ -8,14 +8,6 @@ import {CallbackTestContext} from 'ava';
 import * as fs from 'fs-extra';
 import {Fixture} from 'util.fixture';
 
-const pkg = require('../../package.json');
-
-export function debug(message: string): void {
-	if (pkg.debug) {
-		console.log(message);
-	}
-}
-
 export function cleanup(msg: string, t: CallbackTestContext): void {
 	if (msg) {
 		console.log(`final cleanup: ${msg}`);

@@ -37,9 +37,12 @@ jspm_packages
 .node_repl_history
 .DS_Store
 tmp-unit-test-data
+.awcache
 
 *.js
 *.js.map
 *.d.ts
 !gulpfile.js
 !docs/**/*.js
+!test/helpers/getSelection.js
+!test/helpers/MutationObserver.js

@@ -1,5 +1,13 @@
-import {Highlight} from './lib/highlight';
+import {
+	Highlight,
+	HighlightMode,
+	HighlightOptions,
+	HighlightStyle
+} from './lib/highlight';
 
 export {
-	Highlight
+	Highlight,
+	HighlightMode,
+	HighlightOptions,
+	HighlightStyle
 };
