@@ -1,3 +1,5 @@
+const MinifyPlugin = require("babel-minify-webpack-plugin");
+
 module.exports = {
 	entry: './index.ts',
 	output: {
@@ -11,14 +13,16 @@ module.exports = {
 	module: {
 		rules: [
 			{
-				test: /\.js$/,
-				exclude: /(node_modules|bower_components)/,
-				loader: 'babel-loader'
+				test: /\.ts$/,
+				loader: 'awesome-typescript-loader?useBabel=true&useCache=true'
 			},
 			{
 				test: /\.css$/,
 				use: ['style-loader', 'css-loader']
 			},
 		]
-	}
+	},
+	plugins: [
+    	new MinifyPlugin()
+  	]
 }

@@ -83,21 +83,19 @@ export class Highlight {
 
 	public set(opts: HighlightOptions) {
 
-		const defaultOpts: HighlightOptions = {
+		this._opts = opts = Object.assign({
 			mode: HighlightMode.text,
 			styling: HighlightStyle.plain,
 			custom: {},
 			content: ''
-		};
+		}, opts);
 
-		this._opts = Object.assign(defaultOpts, opts);
+		this._processor = this._modes[opts.mode];
+		this._processor.content = opts.content;
+		this._processor.style = this._styles[opts.styling];
 
-		this._processor = this._modes[this._opts.mode];
-		this._processor.content = this._opts.content;
-		this._processor.style = this._styles[this._opts.styling];
-
-		debug(`initial content: ${this._opts.content}`);
-		this._quill.setText(this._opts.content);
+		debug(`initial content: ${opts.content}`);
+		this._quill.setText(opts.content);
 	}
 
 	private handleChange(delta: any, old: any, source: string) {

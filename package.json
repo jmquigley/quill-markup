@@ -26,8 +26,11 @@
     "@types/jsdom": "^11.0.2",
     "@types/node": "^8.0.28",
     "ava": "^0.22.0",
-    "babel-loader": "^7.1.2",
+    "awesome-typescript-loader": "^3.2.3",
+    "babel-minify": "^0.2.0",
+    "babel-minify-webpack-plugin": "^0.2.0",
     "babel-preset-env": "^1.6.0",
+    "babel-preset-minify": "^0.2.0",
     "coveralls": "^2.13.1",
     "css-loader": "^0.28.1",
     "express": "^4.15.4",
@@ -53,7 +56,8 @@
     "postinstall": "pkgwrap --postinstall",
     "report": "pkgwrap --reporting",
     "start": "node server.js",
-    "test": "pkgwrap --testing --ava"
+    "test": "pkgwrap --testing --ava",
+		"watch": "webpack --watch --progress"
   },
   "pkgwrap": {
     "cleanup": [

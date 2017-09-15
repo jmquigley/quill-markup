@@ -3,6 +3,7 @@
 <head>
     <meta charset="UTF-8">
 	<title>Quill Highlight Demo</title>
+	<link rel="icon" href="data:,">
   	<link rel="stylesheet" href="./styles.css" type="text/css" media="screen" />
   	<link href="quill.snow.min.css" rel="stylesheet">
 	<script type="text/javascript" src="quill.min.js"></script>
@@ -16,22 +17,12 @@
 <script type="text/javascript">
 	Quill.register('modules/highlight', Highlight);
 	let quill = new Quill('#editor', {
+		formats: [],
 		modules: {
 			highlight: {
 			}
 		},
 		theme: 'snow'
-	});
-
-	quill.on('text-change', (delta, oldDelta, source) => {
-		window.delta = delta;
-		console.log(`%s`, quill.getText());
-		console.log(delta);
-
-		const text = quill.getText();
-
-		quill.removeFormat(0, text.length, 'silent')
-		quill.formatText(0, 4, 'color', 'rgb(0, 0, 255)', 'silent');
 	});
 </script>
 
