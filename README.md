@@ -30,6 +30,14 @@ $ yarn start
 ```
 This will start a local express web server @ http://localhost:4000
 
+If developing the module use the webpack watcher to automatically build changes with:
+
+```
+$ yarn start watch
+```
+This will detect changes and rebuild the bundle for testing with (with the web server above)
+
+
 ## Overview
 TODO: Add overview docs
 

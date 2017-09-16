@@ -3453,6 +3453,12 @@ js-base64@^2.1.9:
   version "2.3.2"
   resolved "https://registry.yarnpkg.com/js-base64/-/js-base64-2.3.2.tgz#a79a923666372b580f8e27f51845c6f7e8fbfbaf"
 
+js-output-loader@^0.0.5:
+  version "0.0.5"
+  resolved "https://registry.yarnpkg.com/js-output-loader/-/js-output-loader-0.0.5.tgz#3a8c8f7d0917e5a19c390bf37f654d0d5eeea5a4"
+  dependencies:
+    loader-utils "^1.1.0"
+
 js-string-escape@^1.0.1:
   version "1.0.1"
   resolved "https://registry.yarnpkg.com/js-string-escape/-/js-string-escape-1.0.1.tgz#e2625badbc0d67c7533e9edc1068c587ae4137ef"
@@ -6278,7 +6284,14 @@ util.rstrip@0.0.26:
   dependencies:
     util.pkgwrap "0.0.68"
 
-util.toolbox@0.0.47:
+util.section@^0.0.1:
+  version "0.0.1"
+  resolved "https://registry.yarnpkg.com/util.section/-/util.section-0.0.1.tgz#2e71bc1ed02cb485ada9a8cb84c5db6887c70981"
+  dependencies:
+    util.pkgwrap "0.0.68"
+    util.toolbox "^0.0.47"
+
+util.toolbox@0.0.47, util.toolbox@^0.0.47:
   version "0.0.47"
   resolved "https://registry.yarnpkg.com/util.toolbox/-/util.toolbox-0.0.47.tgz#0e2498c16c1892db8a36d017d147ce7f64fad036"
   dependencies:

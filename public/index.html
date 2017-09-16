@@ -10,7 +10,7 @@
 </head>
 <body>
 
-<div id="editor">Hello World</div>
+<div id="editor"></div>
 </body>
 
 <script type="text/javascript" src="./bundle.js"></script>
@@ -20,6 +20,9 @@
 		formats: [],
 		modules: {
 			highlight: {
+				content: 'Hello World',
+				mode: HighlightMode.markdown,
+				styling: HighlightStyle.monokai
 			}
 		},
 		theme: 'snow'

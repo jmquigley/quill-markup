@@ -1,20 +1,22 @@
 const MinifyPlugin = require("babel-minify-webpack-plugin");
+const path = require('path');
 
 module.exports = {
-	entry: './index.ts',
+	entry: path.resolve(__dirname, 'index.ts'),
 	output: {
-		path: __dirname,
-		filename: './public/bundle.js',
+		path: path.resolve(__dirname, 'public'),
+		filename: 'bundle.js',
 		libraryTarget: "umd"
 	},
 	resolve: {
-		extensions: ['.js', '.ts', '.css']
+		extensions: ['.ts', '.js', '.css']
 	},
 	module: {
 		rules: [
 			{
 				test: /\.ts$/,
-				loader: 'awesome-typescript-loader?useBabel=true&useCache=true'
+				exclude: /node_modules|public/,
+				loader: 'js-output-loader!awesome-typescript-loader?useBabel=true&useCache=true'
 			},
 			{
 				test: /\.css$/,

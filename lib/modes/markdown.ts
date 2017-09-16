@@ -11,6 +11,6 @@ export class Markdown extends BaseHighlightMode {
 	}
 
 	public highlight(text: string, start: number, end: number) {
-		debug('highlighting markdown text %s, start: %d, end: %d', text, start, end);
+		debug('highlight markdown text: %s, start: %d, end: %d', text, start, end);
 	}
 }
