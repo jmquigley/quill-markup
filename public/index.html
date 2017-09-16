@@ -20,13 +20,17 @@
 		formats: [],
 		modules: {
 			highlight: {
-				content: 'Hello World',
 				mode: HighlightMode.markdown,
 				styling: HighlightStyle.monokai
 			}
 		},
 		theme: 'snow'
 	});
+
+	quill.getModule('highlight').set({
+		content: 'Hello World'
+	});
+
 </script>
 
 </html>

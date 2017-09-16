@@ -73,29 +73,30 @@ export class Highlight {
 		debug('Initializing highlight module');
 
 		this._quill = quill;
+		this._opts = Object.assign({
+			mode: HighlightMode.text,
+			styling: HighlightStyle.plain,
+			custom: {},
+			content: ''
+		}, opts);
 
 		this._styles[HighlightStyle.monokai] = require('./styles/monokai.json');
 		this._modes[HighlightMode.markdown] = new Markdown(quill);
 		this._modes[HighlightMode.text] = new Text(quill);
 
 		this.handleEditorChange = this.handleEditorChange.bind(this);
+		this.handleSelection = this.handleSelection.bind(this);
 		this.handleTextChange = this.handleTextChange.bind(this);
 
-		quill.on('text-change', this.handleTextChange);
 		quill.on('editor-change', this.handleEditorChange);
-
-		this.set(opts);
+		quill.on('selection-change', this.handleSelection);
+		quill.on('text-change', this.handleTextChange);
 	}
 
 	/**
 	 * @return {number} the current position within the buffer
 	 */
 	get pos(): number {
-		const range = this._quill.getSelection();
-		if (range) {
-			this._pos = range.index;
-		}
-
 		return this._pos;
 	}
 
@@ -110,12 +111,8 @@ export class Highlight {
 	 */
 	public set(opts: HighlightOptions) {
 
-		this._opts = opts = Object.assign({
-			mode: HighlightMode.text,
-			styling: HighlightStyle.plain,
-			custom: {},
-			content: ''
-		}, opts);
+		this._opts = opts = Object.assign(this._opts, opts);
+		debug('current highlight options: %o', this._opts);
 
 		this._processor = this._modes[opts.mode];
 		this._processor.content = opts.content;
@@ -130,6 +127,14 @@ export class Highlight {
 
 	private handleEditorChange(eventName: string, ...args: any[]) {
 		debug('handleEditorChange(%s), %o', eventName, args);
+	}
+
+	private handleSelection(range: any, oldRange: any, source: string) {
+		debug('handleSelection -> range: %o, oldRange: %o, source: %s', range, oldRange, source);
+		if (range) {
+			this._pos = range.index;
+			debug('position: %d', this.pos);
+		}
 	}
 
 	private handleTextChange(delta: any, old: any, source: string) {
