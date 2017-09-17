@@ -1,4 +1,13 @@
 #editor {
 	width: 100%;
 	height: 500px;
+	font-family: "Inconsolata"
+}
+
+.ql-font-inconsolata {
+	font-family: "Inconsolata";
+}
+
+.ql-font-cormorant {
+	font-family: "Cormorant SC";
 }

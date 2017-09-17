@@ -3,8 +3,11 @@
 export abstract class BaseHighlightMode {
 
 	protected _content: string;
-	protected _style: any;
+	protected _end: number;
 	protected _quill: any;
+	protected _start: number;
+	protected _style: any;
+	protected _text: string;
 
 	constructor(quill: any) {
 		this._quill = quill;
@@ -18,8 +21,16 @@ export abstract class BaseHighlightMode {
 		this._content = val;
 	}
 
+	get end() {
+		return this._end;
+	}
+
 	get quill() {
 		return this._quill;
+	}
+
+	get start() {
+		return this._start;
 	}
 
 	get style() {
@@ -30,5 +41,15 @@ export abstract class BaseHighlightMode {
 		this._style = val;
 	}
 
-	public abstract highlight(text: string, start: number, end: number): void;
+	get text() {
+		return this._text;
+	}
+
+	public highlight(text: string, start: number, end: number): void {
+		this._text = text;
+		this._start = start;
+		this._end = end;
+
+		this.quill.removeFormat(start, end, 'silent');
+	}
 }

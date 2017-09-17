@@ -5,24 +5,45 @@
 	<title>Quill Highlight Demo</title>
 	<link rel="icon" href="data:,">
   	<link rel="stylesheet" href="./styles.css" type="text/css" media="screen" />
+	<link href="https://fonts.googleapis.com/css?family=Cormorant+SC|Inconsolata" rel="stylesheet">
   	<link href="quill.snow.min.css" rel="stylesheet">
+	<link href="highlight.min.css" rel="stylesheet">
+	<script type="text/javascript" src="highlight.min.js"></script>
 	<script type="text/javascript" src="quill.min.js"></script>
 </head>
 <body>
 
-<div id="editor"></div>
+<div id="toolbar-container">
+  <select class="ql-font">
+    <option value="inconsolata" selected>Inconsolata</option>
+	<option value="cormorant">Cormorant</option>
+  </select>
+</div>
+
+<div id="editor" spellcheck="false"></div>
 </body>
 
 <script type="text/javascript" src="./bundle.js"></script>
 <script type="text/javascript">
-	Quill.register('modules/highlight', Highlight);
+    hljs.configure({
+		languages: ['javascript'],
+		useBR: false
+	});
+
+    let Font = Quill.import('formats/font');
+    Font.whitelist = ['inconsolata'];
+
+    Quill.register(Font, true);
+    Quill.register('modules/highlight', Highlight);
+
 	let quill = new Quill('#editor', {
-		formats: [],
 		modules: {
 			highlight: {
 				mode: HighlightMode.markdown,
 				styling: HighlightStyle.monokai
-			}
+			},
+			syntax: true,
+			toolbar: '#toolbar-container'
 		},
 		theme: 'snow'
 	});

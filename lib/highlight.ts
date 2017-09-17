@@ -18,8 +18,7 @@
  * const quill = new Quill('#editor', {
  *     formats: '',
  *     modules: {
- *         highlight: {
- *         }
+ *         highlight: {}
  *     },
  *     theme: 'snow'
  * });
@@ -37,6 +36,7 @@
 
 'use strict';
 
+import {rstrip} from 'util.rstrip';
 import {BaseHighlightMode, Markdown, Text} from './modes';
 
 export enum HighlightMode {
@@ -119,7 +119,7 @@ export class Highlight {
 		this._processor.style = this._styles[opts.styling];
 
 		if (opts.content) {
-			debug(`initial content: ${opts.content}`);
+			debug(`setting content: ${opts.content}`);
 			this._quill.setText(opts.content);
 		}
 		this._processor.highlight(opts.content, 0, opts.content.length);
@@ -140,7 +140,7 @@ export class Highlight {
 	private handleTextChange(delta: any, old: any, source: string) {
 		debug('handleTextChange -> pos: %d, change: %o, old: %o, source: %s', this.pos, delta, old, source);
 
-		const text: string = this._quill.getText();
+		const text: string = rstrip(this._quill.getText());
 		this._processor.highlight(text, 0, text.length);
 	}
 }
