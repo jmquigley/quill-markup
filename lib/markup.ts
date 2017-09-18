@@ -1,88 +1,90 @@
 /**
- * A custom Quill highlighting module.  It manages multiple mode instances
- * that are used to apply text formatting to the contents of the control.
+ * A custom Quill highlighting module for markup modes/styles.  It manages
+ * multiple mode instances  that are used to apply text formatting to the
+ * contents of the control.
  *
  * The module is added to the component per the API instructions:
  * https://quilljs.com/guides/building-a-custom-module/
  *
  * Once the module is initialized the highlighting mode can be changed with
- * the `set` function.  This just changes what the reference internally to
+ * the `set` functions.  This just changes what the reference internally to
  * another class that handles the formatting.
  *
  * #### Examples:
  *
  * ```javascript
- * import {EditorMode, EditorStyle, Highlight} from './modules';
+ * import {MarkupMode, MarkupStyle, Markup} from './lib/markup';
  *
- * Quill.register('modules/highlight', Highlight);
+ * Quill.register('modules/markup', Markup);
  * const quill = new Quill('#editor', {
- *     formats: '',
  *     modules: {
- *         highlight: {}
+ *         highlight: true
  *     },
  *     theme: 'snow'
  * });
  * ...
- * const highlight = quill.getModule('highlight');
- * highlight.set({
+ * const hl = quill.getModule('highlight');
+ * hl.set({
  *     content: 'some value',
- *     mode: EditorMode.markdown,
- *     styling: EditorStyle.monokai
+ *     mode: MarkupMode.markdown,
+ *     styling: MarkupStyle.monokai
  * });
  * ```
  *
- * @module Highlight
+ * @module Markup
  */
 
 'use strict';
 
 import {rstrip} from 'util.rstrip';
-import {BaseHighlightMode, Markdown, Text} from './modes';
+import {BaseMarkupMode, Markdown, Text} from './modes';
 
-export enum HighlightMode {
+export enum MarkupMode {
 	markdown,
 	richedit,
 	text
 }
 
-export enum HighlightStyle {
+export enum MarkupStyle {
 	custom = 'custom',
 	plain = 'plain',
 	monokai = 'monokai'
 }
 
-export interface HighlightOptions {
+export interface MarkupOptions {
 	content?: string;
 	custom?: any;
-	mode: HighlightMode;
-	styling: HighlightStyle;
+	font?: string;
+	fontSize?: number;
+	mode: MarkupMode;
+	styling: MarkupStyle;
 }
 
-const debug = require('debug')('highlight');
+const debug = require('debug')('markup');
 
-export class Highlight {
+export class Markup {
 
-	private _modes: Map<HighlightMode, any> = new Map<HighlightMode, any>();
-	private _opts: HighlightOptions;
+	private _modes: Map<MarkupMode, any> = new Map<MarkupMode, any>();
+	private _opts: MarkupOptions;
 	private _pos: number = 0;
-	private _processor: BaseHighlightMode;
+	private _processor: BaseMarkupMode;
 	private _quill: any;
 	private _styles: Map<string, any> = new Map<string, any>();
 
-	constructor(quill: any, opts: HighlightOptions) {
-		debug('Initializing highlight module');
+	constructor(quill: any, opts: MarkupOptions) {
+		debug('Initializing markup module');
 
 		this._quill = quill;
 		this._opts = Object.assign({
-			mode: HighlightMode.text,
-			styling: HighlightStyle.plain,
+			mode: MarkupMode.text,
+			styling: MarkupStyle.plain,
 			custom: {},
 			content: ''
 		}, opts);
 
-		this._styles[HighlightStyle.monokai] = require('./styles/monokai.json');
-		this._modes[HighlightMode.markdown] = new Markdown(quill);
-		this._modes[HighlightMode.text] = new Text(quill);
+		this._styles[MarkupStyle.monokai] = require('./styles/monokai.json');
+		this._modes[MarkupMode.markdown] = new Markdown(quill);
+		this._modes[MarkupMode.text] = new Text(quill);
 
 		this.handleEditorChange = this.handleEditorChange.bind(this);
 		this.handleSelection = this.handleSelection.bind(this);
@@ -109,10 +111,10 @@ export class Highlight {
 	 * `content` resets the content within the control.  If this is null it
 	 * is ignored.
 	 */
-	public set(opts: HighlightOptions) {
+	public set(opts: MarkupOptions) {
 
 		this._opts = opts = Object.assign(this._opts, opts);
-		debug('current highlight options: %o', this._opts);
+		debug('current markup options: %o', this._opts);
 
 		this._processor = this._modes[opts.mode];
 		this._processor.content = opts.content;
@@ -122,7 +124,19 @@ export class Highlight {
 			debug(`setting content: ${opts.content}`);
 			this._quill.setText(opts.content);
 		}
-		this._processor.highlight(opts.content, 0, opts.content.length);
+		this._processor.markup(opts.content, 0, opts.content.length);
+	}
+
+	public setBold() {
+		this._processor.handleBold();
+	}
+
+	public setFont(fontName: string) {
+		debug('setting font: %s', fontName);
+	}
+
+	public setFontSize(fontSize: string) {
+		debug('setting font size: %s', fontSize);
 	}
 
 	private handleEditorChange(eventName: string, ...args: any[]) {
@@ -141,6 +155,6 @@ export class Highlight {
 		debug('handleTextChange -> pos: %d, change: %o, old: %o, source: %s', this.pos, delta, old, source);
 
 		const text: string = rstrip(this._quill.getText());
-		this._processor.highlight(text, 0, text.length);
+		this._processor.markup(text, 0, text.length);
 	}
 }

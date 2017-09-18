@@ -1,12 +1,12 @@
-# quill-highlight
+# quill-markup
 
-> A highlighting module for the [Quill](https://quilljs.com/) text editor
+> A markup highlighting module for the [Quill](https://quilljs.com/) text editor
 
-[![Build Status](https://travis-ci.org/jmquigley/quill-highlight.svg?branch=master)](https://travis-ci.org/jmquigley/quill-highlight)
+[![Build Status](https://travis-ci.org/jmquigley/quill-markup.svg?branch=master)](https://travis-ci.org/jmquigley/quill-markup)
 [![tslint code style](https://img.shields.io/badge/code_style-TSlint-5ed9c7.svg)](https://palantir.github.io/tslint/)
 [![Test Runner](https://img.shields.io/badge/testing-ava-blue.svg)](https://github.com/avajs/ava)
-[![NPM](https://img.shields.io/npm/v/quill-highlight.svg)](https://www.npmjs.com/package/quill-highlight)
-[![Coverage Status](https://coveralls.io/repos/github/jmquigley/quill-highlight/badge.svg?branch=master)](https://coveralls.io/github/jmquigley/quill-highlight?branch=master)
+[![NPM](https://img.shields.io/npm/v/quill-markup.svg)](https://www.npmjs.com/package/quill-markup)
+[![Coverage Status](https://coveralls.io/repos/github/jmquigley/quill-markup/badge.svg?branch=master)](https://coveralls.io/github/jmquigley/quill-markup?branch=master)
 
 *THIS IS A WORK IN PROGRESS AND SHOULD NOT BE USED*
 
@@ -16,7 +16,7 @@ This module uses [yarn](https://yarnpkg.com/en/) to manage dependencies and run 
 
 To install as an application dependency:
 ```
-$ yarn add --dev quill-highlight
+$ yarn add --dev quill-markup
 ```
 
 To build the app and run all tests:
@@ -39,7 +39,7 @@ This will detect changes and rebuild the bundle for testing with (with the web s
 
 
 ## Overview
-TODO: Add overview docs
+This module turns the Quill WYSIWYG editor into a a fixed text markup editor (for modes like markdown, restructured text, etc).  It takes advantage of the underlying api for styling and undo/redo.
 
 ## Usage
 TODO: Add usage documentation

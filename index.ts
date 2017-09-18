@@ -1,13 +1,13 @@
 import {
-	Highlight,
-	HighlightMode,
-	HighlightOptions,
-	HighlightStyle
-} from './lib/highlight';
+	Markup,
+	MarkupMode,
+	MarkupOptions,
+	MarkupStyle
+} from './lib/markup';
 
 export {
-	Highlight,
-	HighlightMode,
-	HighlightOptions,
-	HighlightStyle
+	Markup,
+	MarkupMode,
+	MarkupOptions,
+	MarkupStyle
 };

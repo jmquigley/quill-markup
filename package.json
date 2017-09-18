@@ -1,16 +1,16 @@
 {
-  "name": "quill-highlight",
-  "version": "0.0.3",
+  "name": "quill-markup",
+  "version": "0.0.0",
   "author": "jmquigley <jmquigley@outlook.com>",
-  "description": "A highlighting module for the Quill text editor",
+  "description": "A markup highlighting module for the Quill text editor",
   "private": false,
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "https://github.com/jmquigley/quill-highlight"
+    "url": "https://github.com/jmquigley/quill-markup"
   },
   "bugs": {
-    "url": "https://github.com/jmquigley/quill-highlight/issues"
+    "url": "https://github.com/jmquigley/quill-markup/issues"
   },
   "engines": {
     "node": ">=7.5"

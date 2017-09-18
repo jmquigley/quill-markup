@@ -5,10 +5,10 @@ import * as fs from 'fs-extra';
 import * as path from 'path';
 import {join} from 'util.join';
 // import {Fixture} from 'util.fixture';
-import {Highlight, HighlightMode, HighlightStyle} from '../index';
+import {Markup, MarkupMode, MarkupStyle} from '../index';
 import {cleanup} from './helpers';
 
-const debug = require('debug')('highlight.test');
+const debug = require('debug')('markup.test');
 const data = fs.readFileSync(join(__dirname, 'fixtures', 'empty-html', 'index.html'));
 debug('data: %s', data);
 
@@ -39,11 +39,11 @@ test.after.always.cb(t => {
 	cleanup(path.basename(__filename), t);
 });
 
-test('Test creation of the Highlight instance', t => {
-	const highlight = new Highlight(quill, {
-		mode: HighlightMode.text,
-		styling: HighlightStyle.plain
+test('Test creation of the Markup instance', t => {
+	const markup = new Markup(quill, {
+		mode: MarkupMode.text,
+		styling: MarkupStyle.plain
 	});
 
-	t.truthy(highlight);
+	t.truthy(markup);
 });

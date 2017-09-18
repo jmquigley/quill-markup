@@ -1,6 +1,6 @@
 'use strict';
 
-export abstract class BaseHighlightMode {
+export abstract class BaseMarkupMode {
 
 	protected _content: string;
 	protected _end: number;
@@ -45,7 +45,9 @@ export abstract class BaseHighlightMode {
 		return this._text;
 	}
 
-	public highlight(text: string, start: number, end: number): void {
+	public abstract handleBold(): void;
+
+	public markup(text: string, start: number, end: number): void {
 		this._text = text;
 		this._start = start;
 		this._end = end;

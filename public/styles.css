@@ -4,10 +4,10 @@
 	font-family: "Inconsolata"
 }
 
-.ql-font-inconsolata {
-	font-family: "Inconsolata";
-}
-
-.ql-font-cormorant {
-	font-family: "Cormorant SC";
+#toolbar {
+	box-sizing: border-box;
+	border: solid 1px #ccc;
+	border-bottom: none;
+	padding: 4px 10px;
+	width: 100%;
 }

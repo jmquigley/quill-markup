@@ -1,11 +1,11 @@
 'use strict';
 
 import {matches} from 'util.matches';
-import {BaseHighlightMode} from './base';
+import {BaseMarkupMode} from './base';
 
 const debug = require('debug')('Markdown');
 
-export class Markdown extends BaseHighlightMode {
+export class Markdown extends BaseMarkupMode {
 
 	private _bold: RegExp = /\*[^*\n]+?\*/g;
 
@@ -14,12 +14,14 @@ export class Markdown extends BaseHighlightMode {
 		debug('creating markdown mode %o', quill);
 	}
 
-	public highlight(text: string, start: number, end: number) {
-		super.highlight(text, start, end);
-
-		debug('highlight markdown text: %s, start: %d, end: %d', this.text, this.start, this.end);
-
+	public markup(text: string, start: number, end: number) {
+		super.markup(text, start, end);
+		debug('markdown text: %s, start: %d, end: %d', this.text, this.start, this.end);
 		this.applyBold();
+	}
+
+	public handleBold() {
+		debug('markdown handleBold');
 	}
 
 	private applyBold() {

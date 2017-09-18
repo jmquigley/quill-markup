@@ -7,17 +7,22 @@
   	<link rel="stylesheet" href="./styles.css" type="text/css" media="screen" />
 	<link href="https://fonts.googleapis.com/css?family=Cormorant+SC|Inconsolata" rel="stylesheet">
   	<link href="quill.snow.min.css" rel="stylesheet">
-	<link href="highlight.min.css" rel="stylesheet">
-	<script type="text/javascript" src="highlight.min.js"></script>
+	<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
 	<script type="text/javascript" src="quill.min.js"></script>
 </head>
 <body>
 
-<div id="toolbar-container">
-  <select class="ql-font">
+<div id="toolbar">
+  <select id="font">
     <option value="inconsolata" selected>Inconsolata</option>
 	<option value="cormorant">Cormorant</option>
   </select>
+  <select id="fontsize">
+    <option value="10" selected>10</option>
+	<option value="11">11</option>
+	<option value="12">12</option>
+  </select>
+  <button id="bold-button"><i class="fa fa-bold"></i></button>
 </div>
 
 <div id="editor" spellcheck="false"></div>
@@ -25,32 +30,34 @@
 
 <script type="text/javascript" src="./bundle.js"></script>
 <script type="text/javascript">
-    hljs.configure({
-		languages: ['javascript'],
-		useBR: false
-	});
-
-    let Font = Quill.import('formats/font');
-    Font.whitelist = ['inconsolata'];
-
-    Quill.register(Font, true);
     Quill.register('modules/highlight', Highlight);
-
 	let quill = new Quill('#editor', {
 		modules: {
 			highlight: {
 				mode: HighlightMode.markdown,
 				styling: HighlightStyle.monokai
 			},
-			syntax: true,
-			toolbar: '#toolbar-container'
+			toolbar: false
 		},
 		theme: 'snow'
 	});
 
-	quill.getModule('highlight').set({
+	let hl = quill.getModule('highlight');
+	hl.set({
 		content: 'Hello World'
 	});
+
+	document.getElementById("font").onchange = (e) => {
+		hl.setFont(e.target.value);
+	}
+
+	document.getElementById("fontsize").onchange = (e) => {
+		hl.setFontSize(e.target.value);
+	}
+
+	document.getElementById("bold-button").onclick = (e) => {
+		hl.setBold();
+	}
 
 </script>
 
