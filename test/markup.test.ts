@@ -1,5 +1,7 @@
 'use strict';
 
+require('mock-css-modules');
+
 import test from 'ava';
 import * as fs from 'fs-extra';
 import * as path from 'path';

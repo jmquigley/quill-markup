@@ -54,16 +54,27 @@ export enum MarkupStyle {
 export interface MarkupOptions {
 	content?: string;
 	custom?: any;
-	font?: string;
+	fontName?: string;
 	fontSize?: number;
 	mode: MarkupMode;
 	styling: MarkupStyle;
 }
 
+const styles = require('./styles.css');
+const fonts = require('./fonts/fonts.css');
 const debug = require('debug')('markup');
+
+debug(`styles: ${JSON.stringify(styles)}`);
+debug(`fonts: ${JSON.stringify(fonts)}`);
 
 export class Markup {
 
+	private _editor: Element;
+	private _fonts: string[] = [
+		'inconsolata',
+		'firamono',
+		'sourcecodepro'
+	];
 	private _modes: Map<MarkupMode, any> = new Map<MarkupMode, any>();
 	private _opts: MarkupOptions;
 	private _pos: number = 0;
@@ -76,19 +87,30 @@ export class Markup {
 
 		this._quill = quill;
 		this._opts = Object.assign({
-			mode: MarkupMode.text,
-			styling: MarkupStyle.plain,
+			content: '',
 			custom: {},
-			content: ''
+			fontName: 'inconsolata',
+			fontSize: 12,
+			mode: MarkupMode.text,
+			styling: MarkupStyle.plain
 		}, opts);
 
+		this._editor = document.getElementById('editor');
 		this._styles[MarkupStyle.monokai] = require('./styles/monokai.json');
 		this._modes[MarkupMode.markdown] = new Markdown(quill);
 		this._modes[MarkupMode.text] = new Text(quill);
 
-		this.handleEditorChange = this.handleEditorChange.bind(this);
-		this.handleSelection = this.handleSelection.bind(this);
-		this.handleTextChange = this.handleTextChange.bind(this);
+		[
+			'handleEditorChange',
+			'handleSelection',
+			'handleTextChange',
+			'set',
+			'setFont',
+			'setFontSize'
+		]
+		.forEach((fn: string) => {
+			this[fn] = this[fn].bind(this);
+		});
 
 		quill.on('editor-change', this.handleEditorChange);
 		quill.on('selection-change', this.handleSelection);
@@ -124,6 +146,9 @@ export class Markup {
 			debug(`setting content: ${opts.content}`);
 			this._quill.setText(opts.content);
 		}
+
+		this.setFont(opts.fontName);
+
 		this._processor.markup(opts.content, 0, opts.content.length);
 	}
 
@@ -132,7 +157,15 @@ export class Markup {
 	}
 
 	public setFont(fontName: string) {
+		// TODO: check for valid font name give, otherwise set default
+
+		fontName = fontName.toLowerCase();
 		debug('setting font: %s', fontName);
+
+		for (const className of this._fonts) {
+			this._editor.classList.remove(fonts[`font-${className}`]);
+		}
+		this._editor.classList.add(fonts[`font-${fontName}`]);
 	}
 
 	public setFontSize(fontSize: string) {

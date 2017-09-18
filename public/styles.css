@@ -1,13 +1,39 @@
 #editor {
 	width: 100%;
 	height: 500px;
-	font-family: "Inconsolata"
 }
 
 #toolbar {
-	box-sizing: border-box;
 	border: solid 1px #ccc;
 	border-bottom: none;
+	-webkit-box-sizing: border-box;
+	        box-sizing: border-box;
 	padding: 4px 10px;
 	width: 100%;
 }
+@font-face {
+	font-family: 'Fira Mono';
+	src: url(FiraMono.ttf);
+}
+
+@font-face {
+	font-family: 'Inconsolata';
+	src: url(Inconsolata.ttf);
+}
+
+@font-face {
+	font-family: 'Source Code Pro';
+	src: url(SourceCodePro.ttf);
+}
+
+.fonts_font-firamono-2AMeA {
+		font-family: "Fira Mono" !important;
+	}
+
+.fonts_font-inconsolata-1qoxc {
+		font-family: "Inconsolata" !important;
+	}
+
+.fonts_font-sourcecodepro-2Cub8 {
+		font-family: "Source Code Pro" !important;
+	}

@@ -1,3 +1,4 @@
+const ExtractTextPlugin = require("extract-text-webpack-plugin");
 const MinifyPlugin = require("babel-minify-webpack-plugin");
 const path = require('path');
 
@@ -21,11 +22,26 @@ module.exports = {
 			},
 			{
 				test: /\.css$/,
-				use: ['style-loader', 'css-loader']
-			},
+				use: ExtractTextPlugin.extract({
+					fallback: 'style-loader',
+					use: [{
+						loader: "css-loader",
+						options: {
+							importLoaders: 1,
+							localIdentName: '[folder]_[local]-[hash:base64:5]'
+						}
+					},
+					'postcss-loader'
+					]}
+				)
+			},			{
+				test: /\.ttf$/,
+				loader: "file-loader?name=[name].[ext]"
+			}
 		]
 	},
 	plugins: [
+		new ExtractTextPlugin({filename: "styles.css"}),
     	new MinifyPlugin()
   	]
 }

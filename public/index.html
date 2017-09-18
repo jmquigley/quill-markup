@@ -14,8 +14,9 @@
 
 <div id="toolbar">
   <select id="font">
+	<option value="firamono">Fira Mono</option>
     <option value="inconsolata" selected>Inconsolata</option>
-	<option value="cormorant">Cormorant</option>
+	<option value="sourcecodepro">Source Code Pro</option>
   </select>
   <select id="fontsize">
     <option value="10" selected>10</option>
@@ -30,33 +31,33 @@
 
 <script type="text/javascript" src="./bundle.js"></script>
 <script type="text/javascript">
-    Quill.register('modules/highlight', Highlight);
+    Quill.register('modules/markup', Markup);
 	let quill = new Quill('#editor', {
 		modules: {
-			highlight: {
-				mode: HighlightMode.markdown,
-				styling: HighlightStyle.monokai
+			markup: {
+				mode: MarkupMode.markdown,
+				styling: MarkupStyle.monokai
 			},
 			toolbar: false
 		},
 		theme: 'snow'
 	});
 
-	let hl = quill.getModule('highlight');
-	hl.set({
+	let markup = quill.getModule('markup');
+	markup.set({
 		content: 'Hello World'
 	});
 
 	document.getElementById("font").onchange = (e) => {
-		hl.setFont(e.target.value);
+		markup.setFont(e.target.value);
 	}
 
 	document.getElementById("fontsize").onchange = (e) => {
-		hl.setFontSize(e.target.value);
+		markup.setFontSize(e.target.value);
 	}
 
 	document.getElementById("bold-button").onclick = (e) => {
-		hl.setBold();
+		markup.setBold();
 	}
 
 </script>
