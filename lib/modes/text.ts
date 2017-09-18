@@ -16,4 +16,7 @@ export class Text extends BaseMarkupMode {
 
 	public handleBold() {
 	}
+
+	public handleItalic() {
+	}
 }

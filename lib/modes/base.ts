@@ -46,6 +46,7 @@ export abstract class BaseMarkupMode {
 	}
 
 	public abstract handleBold(): void;
+	public abstract handleItalic(): void;
 
 	public markup(text: string, start: number, end: number): void {
 		this._text = text;

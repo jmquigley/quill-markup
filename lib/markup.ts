@@ -18,7 +18,10 @@
  * Quill.register('modules/markup', Markup);
  * const quill = new Quill('#editor', {
  *     modules: {
- *         highlight: true
+ *         highlight: {
+ *             mode: MarkupMode.text,
+ *             styling: MarkupStyle.plain
+ *         }
  *     },
  *     theme: 'snow'
  * });
@@ -30,6 +33,10 @@
  *     styling: MarkupStyle.monokai
  * });
  * ```
+ *
+ * Note that initial content cannot be set in the contructor to the module.
+ * it is overwritten with the contents of the `#editor` div.  It can be set
+ * after creation of the Quill instance.
  *
  * @module Markup
  */
@@ -69,9 +76,7 @@ debug(`fonts: ${JSON.stringify(fonts)}`);
 
 export class Markup {
 
-	private _editor: Element;
-
-	// TODO: change this to make the constructor read fonts and build this dynamically
+	private _editor: HTMLElement;
 	private _fonts: string[] = [
 		'inconsolata',
 		'firamono',
@@ -92,7 +97,7 @@ export class Markup {
 			content: '',
 			custom: {},
 			fontName: 'inconsolata',
-			fontSize: 12,
+			fontSize: 13,
 			mode: MarkupMode.text,
 			styling: MarkupStyle.plain
 		}, opts);
@@ -102,11 +107,14 @@ export class Markup {
 		this._modes[MarkupMode.markdown] = new Markdown(quill);
 		this._modes[MarkupMode.text] = new Text(quill);
 
+		// bind all potential callbacks to the class.
 		[
 			'handleEditorChange',
 			'handleSelection',
 			'handleTextChange',
 			'set',
+			'setBold',
+			'setItalic',
 			'setFont',
 			'setFontSize'
 		]
@@ -127,6 +135,13 @@ export class Markup {
 	}
 
 	/**
+	 * @return {Quill} the current Quill instance reference
+	 */
+	get quill(): any {
+		return this._quill;
+	}
+
+	/**
 	 * Changes the current highlighting mode and display style.  It also sets
 	 * the content within control.
 	 * @param opts {HighlightOptions} configuration options.  `mode` sets the
@@ -141,27 +156,57 @@ export class Markup {
 		debug('current markup options: %o', this._opts);
 
 		this._processor = this._modes[opts.mode];
-		this._processor.content = opts.content;
 		this._processor.style = this._styles[opts.styling];
 
 		if (opts.content) {
 			debug(`setting content: ${opts.content}`);
+			this.setContent(opts.content);
 			this._quill.setText(opts.content);
 		}
 
 		this.setFont(opts.fontName);
+		this.setFontSize(opts.fontSize);
 
 		this._processor.markup(opts.content, 0, opts.content.length);
 	}
 
+	/**
+	 * Will call the current processor's bold function to make the current
+	 * highlight or word bold.
+	 */
 	public setBold() {
 		this._processor.handleBold();
 	}
 
+	/**
+	 * Will update the current content of the control with the given
+	 * @param content {string} the new content settting for the editor.
+	 */
+	public setContent(content: string) {
+		this._processor.content = content;
+	}
+
+	/**
+	 * Will call the current processor's italic function to make the current
+	 * highlight or word italic.
+	 */
+	public setItalic() {
+		this._processor.handleItalic();
+	}
+
+	/**
+	 * Changes the current overall font for the editor.  This control works with
+	 * mono fonts, so this will set it for all text.  The fonts are all defined
+	 * in `./lib/fonts`.
+	 * @param fontName {string} the name of the font to set.
+	 */
 	public setFont(fontName: string) {
-		// TODO: check for valid font name give, otherwise set default
 
 		fontName = fontName.toLowerCase();
+		if (!this._fonts.includes(fontName)) {
+			fontName = this._fonts[0];
+		}
+
 		debug('setting font: %s', fontName);
 
 		for (const className of this._fonts) {
@@ -170,14 +215,30 @@ export class Markup {
 		this._editor.classList.add(fonts[`font-${fontName}`]);
 	}
 
-	public setFontSize(fontSize: string) {
-		debug('setting font size: %s', fontSize);
+	/**
+	 * Changes the current overall size of the fonts within the editor.
+	 * @param fontSize {number} the number of pixels in the font sizing.  This
+	 * will resolve to `##px`.
+	 */
+	public setFontSize(fontSize: number) {
+		debug('setting font size: %spx', fontSize);
+		this._editor.style['font-size'] = `${fontSize}px`;
 	}
 
+	/**
+	 * This event is invoked whenever a change occurs in the editor (any type).
+	 * @param eventName {string} the name of the event that occurred.
+	 * @param args {any[]} the dyanamic parameter list passed to this event.
+	 */
 	private handleEditorChange(eventName: string, ...args: any[]) {
 		debug('handleEditorChange(%s), %o', eventName, args);
 	}
 
+	/**
+	 * Whenver the user moves the cursor with the keyboad or clicks within the
+	 * control with the mouse this event is invoked.  This will include single
+	 * mouse or key clicks.
+	 */
 	private handleSelection(range: any, oldRange: any, source: string) {
 		debug('handleSelection -> range: %o, oldRange: %o, source: %s', range, oldRange, source);
 		if (range) {
@@ -186,6 +247,9 @@ export class Markup {
 		}
 	}
 
+	/**
+	 * Invoked with each change of the content text.
+	 */
 	private handleTextChange(delta: any, old: any, source: string) {
 		debug('handleTextChange -> pos: %d, change: %o, old: %o, source: %s', this.pos, delta, old, source);
 

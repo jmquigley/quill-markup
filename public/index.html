@@ -4,11 +4,14 @@
     <meta charset="UTF-8">
 	<title>Quill Highlight Demo</title>
 	<link rel="icon" href="data:,">
+
   	<link rel="stylesheet" href="./styles.css" type="text/css" media="screen" />
-	<link href="https://fonts.googleapis.com/css?family=Cormorant+SC|Inconsolata" rel="stylesheet">
-  	<link href="quill.snow.min.css" rel="stylesheet">
-	<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
-	<script type="text/javascript" src="quill.min.js"></script>
+  	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/quill/1.3.2/quill.snow.min.css">
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+	<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+	<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/quill/1.3.2/quill.min.js"></script>
+	<script type="text/javascript" src="./bundle.js"></script>
 </head>
 <body>
 
@@ -19,47 +22,22 @@
 	<option value="sourcecodepro">Source Code Pro</option>
   </select>
   <select id="fontsize">
-    <option value="10" selected>10</option>
+    <option value="10">10</option>
 	<option value="11">11</option>
 	<option value="12">12</option>
+	<option value="13" selected>13</option>
+	<option value="14">14</option>
+	<option value="16">16</option>
+	<option value="20">20</option>
+	<option value="24">24</option>
   </select>
   <button id="bold-button"><i class="fa fa-bold"></i></button>
+  <button id="italic-button"><i class="fa fa-italic"></i></button>
 </div>
 
 <div id="editor" spellcheck="false"></div>
 </body>
 
-<script type="text/javascript" src="./bundle.js"></script>
-<script type="text/javascript">
-    Quill.register('modules/markup', Markup);
-	let quill = new Quill('#editor', {
-		modules: {
-			markup: {
-				mode: MarkupMode.markdown,
-				styling: MarkupStyle.monokai
-			},
-			toolbar: false
-		},
-		theme: 'snow'
-	});
-
-	let markup = quill.getModule('markup');
-	markup.set({
-		content: 'Hello World'
-	});
-
-	document.getElementById("font").onchange = (e) => {
-		markup.setFont(e.target.value);
-	}
-
-	document.getElementById("fontsize").onchange = (e) => {
-		markup.setFontSize(e.target.value);
-	}
-
-	document.getElementById("bold-button").onclick = (e) => {
-		markup.setBold();
-	}
-
-</script>
+<script type="text/javascript" src='./app.js'></script>
 
 </html>

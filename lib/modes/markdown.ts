@@ -24,6 +24,10 @@ export class Markdown extends BaseMarkupMode {
 		debug('markdown handleBold');
 	}
 
+	public handleItalic() {
+		debug('markdown handleItalic');
+	}
+
 	private applyBold() {
 		for (const match of matches(this.text, this._bold)) {
 			const start = match.start + this.start;
