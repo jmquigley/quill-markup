@@ -70,6 +70,8 @@ debug(`fonts: ${JSON.stringify(fonts)}`);
 export class Markup {
 
 	private _editor: Element;
+
+	// TODO: change this to make the constructor read fonts and build this dynamically
 	private _fonts: string[] = [
 		'inconsolata',
 		'firamono',
