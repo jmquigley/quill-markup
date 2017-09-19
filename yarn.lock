@@ -1988,7 +1988,7 @@ css-color-names@0.0.4:
   version "0.0.4"
   resolved "https://registry.yarnpkg.com/css-color-names/-/css-color-names-0.0.4.tgz#808adc2e79cf84738069b646cb20ec27beb629e0"
 
-css-loader@^0.28.1:
+css-loader@^0.28.7:
   version "0.28.7"
   resolved "https://registry.yarnpkg.com/css-loader/-/css-loader-0.28.7.tgz#5f2ee989dd32edd907717f953317656160999c1b"
   dependencies:
@@ -5052,6 +5052,15 @@ postcss-import@^10.0.0:
     read-cache "^1.0.0"
     resolve "^1.1.7"
 
+postcss-import@^11.0.0:
+  version "11.0.0"
+  resolved "https://registry.yarnpkg.com/postcss-import/-/postcss-import-11.0.0.tgz#a962e2df82d3bc5a6da6a386841747204f41ef5b"
+  dependencies:
+    postcss "^6.0.1"
+    postcss-value-parser "^3.2.3"
+    read-cache "^1.0.0"
+    resolve "^1.1.7"
+
 postcss-initial@^2.0.0:
   version "2.0.0"
   resolved "https://registry.yarnpkg.com/postcss-initial/-/postcss-initial-2.0.0.tgz#72715f7336e0bb79351d99ee65c4a253a8441ba4"
@@ -6346,11 +6355,12 @@ strip-json-comments@~2.0.1:
   version "2.0.1"
   resolved "https://registry.yarnpkg.com/strip-json-comments/-/strip-json-comments-2.0.1.tgz#3c531942e908c2697c0ec344858c286c7ca0a60a"
 
-style-loader@^0.17.0:
-  version "0.17.0"
-  resolved "https://registry.yarnpkg.com/style-loader/-/style-loader-0.17.0.tgz#e8254bccdb7af74bd58274e36107b4d5ab4df310"
+style-loader@^0.18.2:
+  version "0.18.2"
+  resolved "https://registry.yarnpkg.com/style-loader/-/style-loader-0.18.2.tgz#cc31459afbcd6d80b7220ee54b291a9fd66ff5eb"
   dependencies:
     loader-utils "^1.0.2"
+    schema-utils "^0.3.0"
 
 sugarss@^1.0.0:
   version "1.0.0"
@@ -6830,12 +6840,14 @@ util.filelist@0.0.24:
     util.pkgwrap "0.0.68"
     util.rstrip "0.0.26"
 
-util.fixture@0.0.56:
-  version "0.0.56"
-  resolved "https://registry.yarnpkg.com/util.fixture/-/util.fixture-0.0.56.tgz#bdfbf1681cdc6392920d0d3ee99f4e90673e5290"
+util.fixture@0.0.58:
+  version "0.0.58"
+  resolved "https://registry.yarnpkg.com/util.fixture/-/util.fixture-0.0.58.tgz#cb30b0e633e1629cc1e0d2cf0059160b90080c13"
   dependencies:
     fs-extra "^4.0.1"
     klaw-sync "^3.0.0"
+    lodash "^4.17.4"
+    lorem-ipsum "^1.0.4"
     string-template "^1.0.0"
     util.chdir "0.0.30"
     util.filelist "0.0.24"
@@ -6893,25 +6905,15 @@ util.rstrip@0.0.26, util.rstrip@^0.0.26:
   dependencies:
     util.pkgwrap "0.0.68"
 
-util.section@^0.0.1:
-  version "0.0.1"
-  resolved "https://registry.yarnpkg.com/util.section/-/util.section-0.0.1.tgz#2e71bc1ed02cb485ada9a8cb84c5db6887c70981"
+util.section@^0.0.4:
+  version "0.0.4"
+  resolved "https://registry.yarnpkg.com/util.section/-/util.section-0.0.4.tgz#bab6770a82630e57723e8293671ce17e3598a192"
   dependencies:
     util.pkgwrap "0.0.68"
-    util.toolbox "^0.0.47"
 
-util.toolbox@0.0.47, util.toolbox@^0.0.47:
+util.toolbox@0.0.47:
   version "0.0.47"
   resolved "https://registry.yarnpkg.com/util.toolbox/-/util.toolbox-0.0.47.tgz#0e2498c16c1892db8a36d017d147ce7f64fad036"
-  dependencies:
-    fs-extra "^4.0.1"
-    util.pkgwrap "0.0.68"
-    util.rstrip "0.0.26"
-    uuid "^3.1.0"
-
-util.toolbox@^0.0.48:
-  version "0.0.48"
-  resolved "https://registry.yarnpkg.com/util.toolbox/-/util.toolbox-0.0.48.tgz#cadcc977b816f92f719d4c79901d3a47c09fb7b5"
   dependencies:
     fs-extra "^4.0.1"
     util.pkgwrap "0.0.68"
@@ -6998,7 +7000,7 @@ webpack-sources@^1.0.1:
     source-list-map "^2.0.0"
     source-map "~0.5.3"
 
-webpack@^3.5.6:
+webpack@^3.6.0:
   version "3.6.0"
   resolved "https://registry.yarnpkg.com/webpack/-/webpack-3.6.0.tgz#a89a929fbee205d35a4fa2cc487be9cbec8898bc"
   dependencies:

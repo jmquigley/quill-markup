@@ -1,6 +1,7 @@
 'use strict';
 
 import {matches} from 'util.matches';
+import {Section} from 'util.section';
 import {BaseMarkupMode} from './base';
 
 const debug = require('debug')('Markdown');
@@ -14,28 +15,29 @@ export class Markdown extends BaseMarkupMode {
 		debug('creating markdown mode %o', quill);
 	}
 
-	public markup(text: string, start: number, end: number) {
-		super.markup(text, start, end);
-		debug('markdown text: %s, start: %d, end: %d', this.text, this.start, this.end);
+	public markup(start: number, end: number) {
+		super.markup(start, end);
 		this.applyBold();
 	}
 
 	public handleBold() {
-		debug('markdown handleBold');
+		const selection: Section = this.selection;
+		if (selection && selection.text) {
+			debug('bolding word: "%s"', selection.text);
+			this.quill.insertText(selection.end + 1, '*');
+			this.quill.insertText(selection.start, '*');
+		}
 	}
 
 	public handleItalic() {
-		debug('markdown handleItalic');
 	}
 
 	private applyBold() {
-		for (const match of matches(this.text, this._bold)) {
+		for (const match of matches(this.subText, this._bold)) {
 			const start = match.start + this.start;
-			const end = this.end - this.start;
+			const len = match.end - match.start;
 
-			debug('bold match: %o, start: %d, end: %d', match, start, end);
-
-			this.quill.formatText(match.start + this.start, match.end - match.start, {
+			this.quill.formatText(start, len, {
 				color: this.style.bold
 			}, 'silent');
 		}

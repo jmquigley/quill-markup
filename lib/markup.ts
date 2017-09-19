@@ -43,7 +43,7 @@
 
 'use strict';
 
-import {rstrip} from 'util.rstrip';
+import {Section, section as getSection} from 'util.section';
 import {BaseMarkupMode, Markdown, Text} from './modes';
 
 export enum MarkupMode {
@@ -76,7 +76,13 @@ debug(`fonts: ${JSON.stringify(fonts)}`);
 
 export class Markup {
 
+	// The number of lines above and below the current position that will be
+	// repainted with the processor
+	private static readonly SECTION_SIZE: number = 5;
+
+	// A reference to the DOM editor node
 	private _editor: HTMLElement;
+
 	private _fonts: string[] = [
 		'inconsolata',
 		'firamono',
@@ -84,9 +90,13 @@ export class Markup {
 	];
 	private _modes: Map<MarkupMode, any> = new Map<MarkupMode, any>();
 	private _opts: MarkupOptions;
-	private _pos: number = 0;
 	private _processor: BaseMarkupMode;
 	private _quill: any;
+	private _section: Section = {
+		start: 0,
+		end: 0,
+		text: ''
+	};
 	private _styles: Map<string, any> = new Map<string, any>();
 
 	constructor(quill: any, opts: MarkupOptions) {
@@ -110,7 +120,6 @@ export class Markup {
 		// bind all potential callbacks to the class.
 		[
 			'handleEditorChange',
-			'handleSelection',
 			'handleTextChange',
 			'set',
 			'setBold',
@@ -123,22 +132,7 @@ export class Markup {
 		});
 
 		quill.on('editor-change', this.handleEditorChange);
-		quill.on('selection-change', this.handleSelection);
 		quill.on('text-change', this.handleTextChange);
-	}
-
-	/**
-	 * @return {number} the current position within the buffer
-	 */
-	get pos(): number {
-		return this._pos;
-	}
-
-	/**
-	 * @return {Quill} the current Quill instance reference
-	 */
-	get quill(): any {
-		return this._quill;
 	}
 
 	/**
@@ -159,7 +153,14 @@ export class Markup {
 		this._processor.style = this._styles[opts.styling];
 
 		if (opts.content) {
-			debug(`setting content: ${opts.content}`);
+			opts.content = '*Hello World*\n';
+			for (let i = 0; i < 25; i++) {
+				for (let j = 0; j < 40; j++) {
+					opts.content += `${String.fromCharCode(i + 97)} `;
+				}
+				opts.content += '\n';
+			}
+
 			this.setContent(opts.content);
 			this._quill.setText(opts.content);
 		}
@@ -167,7 +168,8 @@ export class Markup {
 		this.setFont(opts.fontName);
 		this.setFontSize(opts.fontSize);
 
-		this._processor.markup(opts.content, 0, opts.content.length);
+		this._section = getSection(opts.content, 0, Markup.SECTION_SIZE);
+		this._processor.markup(0, opts.content.length);
 	}
 
 	/**
@@ -231,29 +233,26 @@ export class Markup {
 	 * @param args {any[]} the dyanamic parameter list passed to this event.
 	 */
 	private handleEditorChange(eventName: string, ...args: any[]) {
-		debug('handleEditorChange(%s), %o', eventName, args);
-	}
+		if (eventName === 'selection-change') {
+			const range = args[0];
+			if (range) {
+				this._processor.range = range;
+				this._processor.pos = range.index;
+			}
 
-	/**
-	 * Whenver the user moves the cursor with the keyboad or clicks within the
-	 * control with the mouse this event is invoked.  This will include single
-	 * mouse or key clicks.
-	 */
-	private handleSelection(range: any, oldRange: any, source: string) {
-		debug('handleSelection -> range: %o, oldRange: %o, source: %s', range, oldRange, source);
-		if (range) {
-			this._pos = range.index;
-			debug('position: %d', this.pos);
+			// Compute the region that will be involved in highlighting.
+			this._section = getSection(
+				this._processor.text,
+				this._processor.pos,
+				Markup.SECTION_SIZE
+			);
 		}
 	}
 
 	/**
 	 * Invoked with each change of the content text.
 	 */
-	private handleTextChange(delta: any, old: any, source: string) {
-		debug('handleTextChange -> pos: %d, change: %o, old: %o, source: %s', this.pos, delta, old, source);
-
-		const text: string = rstrip(this._quill.getText());
-		this._processor.markup(text, 0, text.length);
+	private handleTextChange() {
+		this._processor.markup(this._section.start, this._section.end);
 	}
 }

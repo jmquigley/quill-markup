@@ -10,8 +10,8 @@ export class Text extends BaseMarkupMode {
 		debug('creating text mode %o', quill);
 	}
 
-	public markup(text: string, start: number, end: number) {
-		debug('highlighting text %s, start: %d, end: %d', text, start, end);
+	public markup(start: number, end: number) {
+		super.markup(start, end);
 	}
 
 	public handleBold() {
