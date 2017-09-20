@@ -12,7 +12,6 @@ const debug = require('debug')('base');
 
 export abstract class BaseMarkupMode {
 
-	protected _content: string;
 	protected _end: number;
 	protected _pos: number = 0;
 	protected _quill: any;

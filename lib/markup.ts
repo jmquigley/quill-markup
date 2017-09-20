@@ -117,7 +117,6 @@ export class Markup {
 	};
 	private _styles: Map<string, any> = new Map<string, any>();
 
-
 	constructor(quill: any, opts: MarkupOptions) {
 		debug('Initializing markup module');
 
@@ -180,18 +179,22 @@ export class Markup {
 		this._styles[MarkupStyle.custom] = this._opts.custom;
 	}
 
+	/**
+	 * Resets the idle timer when the user does something in the app.
+	 */
 	private resetInactivityTimer() {
 		this._idle = false;
 		clearTimeout(this._idleTimer);
-		this._idleTimer = setTimeout(this.markIdle, this._idleDelay)
+		this._idleTimer = setTimeout(this.markIdle, this._idleDelay);
 	}
 
+	/**
+	 * When the user is idle for N seconds this function is called by a global
+	 * timer to set a flag and rescan the full document.  This can be an
+	 * expensive operation and we need to find the tradeoff limit
+	 */
 	private markIdle() {
 		this._idle = true;
-
-		// if the user was idle for N seconds, rescan the document
-		// This can be an expensive operation and we need to find the
-		// tradeoff limit
 		this._processor.handleChange(0, this._processor.text.length);
 	}
 
