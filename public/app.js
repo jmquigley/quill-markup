@@ -1,10 +1,12 @@
 Quill.register('modules/markup', Markup);
 let quill = new Quill('#editor', {
 	modules: {
-		markup: {
-			mode: MarkupMode.markdown,
-			styling: MarkupStyle.monokai
-		},
+		history: {
+      		delay: 2000,
+      		maxStack: 500,
+      		userOnly: true
+    	},
+		markup: true,
 		toolbar: false
 	},
 	theme: 'snow'
@@ -12,6 +14,8 @@ let quill = new Quill('#editor', {
 
 let markup = quill.getModule('markup');
 markup.set({
+	mode: MarkupMode.markdown,
+	styling: MarkupStyle.monokai,
 	content: 'Hello World'
 });
 
@@ -46,4 +50,12 @@ document.getElementById("headerlevel").onchange = (e) => {
     for(var i = 0; i < elements.length; i++){
       elements[i].selected = false;
     }
+}
+
+document.getElementById("undo-button").onclick = (e) => {
+	markup.undo();
+}
+
+document.getElementById("redo-button").onclick = (e) => {
+	markup.redo();
 }

@@ -18,10 +18,16 @@
  * Quill.register('modules/markup', Markup);
  * const quill = new Quill('#editor', {
  *     modules: {
- *         highlight: {
+ *         history: {
+ *             delay: 2000,
+ *             maxStack: 500,
+ *             userOnly: true
+ *         },
+ *         markup: {
  *             mode: MarkupMode.text,
  *             styling: MarkupStyle.plain
- *         }
+ *         },
+ *         toolbar: false
  *     },
  *     theme: 'snow'
  * });
@@ -35,8 +41,9 @@
  * ```
  *
  * Note that initial content cannot be set in the contructor to the module.
- * it is overwritten with the contents of the `#editor` div.  It can be set
- * after creation of the Quill instance.
+ * it is overwritten with the contents of the `#editor` div as Qill is
+ * instatiated.  It can be set after creation of the Quill instance using
+ * the `.setContent('')` function.
  *
  * @module Markup
  */
@@ -70,6 +77,7 @@ export interface MarkupOptions {
 const styles = require('./styles.css');
 const fonts = require('./fonts/fonts.css');
 const debug = require('debug')('markup');
+const pkg = require('../package.json');
 
 debug(`styles: ${JSON.stringify(styles)}`);
 debug(`fonts: ${JSON.stringify(fonts)}`);
@@ -114,7 +122,9 @@ export class Markup {
 		}, opts);
 
 		this._editor = document.getElementById('editor');
-		this._styles[MarkupStyle.monokai] = require('./styles/monokai.json');
+
+		this.loadStyles();
+
 		this._modes[MarkupMode.markdown] = new Markdown(quill);
 		this._modes[MarkupMode.text] = new Text(quill);
 
@@ -122,11 +132,17 @@ export class Markup {
 		[
 			'handleEditorChange',
 			'handleTextChange',
+			'redo',
 			'set',
 			'setBold',
+			'setContent',
 			'setItalic',
 			'setFont',
-			'setFontSize'
+			'setFontSize',
+			'setHeader',
+			'setStrikeThrough',
+			'setUnderline',
+			'undo'
 		]
 		.forEach((fn: string) => {
 			this[fn] = this[fn].bind(this);
@@ -134,6 +150,26 @@ export class Markup {
 
 		quill.on('editor-change', this.handleEditorChange);
 		quill.on('text-change', this.handleTextChange);
+	}
+
+	private loadStyles() {
+		const baseStyles = require('./styles/base.json');
+
+		this._styles[MarkupStyle.monokai] = Object.assign(
+			baseStyles,
+			require('./styles/monokai.json')
+		);
+		this._styles[MarkupStyle.plain] = require('./styles/plain.json');
+		this._styles[MarkupStyle.custom] = this._opts.custom;
+	}
+
+	/**
+	 * Calls the quill history redo function
+	 */
+	public redo() {
+		if (this._quill.history) {
+			this._quill.history.redo();
+		}
 	}
 
 	/**
@@ -150,20 +186,25 @@ export class Markup {
 		this._opts = opts = Object.assign(this._opts, opts);
 		debug('current markup options: %o', this._opts);
 
+		this._styles[MarkupStyle.custom] = this._opts.custom;
 		this._processor = this._modes[opts.mode];
 		this._processor.style = this._styles[opts.styling];
 
 		if (opts.content) {
-			opts.content = '*Hello World*\n';
-			for (let i = 0; i < 25; i++) {
-				for (let j = 0; j < 40; j++) {
-					opts.content += `${String.fromCharCode(i + 97)} `;
+
+			// Temporary code below.  This is just conveniece code for
+			// testing.
+			if (pkg['debug']) {
+				opts.content = '*Hello World*\n';
+				for (let i = 0; i < 25; i++) {
+					for (let j = 0; j < 40; j++) {
+						opts.content += `${String.fromCharCode(i + 97)} `;
+					}
+					opts.content += '\n';
 				}
-				opts.content += '\n';
 			}
 
 			this.setContent(opts.content);
-			this._quill.setText(opts.content);
 		}
 
 		this.setFont(opts.fontName);
@@ -187,6 +228,7 @@ export class Markup {
 	 */
 	public setContent(content: string) {
 		this._processor.content = content;
+		this._quill.setText(content);
 	}
 
 	/**
@@ -198,17 +240,25 @@ export class Markup {
 	}
 
 	/**
-	 * Will call the current processor's italic function to make the current
+	 * Calls the current processor's italic function to make the current
 	 * highlight or word italic.
 	 */
 	public setItalic() {
 		this._processor.handleItalic();
 	}
 
+	/**
+	 * Calls the current processor's strikthrogh function to highlight the
+	 * current word/selection.
+	 */
 	public setStrikeThrough() {
 		this._processor.handleStrikeThrough();
 	}
 
+	/**
+	 * Calls the current processor's underline function to highlight the
+	 * current word/selection.
+	 */
 	public setUnderline() {
 		this._processor.handleUnderline();
 	}
@@ -242,6 +292,15 @@ export class Markup {
 	public setFontSize(fontSize: number) {
 		debug('setting font size: %spx', fontSize);
 		this._editor.style['font-size'] = `${fontSize}px`;
+	}
+
+	/**
+	 * Calls the quill history undo function
+	 */
+	public undo() {
+		if (this._quill.history) {
+			this._quill.history.undo();
+		}
 	}
 
 	/**
