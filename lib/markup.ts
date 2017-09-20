@@ -78,7 +78,8 @@ export class Markup {
 
 	// The number of lines above and below the current position that will be
 	// repainted with the processor
-	private static readonly SECTION_SIZE: number = 5;
+	private static readonly SECTION_SIZE: number = 30;
+	private static readonly THRESHOLD: number = 600;
 
 	// A reference to the DOM editor node
 	private _editor: HTMLElement;
@@ -168,7 +169,7 @@ export class Markup {
 		this.setFont(opts.fontName);
 		this.setFontSize(opts.fontSize);
 
-		this._section = getSection(opts.content, 0, Markup.SECTION_SIZE);
+		this._section = getSection(opts.content, 0, Markup.SECTION_SIZE, Markup.THRESHOLD);
 		this._processor.markup(0, opts.content.length);
 	}
 
@@ -186,6 +187,14 @@ export class Markup {
 	 */
 	public setContent(content: string) {
 		this._processor.content = content;
+	}
+
+	/**
+	 * Calls the processor's current header creation function
+	 * @param level {string} the level selected by the user
+	 */
+	public setHeader(level: string) {
+		this._processor.handleHeader(Number(level));
 	}
 
 	/**

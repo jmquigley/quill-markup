@@ -3,6 +3,12 @@
 	height: 500px;
 }
 
+input,
+textarea,
+[contenteditable] {
+  caret-color: black !important;
+}
+
 #toolbar {
 	border: solid 1px #ccc;
 	border-bottom: none;

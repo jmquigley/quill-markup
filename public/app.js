@@ -38,3 +38,12 @@ document.getElementById("underline-button").onclick = (e) => {
 document.getElementById("strike-button").onclick = (e) => {
 	markup.setStrikeThrough();
 }
+
+document.getElementById("headerlevel").onchange = (e) => {
+	markup.setHeader(e.target.value);
+
+	let elements = e.target.selectedOptions;
+    for(var i = 0; i < elements.length; i++){
+      elements[i].selected = false;
+    }
+}

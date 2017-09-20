@@ -5,5 +5,5 @@ const app = express();
 app.use(express.static('public'));
 
 app.listen(4000, () => {
-    console.log('Express server is up on port 4000 (ctrl + c to quit)');
+    console.log('Express server is up on port 4000 (ctrl+c to quit)');
 });

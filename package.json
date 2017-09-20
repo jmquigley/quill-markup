@@ -22,7 +22,7 @@
     "util.matches": "^0.0.2",
     "util.pkgwrap": "0.0.68",
     "util.rstrip": "^0.0.26",
-    "util.section": "^0.0.4"
+    "util.section": "^0.0.6"
   },
   "devDependencies": {
     "@types/express": "^4.0.37",

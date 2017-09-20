@@ -1,5 +1,14 @@
 {
-    "h1": "red",
+		"foreground": "black",
+		"background": "white",
+
+    "h1": "#ffff00",
+    "h2": "#ffd700",
+    "h3": "#ffaf00",
+    "h4": "#ff8700",
+    "h5": "#ff5f00",
+    "h6": "#ff0000",
+
 		"bold": "#0087ff",
 		"italic": "#af00ff",
 		"underline": "blue",

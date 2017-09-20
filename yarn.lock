@@ -6905,9 +6905,9 @@ util.rstrip@0.0.26, util.rstrip@^0.0.26:
   dependencies:
     util.pkgwrap "0.0.68"
 
-util.section@^0.0.4:
-  version "0.0.4"
-  resolved "https://registry.yarnpkg.com/util.section/-/util.section-0.0.4.tgz#bab6770a82630e57723e8293671ce17e3598a192"
+util.section@^0.0.6:
+  version "0.0.6"
+  resolved "https://registry.yarnpkg.com/util.section/-/util.section-0.0.6.tgz#64e3f27cb1600ce9e5cd9fb111f060c1f7317367"
   dependencies:
     util.pkgwrap "0.0.68"
 
