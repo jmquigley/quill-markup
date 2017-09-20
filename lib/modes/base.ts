@@ -1,7 +1,10 @@
 'use strict';
 
+import {matches} from 'util.matches';
 import {rstrip} from 'util.rstrip';
 import {Section, word as getWord} from 'util.section';
+
+const debug = require('debug')('base');
 
 export abstract class BaseMarkupMode {
 
@@ -93,6 +96,27 @@ export abstract class BaseMarkupMode {
 
 	public abstract handleBold(): void;
 	public abstract handleItalic(): void;
+	public abstract handleUnderline(): void;
+	public abstract handleStrikeThrough(): void;
+
+	public annotate(selection: Section, chevron: string) {
+		if (selection && selection.text) {
+			debug('annotating word: "%s" with "%s"', selection.text, chevron);
+			this.quill.insertText(selection.end + 1, chevron);
+			this.quill.insertText(selection.start, chevron);
+		}
+	}
+
+	public colorize(text: string, re: RegExp, color: string) {
+		for (const match of matches(text, re)) {
+			const start = match.start + this.start;
+			const len = match.end - match.start;
+
+			this.quill.formatText(start, len, {
+				color: color
+			}, 'silent');
+		}
+	}
 
 	/**
 	 * When the document changes this function is invoked to reapply the

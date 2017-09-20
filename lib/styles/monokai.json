@@ -1,4 +1,7 @@
 {
     "h1": "red",
-		"bold": "blue"
+		"bold": "#0087ff",
+		"italic": "#af00ff",
+		"underline": "blue",
+		"strikethrough": "green"
 }

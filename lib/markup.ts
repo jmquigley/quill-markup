@@ -196,6 +196,14 @@ export class Markup {
 		this._processor.handleItalic();
 	}
 
+	public setStrikeThrough() {
+		this._processor.handleStrikeThrough();
+	}
+
+	public setUnderline() {
+		this._processor.handleUnderline();
+	}
+
 	/**
 	 * Changes the current overall font for the editor.  This control works with
 	 * mono fonts, so this will set it for all text.  The fonts are all defined

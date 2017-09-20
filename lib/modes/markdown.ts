@@ -1,14 +1,15 @@
 'use strict';
 
-import {matches} from 'util.matches';
-import {Section} from 'util.section';
 import {BaseMarkupMode} from './base';
 
 const debug = require('debug')('Markdown');
 
 export class Markdown extends BaseMarkupMode {
 
-	private _bold: RegExp = /\*[^*\n]+?\*/g;
+	private _bold: RegExp = /(\*{2}).+?\1/gi;
+	private _italic: RegExp = /(\*{1}).+?\1/gi;
+	private _underline: RegExp = /(\_{1}).+?\1/gi;
+	private _strikethrough: RegExp = /(\~{1}).+?\1/gi;
 
 	constructor(quill: any) {
 		super(quill);
@@ -17,30 +18,27 @@ export class Markdown extends BaseMarkupMode {
 
 	public markup(start: number, end: number) {
 		super.markup(start, end);
-		this.applyBold();
+
+		this.colorize(this.subText, this._italic, this.style.italic);
+		this.colorize(this.subText, this._bold, this.style.bold);
+		this.colorize(this.subText, this._strikethrough, this.style.strikethrough);
+		this.colorize(this.subText, this._underline, this.style.underline);
 	}
 
 	public handleBold() {
-		const selection: Section = this.selection;
-		if (selection && selection.text) {
-			debug('bolding word: "%s"', selection.text);
-			this.quill.insertText(selection.end + 1, '*');
-			this.quill.insertText(selection.start, '*');
-		}
+		this.annotate(this.selection, '**');
 	}
 
 	public handleItalic() {
+		this.annotate(this.selection, '*');
 	}
 
-	private applyBold() {
-		for (const match of matches(this.subText, this._bold)) {
-			const start = match.start + this.start;
-			const len = match.end - match.start;
+	public handleStrikeThrough() {
+		this.annotate(this.selection, '~');
+	}
 
-			this.quill.formatText(start, len, {
-				color: this.style.bold
-			}, 'silent');
-		}
+	public handleUnderline() {
+		this.annotate(this.selection, '_');
 	}
 
 }

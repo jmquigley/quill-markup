@@ -30,3 +30,11 @@ document.getElementById("bold-button").onclick = (e) => {
 document.getElementById("italic-button").onclick = (e) => {
 	markup.setItalic();
 }
+
+document.getElementById("underline-button").onclick = (e) => {
+	markup.setUnderline();
+}
+
+document.getElementById("strike-button").onclick = (e) => {
+	markup.setStrikeThrough();
+}

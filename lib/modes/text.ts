@@ -14,9 +14,8 @@ export class Text extends BaseMarkupMode {
 		super.markup(start, end);
 	}
 
-	public handleBold() {
-	}
-
-	public handleItalic() {
-	}
+	public handleBold() {}
+	public handleItalic() {}
+	public handleUnderline() {}
+	public handleStrikeThrough() {}
 }
