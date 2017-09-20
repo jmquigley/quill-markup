@@ -86,8 +86,13 @@ export class Markup {
 
 	// The number of lines above and below the current position that will be
 	// repainted with the processor
-	private static readonly SECTION_SIZE: number = 30;
+	private static readonly SECTION_SIZE: number = 40;
 	private static readonly THRESHOLD: number = 600;
+
+	// This is the time before the whole document is rescanned for
+	// highlighting
+	private _delay: number = 5000;
+	private _processing: boolean = false;
 
 	// A reference to the DOM editor node
 	private _editor: HTMLElement;
@@ -327,8 +332,25 @@ export class Markup {
 
 	/**
 	 * Invoked with each change of the content text.
+	 *
+	 * This will also hold a timer to peform a full scan after 5 seconds.
+	 * Using "sections" to format has a trade off where a block format on
+	 * a boundary of a section can lose formatting where the bottom of the
+	 * block is seen by the section, but the top is not, so the regex string
+	 * will not match within the section.  This timer will send a full
+	 * range of the document to the processor after N seconds (5 seconds by
+	 * default).  The timer will only occur when changes occur (so it is
+	 * idle if the keyboard is idle)
 	 */
 	private handleTextChange() {
 		this._processor.markup(this._section.start, this._section.end);
+
+		if (!this._processing) {
+			this._processing = true;
+			setTimeout(() => {
+				this._processor.markup(0, this._quill.getText().length);
+				this._processing = false;
+			}, this._delay);
+		}
 	}
 }

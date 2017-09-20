@@ -232,5 +232,6 @@ export abstract class BaseMarkupMode {
 				this._processing = false;
 			}, this._delay);
 		}
+
 	}
 }
