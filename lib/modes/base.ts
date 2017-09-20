@@ -12,9 +12,6 @@ const debug = require('debug')('base');
 
 export abstract class BaseMarkupMode {
 
-	private _delay: number = 200;
-	private _processing: boolean = false;
-
 	protected _content: string;
 	protected _end: number;
 	protected _pos: number = 0;
@@ -29,14 +26,6 @@ export abstract class BaseMarkupMode {
 		this._quill = quill;
 	}
 
-	get content() {
-		return this._content;
-	}
-
-	set content(val: string) {
-		this._content = val;
-	}
-
 	get end() {
 		return this._end;
 	}
@@ -49,6 +38,9 @@ export abstract class BaseMarkupMode {
 		return getLine(this.text, this.pos);
 	}
 
+	/**
+	 * @return the current position within the buffer
+	 */
 	get pos() {
 		return this._pos;
 	}
@@ -57,10 +49,16 @@ export abstract class BaseMarkupMode {
 		this._pos = val;
 	}
 
+	/**
+	 * @return a reference to the Quill instance for this editor instance
+	 */
 	get quill() {
 		return this._quill;
 	}
 
+	/**
+	 * @return {any} the current range object of the user selection/cursor
+	 */
 	get range() {
 		return this._range;
 	}
@@ -101,9 +99,9 @@ export abstract class BaseMarkupMode {
 	}
 
 	/**
-	 * @return {string} when the markup function is called it works with a
-	 * substring.  This function returns the last substring given to markup
-	 * This corresponds to the current setion.
+	 * @return {string} when the highlight function is called it works with a
+	 * substring.  This function returns the last substring computed when
+	 * a change is detected.
 	 */
 	get subText() {
 		return this._subText;
@@ -116,11 +114,16 @@ export abstract class BaseMarkupMode {
 		return rstrip(this.quill.getText());
 	}
 
+	set text(val: string) {
+		this._quill.setText(val);
+	}
+
 	public abstract handleBold(): void;
 	public abstract handleHeader(level: number): void;
 	public abstract handleItalic(): void;
 	public abstract handleStrikeThrough(): void;
 	public abstract handleUnderline(): void;
+	public abstract highlight(): void;
 
 	/**
 	 * Takes a selection area from a document and applies a markup annotation
@@ -168,11 +171,10 @@ export abstract class BaseMarkupMode {
 	}
 
 	/**
-	 * Applies a color format to th buffer based on the given regex string.
-	 * It will search through the given buffer for strings to update.
+	 * Applies a color format to the given buffer based on the given regex string.
 	 * This uses the selected section from the main buffer to compute the
 	 * start offset.  This doesn't search the whole buffer, but a "subText"
-	 * region of the buffer.
+	 * region of the buffer given to the function.
 	 * @param text {string} the text buffer where the regex will look for
 	 * matches.
 	 * @param re {RegExp} the regular expression used for the search
@@ -197,41 +199,16 @@ export abstract class BaseMarkupMode {
 	 * highlighting.  This is the base class function that saves the section
 	 * range and removes the formatting from that range.  The mode is then
 	 * responsible for reapplying the format to that range via callback.
-	 *
-	 * This function provides a callback that can be used by the implementing
-	 * modes to use for colorization.  It's possible to apply coloring after
-	 * each key stroke, but that results in a lot of wasted computing and
-	 * severly degrades performance.  There is no reason to keep reapplying
-	 * after each keystroke.  This callback is placed on a timer so when
-	 * changes start the colorization will only occur after that delay has
-	 * ended.  That means the highlighting will reprocess 3 times per second
-	 * (if the document is dirty)
-	 *
-	 * The implementing node should use a super call to invoke this method.
-	 *
 	 * @param start {number} the starting location within the full document
 	 * where markdown changes should be scanned.
 	 * @param end {number} the ending location within the full document
 	 * where markdown changes should be scanned
-	 * @param [cb] {Function} a callback function that is invoked when a
-	 * timer finishes.  The timer is set to 300ms.
 	 */
-	public markup(start: number, end: number, cb?: any): void {
+	public handleChange(start: number, end: number): void {
 		this._end = end;
 		this._start = start;
 		this._subText = this.text.substring(start, end);
-
-		if (!this._processing && cb) {
-			this._processing = true;
-			setTimeout(() => {
-				// Removes the markup around the document subsection before
-				// reapplying the text to that region.
-				this.quill.removeFormat(start, end - start, 'silent');
-
-				cb();
-				this._processing = false;
-			}, this._delay);
-		}
-
+		this.quill.removeFormat(start, end - start, 'silent');
+		this.highlight();
 	}
 }

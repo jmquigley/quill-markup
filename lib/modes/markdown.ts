@@ -20,24 +20,21 @@ export class Markdown extends BaseMarkupMode {
 
 	constructor(quill: any) {
 		super(quill);
-		this.markup = this.markup.bind(this);
 		debug('creating markdown mode %o', quill);
 	}
 
-	public markup(start: number, end: number) {
-		super.markup(start, end, () => {
-			this.colorize(this.subText, this._italic, this.style.italic);
-			this.colorize(this.subText, this._bold, this.style.bold);
-			this.colorize(this.subText, this._strikethrough, this.style.strikethrough);
-			this.colorize(this.subText, this._underline, this.style.underline);
+	public highlight() {
+		this.colorize(this.subText, this._italic, this.style.italic);
+		this.colorize(this.subText, this._bold, this.style.bold);
+		this.colorize(this.subText, this._strikethrough, this.style.strikethrough);
+		this.colorize(this.subText, this._underline, this.style.underline);
 
-			this.colorize(this.subText, this._h1, this.style.h1);
-			this.colorize(this.subText, this._h2, this.style.h2);
-			this.colorize(this.subText, this._h3, this.style.h3);
-			this.colorize(this.subText, this._h4, this.style.h4);
-			this.colorize(this.subText, this._h5, this.style.h5);
-			this.colorize(this.subText, this._h6, this.style.h6);
-		});
+		this.colorize(this.subText, this._h1, this.style.h1);
+		this.colorize(this.subText, this._h2, this.style.h2);
+		this.colorize(this.subText, this._h3, this.style.h3);
+		this.colorize(this.subText, this._h4, this.style.h4);
+		this.colorize(this.subText, this._h5, this.style.h5);
+		this.colorize(this.subText, this._h6, this.style.h6);
 	}
 
 	public handleBold() {

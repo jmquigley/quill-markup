@@ -89,10 +89,14 @@ export class Markup {
 	private static readonly SECTION_SIZE: number = 40;
 	private static readonly THRESHOLD: number = 600;
 
-	// This is the time before the whole document is rescanned for
-	// highlighting
-	private _delay: number = 5000;
-	private _processing: boolean = false;
+	// The time between each incremental section scan
+	private _delay: number = 250;
+	private _changing: boolean = false;
+
+	// The time before idle detection
+	private _idle: boolean = true;
+	private _idleDelay: number = 5000;
+	private _idleTimer: any;
 
 	// A reference to the DOM editor node
 	private _editor: HTMLElement;
@@ -112,6 +116,7 @@ export class Markup {
 		text: ''
 	};
 	private _styles: Map<string, any> = new Map<string, any>();
+
 
 	constructor(quill: any, opts: MarkupOptions) {
 		debug('Initializing markup module');
@@ -137,6 +142,8 @@ export class Markup {
 		[
 			'handleEditorChange',
 			'handleTextChange',
+			'resetInactivityTimer',
+			'markIdle',
 			'redo',
 			'set',
 			'setBold',
@@ -155,6 +162,11 @@ export class Markup {
 
 		quill.on('editor-change', this.handleEditorChange);
 		quill.on('text-change', this.handleTextChange);
+
+		// These events reset the idle activity flag
+		window.onload = this.resetInactivityTimer;
+		document.onmousemove = this.resetInactivityTimer;
+		document.onkeypress = this.resetInactivityTimer;
 	}
 
 	private loadStyles() {
@@ -166,6 +178,21 @@ export class Markup {
 		);
 		this._styles[MarkupStyle.plain] = require('./styles/plain.json');
 		this._styles[MarkupStyle.custom] = this._opts.custom;
+	}
+
+	private resetInactivityTimer() {
+		this._idle = false;
+		clearTimeout(this._idleTimer);
+		this._idleTimer = setTimeout(this.markIdle, this._idleDelay)
+	}
+
+	private markIdle() {
+		this._idle = true;
+
+		// if the user was idle for N seconds, rescan the document
+		// This can be an expensive operation and we need to find the
+		// tradeoff limit
+		this._processor.handleChange(0, this._processor.text.length);
 	}
 
 	/**
@@ -216,7 +243,7 @@ export class Markup {
 		this.setFontSize(opts.fontSize);
 
 		this._section = getSection(opts.content, 0, Markup.SECTION_SIZE, Markup.THRESHOLD);
-		this._processor.markup(0, opts.content.length);
+		this._processor.handleChange(0, opts.content.length);
 	}
 
 	/**
@@ -232,8 +259,7 @@ export class Markup {
 	 * @param content {string} the new content settting for the editor.
 	 */
 	public setContent(content: string) {
-		this._processor.content = content;
-		this._quill.setText(content);
+		this._processor.text = content;
 	}
 
 	/**
@@ -333,7 +359,7 @@ export class Markup {
 	/**
 	 * Invoked with each change of the content text.
 	 *
-	 * This will also hold a timer to peform a full scan after 5 seconds.
+	 * This will also hold a timer to peform a full scan after N seconds.
 	 * Using "sections" to format has a trade off where a block format on
 	 * a boundary of a section can lose formatting where the bottom of the
 	 * block is seen by the section, but the top is not, so the regex string
@@ -343,13 +369,11 @@ export class Markup {
 	 * idle if the keyboard is idle)
 	 */
 	private handleTextChange() {
-		this._processor.markup(this._section.start, this._section.end);
-
-		if (!this._processing) {
-			this._processing = true;
+		if (!this._changing) {
+			this._changing = true;
 			setTimeout(() => {
-				this._processor.markup(0, this._quill.getText().length);
-				this._processing = false;
+				this._processor.handleChange(this._section.start, this._section.end);
+				this._changing = false;
 			}, this._delay);
 		}
 	}

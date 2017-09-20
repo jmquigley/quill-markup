@@ -10,9 +10,7 @@ export class Text extends BaseMarkupMode {
 		debug('creating text mode %o', quill);
 	}
 
-	public markup(start: number, end: number) {
-		super.markup(start, end);
-	}
+	public highlight() {}
 
 	public handleBold() {}
 	public handleHeader(level: number) { level = 0; }
