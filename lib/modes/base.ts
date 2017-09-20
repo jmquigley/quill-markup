@@ -1,5 +1,6 @@
 'use strict';
 
+import * as hljs from 'highlight.js';
 import {matches} from 'util.matches';
 import {rstrip} from 'util.rstrip';
 import {
@@ -190,6 +191,22 @@ export abstract class BaseMarkupMode {
 			this.quill.formatText(start, len, {
 				color: color
 			}, 'silent');
+		}
+	}
+
+	public codify(text: string, re: RegExp) {
+		for (const match of matches(text, re)) {
+			// debug('colorize match (%s): %o', match.text, match);
+
+			// const start = match.start + this.start;
+			// const len = match.end - match.start;
+
+			const parse = hljs.highlight('javascript', match.text);
+			debug('obj: %o, %s', parse, parse.value);
+
+			/* this.quill.formatText(start, len, {
+			   code: true
+			   }, 'silent');*/
 		}
 	}
 

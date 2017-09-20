@@ -10,6 +10,7 @@ export class Markdown extends BaseMarkupMode {
 	private _italic: RegExp = /(\*{1}).+?\1/gi;
 	private _underline: RegExp = /(\_{1}).+?\1/gi;
 	private _strikethrough: RegExp = /(\~{1}).+?\1/gi;
+	private _mono: RegExp = /(`{1})(?!\`).+?\1/gi;
 
 	private _h1: RegExp = /.+(\r\n|\r|\n)==+|# .*/gi;
 	private _h2: RegExp = /.+(\r\n|\r|\n)--+|## .*/gi;
@@ -17,6 +18,8 @@ export class Markdown extends BaseMarkupMode {
 	private _h4: RegExp = /#### .*/gi;
 	private _h5: RegExp = /##### .*/gi;
 	private _h6: RegExp = /###### .*/gi;
+
+	private _code: RegExp = /(:?```)[^`]+?\1/gi;
 
 	constructor(quill: any) {
 		super(quill);
@@ -28,13 +31,15 @@ export class Markdown extends BaseMarkupMode {
 		this.colorize(this.subText, this._bold, this.style.bold);
 		this.colorize(this.subText, this._strikethrough, this.style.strikethrough);
 		this.colorize(this.subText, this._underline, this.style.underline);
-
+		this.colorize(this.subText, this._mono, this.style.mono);
 		this.colorize(this.subText, this._h1, this.style.h1);
 		this.colorize(this.subText, this._h2, this.style.h2);
 		this.colorize(this.subText, this._h3, this.style.h3);
 		this.colorize(this.subText, this._h4, this.style.h4);
 		this.colorize(this.subText, this._h5, this.style.h5);
 		this.colorize(this.subText, this._h6, this.style.h6);
+
+		this.codify(this.text, this._code);
 	}
 
 	public handleBold() {
