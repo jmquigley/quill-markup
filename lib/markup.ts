@@ -86,8 +86,8 @@ export class Markup {
 
 	// The number of lines above and below the current position that will be
 	// repainted with the processor
-	private static readonly SECTION_SIZE: number = 40;
-	private static readonly THRESHOLD: number = 600;
+	private static readonly SECTION_SIZE: number = 0;
+	private static readonly THRESHOLD: number = 0;
 
 	// The time between each incremental section scan
 	private _delay: number = 250;
@@ -95,7 +95,7 @@ export class Markup {
 
 	// The time before idle detection
 	private _idle: boolean = true;
-	private _idleDelay: number = 5000;
+	private _idleDelay: number = 3000;
 	private _idleTimer: any;
 
 	// A reference to the DOM editor node
@@ -108,6 +108,7 @@ export class Markup {
 	];
 	private _modes: Map<MarkupMode, any> = new Map<MarkupMode, any>();
 	private _opts: MarkupOptions;
+	private _paste: boolean = false;
 	private _processor: BaseMarkupMode;
 	private _quill: any;
 	private _section: Section = {
@@ -140,6 +141,7 @@ export class Markup {
 		// bind all potential callbacks to the class.
 		[
 			'handleEditorChange',
+			'handlePaste',
 			'handleTextChange',
 			'resetInactivityTimer',
 			'markIdle',
@@ -161,6 +163,8 @@ export class Markup {
 
 		quill.on('editor-change', this.handleEditorChange);
 		quill.on('text-change', this.handleTextChange);
+
+		this._editor.addEventListener('paste', this.handlePaste);
 
 		// These events reset the idle activity flag
 		window.onload = this.resetInactivityTimer;
@@ -195,7 +199,7 @@ export class Markup {
 	 */
 	private markIdle() {
 		this._idle = true;
-		this._processor.handleChange(0, this._processor.text.length);
+		// this._processor.handleChange(0, this._processor.text.length);
 	}
 
 	/**
@@ -246,7 +250,7 @@ export class Markup {
 		this.setFontSize(opts.fontSize);
 
 		this._section = getSection(opts.content, 0, Markup.SECTION_SIZE, Markup.THRESHOLD);
-		this._processor.handleChange(0, opts.content.length);
+		this.setRefresh();
 	}
 
 	/**
@@ -263,38 +267,6 @@ export class Markup {
 	 */
 	public setContent(content: string) {
 		this._processor.text = content;
-	}
-
-	/**
-	 * Calls the processor's current header creation function
-	 * @param level {string} the level selected by the user
-	 */
-	public setHeader(level: string) {
-		this._processor.handleHeader(Number(level));
-	}
-
-	/**
-	 * Calls the current processor's italic function to make the current
-	 * highlight or word italic.
-	 */
-	public setItalic() {
-		this._processor.handleItalic();
-	}
-
-	/**
-	 * Calls the current processor's strikthrogh function to highlight the
-	 * current word/selection.
-	 */
-	public setStrikeThrough() {
-		this._processor.handleStrikeThrough();
-	}
-
-	/**
-	 * Calls the current processor's underline function to highlight the
-	 * current word/selection.
-	 */
-	public setUnderline() {
-		this._processor.handleUnderline();
 	}
 
 	/**
@@ -329,6 +301,45 @@ export class Markup {
 	}
 
 	/**
+	 * Calls the processor's current header creation function
+	 * @param level {string} the level selected by the user
+	 */
+	public setHeader(level: string) {
+		this._processor.handleHeader(Number(level));
+	}
+
+	/**
+	 * Calls the current processor's italic function to make the current
+	 * highlight or word italic.
+	 */
+	public setItalic() {
+		this._processor.handleItalic();
+	}
+
+	/**
+	 * Rescans the entire document for highlighting
+	 */
+	public setRefresh() {
+		this._processor.handleChange(0, this._quill.getLength());
+	}
+
+	/**
+	 * Calls the current processor's strikthrogh function to highlight the
+	 * current word/selection.
+	 */
+	public setStrikeThrough() {
+		this._processor.handleStrikeThrough();
+	}
+
+	/**
+	 * Calls the current processor's underline function to highlight the
+	 * current word/selection.
+	 */
+	public setUnderline() {
+		this._processor.handleUnderline();
+	}
+
+	/**
 	 * Calls the quill history undo function
 	 */
 	public undo() {
@@ -360,6 +371,13 @@ export class Markup {
 	}
 
 	/**
+	 * When the user pastes information into the editor, this event is fired
+	 */
+	private handlePaste() {
+		this._paste = true;
+	}
+
+	/**
 	 * Invoked with each change of the content text.
 	 *
 	 * This will also hold a timer to peform a full scan after N seconds.
@@ -372,10 +390,16 @@ export class Markup {
 	 * idle if the keyboard is idle)
 	 */
 	private handleTextChange() {
-		if (!this._changing) {
+		if (!this._changing || this._paste) {
 			this._changing = true;
 			setTimeout(() => {
-				this._processor.handleChange(this._section.start, this._section.end);
+				if (this._paste) {
+					this.setRefresh();
+					this._paste = false;
+				} else {
+					this._processor.handleChange(this._section.start, this._section.end);
+				}
+
 				this._changing = false;
 			}, this._delay);
 		}

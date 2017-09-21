@@ -15,6 +15,15 @@ input, textarea, [contenteditable] {
 	padding: 4px 10px;
 	width: 100%;
 }
+
+.ql-syntax + pre, .ql-syntax pre, .ql-syntax code {
+	background: inherit !important;
+	color: inherit !important;
+	font-size: inherit !important;
+	margin: 0 !important;
+	margin-bottom: 10px;
+	padding: 2px 8px !important;
+}
 @font-face {
 	font-family: 'Fira Mono';
 	src: url(FiraMono.ttf);

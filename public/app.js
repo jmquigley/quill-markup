@@ -1,12 +1,36 @@
+let keybindings = {
+	tab: {
+    	key: 9,
+    	handler: function() {
+			let pos = 0;
+			let range = this.quill.getSelection();
+			if (range) {
+				pos = range.index;
+			}
+ 			this.quill.insertText(pos, '@@@@');
+			return false;
+    	}
+  	}
+};
+
+hljs.configure({
+  tabReplace: '    '
+});
+
 Quill.register('modules/markup', Markup);
 let quill = new Quill('#editor', {
+	clipboard: true,
 	modules: {
 		history: {
       		delay: 2000,
       		maxStack: 500,
       		userOnly: true
     	},
+		keyboard: {
+		    bindings: keybindings
+		},
 		markup: true,
+		syntax: true,
 		toolbar: false
 	},
 	theme: 'snow'

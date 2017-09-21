@@ -19,7 +19,7 @@ export class Markdown extends BaseMarkupMode {
 	private _h5: RegExp = /##### .*/gi;
 	private _h6: RegExp = /###### .*/gi;
 
-	private _code: RegExp = /(:?```)[^`]+?\1/gi;
+	private _code: RegExp = /(```)[^`]+?\1/gi;
 
 	constructor(quill: any) {
 		super(quill);
