@@ -206,10 +206,12 @@ export abstract class BaseMarkupMode {
 			const header = getLine(match.text, 0).text;
 			const start = match.start + header.length;
 			const len = match.end - match.start - (header.length + 3);
+			const code = match.text.slice(header.length, match.text.length - 4);
 
-			this.quill.formatText(start, len, {
-				'code-block': true
-			}, 'silent');
+			debug('match: %o, start', match);
+			debug('code: %s', code);
+
+			this.quill.formatText(start, len, 'syntax', code, 'silent');
 		}
 	}
 

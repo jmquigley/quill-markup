@@ -1,23 +1,28 @@
 let keybindings = {
 	tab: {
     	key: 9,
-    	handler: function() {
-			let pos = 0;
-			let range = this.quill.getSelection();
-			if (range) {
-				pos = range.index;
-			}
- 			this.quill.insertText(pos, '    ');
-			return true;
+    	handler: function(range, context) {
+			console.log(`range: ${JSON.stringify(range)}, context: ${JSON.stringify(context)}`);
+ 			this.quill.insertText(range.index, '    ');
+			return false;
     	}
-  	}
+  	},
+	'indent code-block': null,
+	'outdent code-block': null,
+	'code exit': null,
+	'embed left': null,
+	'embed right': null,
+	'embed left shift': null,
+	'embed right shift': null
 };
 
 hljs.configure({
   tabReplace: '    '
 });
 
+Quill.register(SyntaxBlot);
 Quill.register('modules/markup', Markup);
+
 let quill = new Quill('#editor', {
 	clipboard: true,
 	modules: {
@@ -33,16 +38,19 @@ let quill = new Quill('#editor', {
 			custom: {
 			}
 		},
-		syntax: true,
-		toolbar: false
+		toolbar: null
 	},
 	theme: 'snow'
 });
 
 let markup = quill.getModule('markup');
 markup.set({
-	mode: MarkupMode.markdown,
-	content: 'Hello World'
+	content: 'Hello World',
+	custom: {
+		background: 'black',
+		foreground: 'white'
+	},
+	mode: MarkupMode.markdown
 });
 
 document.getElementById("refresh-button").onclick = (e) => {

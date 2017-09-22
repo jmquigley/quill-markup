@@ -4,7 +4,7 @@
 }
 
 input, textarea, [contenteditable] {
-  caret-color: black !important;
+  caret-color: currentColor !important;
 }
 
 #toolbar {
@@ -17,8 +17,6 @@ input, textarea, [contenteditable] {
 }
 
 .ql-syntax {
-	/* background: inherit !important; */
-	color: inherit !important;
 	font-size: inherit !important;
 	margin: 0 !important;
 	margin-bottom: 10px !important;

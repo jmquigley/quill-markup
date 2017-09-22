@@ -1,5 +1,5 @@
 const ExtractTextPlugin = require("extract-text-webpack-plugin");
-const MinifyPlugin = require("babel-minify-webpack-plugin");
+// const MinifyPlugin = require("babel-minify-webpack-plugin");
 const path = require('path');
 
 module.exports = {
@@ -12,6 +12,9 @@ module.exports = {
 	},
 	resolve: {
 		extensions: ['.ts', '.js', '.css']
+	},
+	resolveLoader: {
+		modules: [path.join(__dirname, "node_modules")]
 	},
 	module: {
 		rules: [
@@ -41,7 +44,7 @@ module.exports = {
 		]
 	},
 	plugins: [
-		new ExtractTextPlugin({filename: "styles.css"}),
-    	new MinifyPlugin()
+		new ExtractTextPlugin({filename: "styles.css"})
+    	// new MinifyPlugin()
   	]
 }

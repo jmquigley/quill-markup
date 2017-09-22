@@ -24,7 +24,11 @@
  *             userOnly: true
  *         },
  *         markup: {
- *             mode: MarkupMode.text
+ *             mode: MarkupMode.text,
+ *             custom: {
+ *                 foreground: 'black',
+ *                 background: 'white',
+ *             }
  *         },
  *         toolbar: false
  *     },
@@ -350,6 +354,7 @@ export class Markup {
 	 * @param args {any[]} the dyanamic parameter list passed to this event.
 	 */
 	private handleEditorChange(eventName: string, ...args: any[]) {
+		// debug('handleEditorChange: %s, %o', eventName, args);
 		if (eventName === 'selection-change') {
 			const range = args[0];
 			if (range) {
