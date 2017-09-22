@@ -13,7 +13,7 @@
  * #### Examples:
  *
  * ```javascript
- * import {MarkupMode, MarkupStyle, Markup} from './lib/markup';
+ * import {MarkupMode, Markup} from './lib/markup';
  *
  * Quill.register('modules/markup', Markup);
  * const quill = new Quill('#editor', {
@@ -24,8 +24,7 @@
  *             userOnly: true
  *         },
  *         markup: {
- *             mode: MarkupMode.text,
- *             styling: MarkupStyle.plain
+ *             mode: MarkupMode.text
  *         },
  *         toolbar: false
  *     },
@@ -35,8 +34,7 @@
  * const hl = quill.getModule('highlight');
  * hl.set({
  *     content: 'some value',
- *     mode: MarkupMode.markdown,
- *     styling: MarkupStyle.monokai
+ *     mode: MarkupMode.markdown
  * });
  * ```
  *
@@ -55,14 +53,7 @@ import {BaseMarkupMode, Markdown, Text} from './modes';
 
 export enum MarkupMode {
 	markdown,
-	richedit,
 	text
-}
-
-export enum MarkupStyle {
-	custom = 'custom',
-	plain = 'plain',
-	monokai = 'monokai'
 }
 
 export interface MarkupOptions {
@@ -71,15 +62,14 @@ export interface MarkupOptions {
 	fontName?: string;
 	fontSize?: number;
 	mode: MarkupMode;
-	styling: MarkupStyle;
 }
 
-const styles = require('./styles.css');
+require('./styles.css');
+
 const fonts = require('./fonts/fonts.css');
 const debug = require('debug')('markup');
 const pkg = require('../package.json');
 
-debug(`styles: ${JSON.stringify(styles)}`);
 debug(`fonts: ${JSON.stringify(fonts)}`);
 
 export class Markup {
@@ -88,6 +78,10 @@ export class Markup {
 	// repainted with the processor
 	private static readonly SECTION_SIZE: number = 0;
 	private static readonly THRESHOLD: number = 0;
+	private static readonly DIRTY_LIMIT: number = 10;
+
+	private _dirty: boolean = false;
+	private _dirtyCount: number = 0;
 
 	// The time between each incremental section scan
 	private _delay: number = 250;
@@ -116,7 +110,6 @@ export class Markup {
 		end: 0,
 		text: ''
 	};
-	private _styles: Map<string, any> = new Map<string, any>();
 
 	constructor(quill: any, opts: MarkupOptions) {
 		debug('Initializing markup module');
@@ -127,13 +120,10 @@ export class Markup {
 			custom: {},
 			fontName: 'inconsolata',
 			fontSize: 13,
-			mode: MarkupMode.text,
-			styling: MarkupStyle.plain
+			mode: MarkupMode.text
 		}, opts);
 
 		this._editor = document.getElementById('editor');
-
-		this.loadStyles();
 
 		this._modes[MarkupMode.markdown] = new Markdown(quill);
 		this._modes[MarkupMode.text] = new Text(quill);
@@ -165,22 +155,12 @@ export class Markup {
 		quill.on('text-change', this.handleTextChange);
 
 		this._editor.addEventListener('paste', this.handlePaste);
+		window.addEventListener('load', this.resetInactivityTimer);
+		document.addEventListener('mousemove', this.resetInactivityTimer);
+		document.addEventListener('click', this.resetInactivityTimer);
+		document.addEventListener('keydown', this.resetInactivityTimer);
 
-		// These events reset the idle activity flag
-		window.onload = this.resetInactivityTimer;
-		document.onmousemove = this.resetInactivityTimer;
-		document.onkeypress = this.resetInactivityTimer;
-	}
-
-	private loadStyles() {
-		const baseStyles = require('./styles/base.json');
-
-		this._styles[MarkupStyle.monokai] = Object.assign(
-			baseStyles,
-			require('./styles/monokai.json')
-		);
-		this._styles[MarkupStyle.plain] = require('./styles/plain.json');
-		this._styles[MarkupStyle.custom] = this._opts.custom;
+		this.set(opts);
 	}
 
 	/**
@@ -198,8 +178,14 @@ export class Markup {
 	 * expensive operation and we need to find the tradeoff limit
 	 */
 	private markIdle() {
+		// debug('idle');
 		this._idle = true;
-		// this._processor.handleChange(0, this._processor.text.length);
+
+		if (this._dirty) {
+			this.refresh();
+			this._dirty = false;
+			this._dirtyCount = 0;
+		}
 	}
 
 	/**
@@ -209,6 +195,13 @@ export class Markup {
 		if (this._quill.history) {
 			this._quill.history.redo();
 		}
+	}
+
+	/**
+	 * Rescans the entire document for highlighting
+	 */
+	public refresh() {
+		this._processor.handleChange(0, this._quill.getLength());
 	}
 
 	/**
@@ -224,10 +217,17 @@ export class Markup {
 
 		this._opts = opts = Object.assign(this._opts, opts);
 		debug('current markup options: %o', this._opts);
-
-		this._styles[MarkupStyle.custom] = this._opts.custom;
 		this._processor = this._modes[opts.mode];
-		this._processor.style = this._styles[opts.styling];
+
+		this._processor.style = Object.assign(
+			{
+				foreground: 'black',
+				background: 'white'
+			},
+			(opts.mode === MarkupMode.text) ? {} : require('./highlighting.json'),
+			opts.custom
+		);
+		debug('current highlighting styles: %o', this._processor.style);
 
 		if (opts.content) {
 
@@ -249,8 +249,11 @@ export class Markup {
 		this.setFont(opts.fontName);
 		this.setFontSize(opts.fontSize);
 
+		this._editor.style['color'] = this._processor.style.foreground;
+		this._editor.style['background-color'] = this._processor.style.background;
+
 		this._section = getSection(opts.content, 0, Markup.SECTION_SIZE, Markup.THRESHOLD);
-		this.setRefresh();
+		this.refresh();
 	}
 
 	/**
@@ -314,13 +317,6 @@ export class Markup {
 	 */
 	public setItalic() {
 		this._processor.handleItalic();
-	}
-
-	/**
-	 * Rescans the entire document for highlighting
-	 */
-	public setRefresh() {
-		this._processor.handleChange(0, this._quill.getLength());
 	}
 
 	/**
@@ -389,12 +385,18 @@ export class Markup {
 	 * default).  The timer will only occur when changes occur (so it is
 	 * idle if the keyboard is idle)
 	 */
-	private handleTextChange() {
+	private handleTextChange(delta?: any, old?: any, source?: string) {
+		delta = old = null;
+
+		if (source === 'user' && this._dirtyCount++ > Markup.DIRTY_LIMIT) {
+			this._dirty = true;
+		}
+
 		if (!this._changing || this._paste) {
 			this._changing = true;
 			setTimeout(() => {
 				if (this._paste) {
-					this.setRefresh();
+					this.refresh();
 					this._paste = false;
 				} else {
 					this._processor.handleChange(this._section.start, this._section.end);

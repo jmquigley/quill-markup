@@ -17,11 +17,11 @@ textarea,
 	width: 100%;
 }
 
-.ql-syntax + pre, .ql-syntax pre, .ql-syntax code {
-	background: inherit !important;
+.ql-syntax {
+	/* background: inherit !important; */
 	color: inherit !important;
 	font-size: inherit !important;
 	margin: 0 !important;
-	margin-bottom: 10px;
-	padding: 2px 8px !important;
+	margin-bottom: 10px !important;
+	padding: 2px 8px 5px 8px !important;
 }

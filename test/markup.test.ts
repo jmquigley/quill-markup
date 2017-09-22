@@ -7,7 +7,7 @@ import * as fs from 'fs-extra';
 import * as path from 'path';
 import {join} from 'util.join';
 // import {Fixture} from 'util.fixture';
-import {Markup, MarkupMode, MarkupStyle} from '../index';
+import {Markup, MarkupMode} from '../index';
 import {cleanup} from './helpers';
 
 const debug = require('debug')('markup.test');
@@ -43,8 +43,7 @@ test.after.always.cb(t => {
 
 test('Test creation of the Markup instance', t => {
 	const markup = new Markup(quill, {
-		mode: MarkupMode.text,
-		styling: MarkupStyle.plain
+		mode: MarkupMode.text
 	});
 
 	t.truthy(markup);

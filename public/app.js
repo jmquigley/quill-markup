@@ -7,8 +7,8 @@ let keybindings = {
 			if (range) {
 				pos = range.index;
 			}
- 			this.quill.insertText(pos, '@@@@');
-			return false;
+ 			this.quill.insertText(pos, '    ');
+			return true;
     	}
   	}
 };
@@ -29,7 +29,10 @@ let quill = new Quill('#editor', {
 		keyboard: {
 		    bindings: keybindings
 		},
-		markup: true,
+		markup: {
+			custom: {
+			}
+		},
 		syntax: true,
 		toolbar: false
 	},
@@ -39,9 +42,12 @@ let quill = new Quill('#editor', {
 let markup = quill.getModule('markup');
 markup.set({
 	mode: MarkupMode.markdown,
-	styling: MarkupStyle.monokai,
 	content: 'Hello World'
 });
+
+document.getElementById("refresh-button").onclick = (e) => {
+	markup.refresh();
+}
 
 document.getElementById("font").onchange = (e) => {
 	markup.setFont(e.target.value);

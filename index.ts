@@ -1,13 +1,11 @@
 import {
 	Markup,
 	MarkupMode,
-	MarkupOptions,
-	MarkupStyle
+	MarkupOptions
 } from './lib/markup';
 
 export {
 	Markup,
 	MarkupMode,
-	MarkupOptions,
-	MarkupStyle
+	MarkupOptions
 };
