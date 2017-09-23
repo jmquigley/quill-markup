@@ -84,7 +84,9 @@
       "index.d.ts",
       "server.js",
       "server.d.ts",
-      "./lib/**/*.js",
+      "./lib/**/*.d.ts",
+			"./lib/markup.js",
+			"./lib/modes/**/*.js",
       "./lib/**/*.d.ts",
       "./test/helpers/index.js",
       "./test/highlight.test.js"

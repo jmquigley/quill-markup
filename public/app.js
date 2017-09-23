@@ -1,3 +1,5 @@
+'use strict';
+
 let keybindings = {
 	tab: {
     	key: 9,
@@ -16,11 +18,6 @@ let keybindings = {
 	'embed right shift': null
 };
 
-hljs.configure({
-  tabReplace: '    '
-});
-
-Quill.register(SyntaxBlot);
 Quill.register('modules/markup', Markup);
 
 let quill = new Quill('#editor', {
@@ -35,8 +32,6 @@ let quill = new Quill('#editor', {
 		    bindings: keybindings
 		},
 		markup: {
-			custom: {
-			}
 		},
 		toolbar: null
 	},
