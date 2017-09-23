@@ -18,6 +18,7 @@ module.exports = {
 	resolveLoader: {
 		modules: [path.join(__dirname, "node_modules")]
 	},
+	devtool: 'source-map',
 	module: {
 		rules: [
 			{

@@ -7,7 +7,7 @@ import * as fs from 'fs-extra';
 import * as path from 'path';
 import {join} from 'util.join';
 // import {Fixture} from 'util.fixture';
-import {Markup, MarkupMode} from '../index';
+import {getQuill} from '../lib/helpers';
 import {cleanup} from './helpers';
 
 const debug = require('debug')('markup.test');
@@ -18,8 +18,11 @@ const domCleanup = require('jsdom-global')(data);
 require('./helpers/MutationObserver')(global);
 require('./helpers/getSelection')(global);
 
-const Quill = require('quill');
+(global as any).Quill = require('quill');
+const Quill = getQuill();
 let quill: any = null;
+
+import {Markup, MarkupMode} from '../index';
 
 test.before(t => {
 	quill = new Quill('#editor', {

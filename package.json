@@ -63,7 +63,7 @@
     "util.fixture": "0.0.58",
     "webpack": "^3.6.0"
   },
-  "main": "./public/bundle.js",
+  "main": "./index.js",
   "types": "./index.d.ts",
   "scripts": {
     "all": "yarn install && yarn run clean && yarn run lint && yarn run build && yarn test && yarn run report",

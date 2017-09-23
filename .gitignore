@@ -39,6 +39,7 @@ jspm_packages
 tmp-unit-test-data
 .awcache
 
+*.map
 *.js
 *.js.map
 *.d.ts

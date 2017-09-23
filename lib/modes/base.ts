@@ -211,7 +211,7 @@ export abstract class BaseMarkupMode {
 			debug('match: %o, start', match);
 			debug('code: %s', code);
 
-			this.quill.formatText(start, len, 'syntax-block', code, 'silent');
+			this.quill.formatText(start, len, 'syntax', code, 'silent');
 		}
 	}
 

@@ -1,3 +1,5 @@
+import {getQuill} from './lib/helpers';
+
 import {
 	Markup,
 	MarkupMode,
@@ -5,6 +7,7 @@ import {
 } from './lib/markup';
 
 export {
+	getQuill,
 	Markup,
 	MarkupMode,
 	MarkupOptions

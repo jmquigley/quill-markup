@@ -54,6 +54,7 @@
 
 import {Section, section as getSection} from 'util.section';
 import {SyntaxBlot} from './formats/syntax';
+import {getQuill} from './helpers';
 import {BaseMarkupMode, Markdown, Text} from './modes';
 
 export enum MarkupMode {
@@ -71,10 +72,10 @@ export interface MarkupOptions {
 
 require('./styles.css');
 
-const Quill = (window as any).Quill;
-const fonts = require('./fonts/fonts.css');
 const debug = require('debug')('markup');
+const fonts = require('./fonts/fonts.css');
 const pkg = require('../package.json');
+const Quill = getQuill();
 
 debug(`fonts: ${JSON.stringify(fonts)}`);
 
@@ -132,6 +133,9 @@ export class Markup {
 		this._editor = document.getElementById('editor');
 
 		Quill.register(SyntaxBlot);
+
+		debug('quill (local): %o', quill);
+		debug('Quill (global) %o', Quill);
 
 		this._modes[MarkupMode.markdown] = new Markdown(quill);
 		this._modes[MarkupMode.text] = new Text(quill);

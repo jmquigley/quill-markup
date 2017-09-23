@@ -25,5 +25,10 @@ server.*
 .babelrc
 .DS_Store
 docs/
-public/
+public/*.ttf
+public/app.js
+public/bundle.js
+public/bundle.js.map
+public/index.html
 webpack.config.js
+postcss.config.js
