@@ -53,7 +53,6 @@
 'use strict';
 
 import {Section, section as getSection} from 'util.section';
-import {SyntaxBlot} from './formats/syntax';
 import {getQuill} from './helpers';
 import {BaseMarkupMode, Markdown, Text} from './modes';
 
@@ -75,9 +74,9 @@ require('./styles.css');
 const debug = require('debug')('markup');
 const fonts = require('./fonts/fonts.css');
 const pkg = require('../package.json');
-const Quill = getQuill();
-
 debug(`fonts: ${JSON.stringify(fonts)}`);
+
+const Quill = getQuill();
 
 export class Markup {
 
@@ -96,7 +95,7 @@ export class Markup {
 
 	// The time before idle detection
 	private _idle: boolean = true;
-	private _idleDelay: number = 3000;
+	private _idleDelay: number = 5000;
 	private _idleTimer: any;
 
 	// A reference to the DOM editor node
@@ -131,8 +130,6 @@ export class Markup {
 		}, opts);
 
 		this._editor = document.getElementById('editor');
-
-		Quill.register(SyntaxBlot);
 
 		debug('quill (local): %o', quill);
 		debug('Quill (global) %o', Quill);

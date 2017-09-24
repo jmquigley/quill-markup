@@ -3,8 +3,7 @@
 let keybindings = {
 	tab: {
     	key: 9,
-    	handler: function(range, context) {
-			console.log(`range: ${JSON.stringify(range)}, context: ${JSON.stringify(context)}`);
+    	handler: function(range) {
  			this.quill.insertText(range.index, '    ');
 			return false;
     	}
@@ -32,6 +31,9 @@ let quill = new Quill('#editor', {
 		    bindings: keybindings
 		},
 		markup: {
+		},
+		syntax: {
+			delay: 100
 		},
 		toolbar: null
 	},

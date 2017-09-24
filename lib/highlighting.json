@@ -11,7 +11,9 @@
 
 	"bold": "#0087ff",
 	"italic": "#af00ff",
-	"underline": "blue",
-	"strikethrough": "green",
-	"mono": "#8a8a8a"
+	"underline": "green",
+	"strikethrough": "maroon",
+	"mono": "#8a8a8a",
+	"fence": "silver",
+	"language": "gray"
 }

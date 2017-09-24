@@ -198,8 +198,13 @@ export abstract class BaseMarkupMode {
 		}
 	}
 
+	/**
+	 * Searches for a fenced code region and applies syntax highlighting to it.
+	 * @param text {string} the text buffer where the regex will look for
+	 * matches.
+	 * @param re {RegExp} the regular expression used for the search
+	 */
 	public codify(text: string, re: RegExp) {
-
 		for (const match of matches(text, re)) {
 			// debug('colorize match (%s): %o', match.text, match);
 
@@ -208,10 +213,10 @@ export abstract class BaseMarkupMode {
 			const len = match.end - match.start - (header.length + 3);
 			const code = match.text.slice(header.length, match.text.length - 4);
 
-			debug('match: %o, start', match);
-			debug('code: %s', code);
-
-			this.quill.formatText(start, len, 'syntax', code, 'silent');
+			this.quill.formatText(match.start, 3, {color: this.style.fence}, 'silent');
+			this.quill.formatText(match.start + 3, header.length - 3, {color: this.style.language}, 'silent');
+			this.quill.formatText(start, len, 'code-block', code, 'silent');
+			this.quill.formatText(match.end - 3, 3, {color: this.style.fence}, 'silent');
 		}
 	}
 
