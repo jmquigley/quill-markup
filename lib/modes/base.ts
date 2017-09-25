@@ -7,7 +7,10 @@ import {
 	Section,
 	word as getWord
 } from 'util.section';
+import {getQuill} from '../helpers';
 
+const Quill = getQuill();
+const Delta = Quill.import('delta');
 const debug = require('debug')('base');
 
 export abstract class BaseMarkupMode {
@@ -186,15 +189,23 @@ export abstract class BaseMarkupMode {
 	 * formatting of the color.
 	 */
 	public colorize(text: string, re: RegExp, color: string) {
-		for (const match of matches(text, re)) {
-			// debug('colorize match (%s): %o', match.text, match);
+		let offset = 0;
 
-			const start = match.start + this.start;
-			const len = match.end - match.start;
+		// debug('colorizing, start %d', this.start);
 
-			this.quill.formatText(start, len, {
-				color: color
-			}, 'silent');
+		const tokens = matches(text, re);
+		if (tokens.length > 0) {
+			const delta = new Delta().retain(this.start);
+
+			for (const match of tokens) {
+				delta.retain(match.start - offset)
+					.retain(match.end - match.start, {color: color});
+				offset = match.end;
+			}
+
+			if (delta.ops.length > 0) {
+				this.quill.updateContents(delta, 'silent');
+			}
 		}
 	}
 

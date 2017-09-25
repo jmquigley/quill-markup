@@ -82,7 +82,7 @@ export class Markup {
 
 	// The number of lines above and below the current position that will be
 	// repainted with the processor
-	private static readonly SECTION_SIZE: number = 0;
+	private static readonly SECTION_SIZE: number = 30;
 	private static readonly THRESHOLD: number = 0;
 	private static readonly DIRTY_LIMIT: number = 10;
 
@@ -95,7 +95,7 @@ export class Markup {
 
 	// The time before idle detection
 	private _idle: boolean = true;
-	private _idleDelay: number = 5000;
+	private _idleDelay: number = 3000;
 	private _idleTimer: any;
 
 	// A reference to the DOM editor node
@@ -191,7 +191,7 @@ export class Markup {
 		this._idle = true;
 
 		if (this._dirty) {
-			this.refresh();
+			// this.refresh();
 			this._dirty = false;
 			this._dirtyCount = 0;
 		}
@@ -243,7 +243,7 @@ export class Markup {
 			// Temporary code below.  This is just conveniece code for
 			// testing.
 			if (pkg['debug']) {
-				opts.content = '*Hello World*\n';
+				opts.content = '*Hello World* \n';
 				for (let i = 0; i < 25; i++) {
 					for (let j = 0; j < 40; j++) {
 						opts.content += `${String.fromCharCode(i + 97)} `;
