@@ -82,7 +82,7 @@ export class Markup {
 
 	// The number of lines above and below the current position that will be
 	// repainted with the processor
-	private static readonly SECTION_SIZE: number = 30;
+	private static readonly SECTION_SIZE: number = 0;
 	private static readonly THRESHOLD: number = 0;
 	private static readonly DIRTY_LIMIT: number = 10;
 

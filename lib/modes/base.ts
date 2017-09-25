@@ -15,6 +15,7 @@ const debug = require('debug')('base');
 
 export abstract class BaseMarkupMode {
 
+	protected _delta: any = new Delta();
 	protected _end: number;
 	protected _pos: number = 0;
 	protected _quill: any;
@@ -178,8 +179,8 @@ export abstract class BaseMarkupMode {
 	}
 
 	/**
-	 * Applies a color format to the given buffer based on the given regex string.
-	 * This uses the selected section from the main buffer to compute the
+	 * Applies a single color format to the given buffer based on the given regex
+	 * string. This uses the selected section from the main buffer to compute the
 	 * start offset.  This doesn't search the whole buffer, but a "subText"
 	 * region of the buffer given to the function.
 	 * @param text {string} the text buffer where the regex will look for
@@ -187,26 +188,96 @@ export abstract class BaseMarkupMode {
 	 * @param re {RegExp} the regular expression used for the search
 	 * @param color {string} the color string (hex or named) used for the
 	 * formatting of the color.
+	 * @return {Delta} the Delta created by this change
 	 */
 	public colorize(text: string, re: RegExp, color: string) {
 		let offset = 0;
 
 		// debug('colorizing, start %d', this.start);
+		this._delta.ops.length = 0;
 
 		const tokens = matches(text, re);
 		if (tokens.length > 0) {
-			const delta = new Delta().retain(this.start);
+			this._delta.retain(this.start);
 
 			for (const match of tokens) {
-				delta.retain(match.start - offset)
-					.retain(match.end - match.start, {color: color});
-				offset = match.end;
+				this._delta.retain(match.start - offset)
+					.retain(match.end - match.start + 1, {color: color});
+				offset = match.end + 1;
 			}
 
-			if (delta.ops.length > 0) {
-				this.quill.updateContents(delta, 'silent');
+			if (this._delta.ops.length > 0) {
+				return this.quill.updateContents(this._delta, 'silent');
 			}
 		}
+
+		return this._delta;
+	}
+
+	/**
+	 * Special colorization function that adds colors to embedded links.  The
+	 * given regex values must break the the string into three matching parts:
+	 *
+	 * - match 1 - the link name
+	 * - match 2 - the url link
+	 * - match 3 - an optional title value
+	 *
+	 * The color values for the link constituent parts is located in
+	 * highlights.json.  They are: linkName, link, linkTitle, and linkChevron
+	 *
+	 * @param text {string} the text buffer where the regex will look for
+	 * matches.
+	 * @param re {RegExp} the regular expression used for the search
+	 * @return {Delta} the delta structure created
+	 */
+	public colorizeLink(text: string, re: RegExp) {
+		let offset = 0;
+
+		// debug('colorizing, start %d', this.start);
+		this._delta.ops.length = 0;
+
+		const tokens = matches(text, re);
+		if (tokens.length > 0) {
+
+			this._delta.retain(this.start);
+
+			for (const match of tokens) {
+				this._delta.retain(match.start - offset);
+
+				const name: string = match.result[1];
+				let nameIdx: number = 0;
+				if (name) {
+					nameIdx = match.groupIndex[0];
+					this._delta.retain(nameIdx, {color: this.style.linkChevron})
+						.retain(name.length, {color: this.style.linkName});
+				}
+
+				const link: string = match.result[2];
+				let linkIdx: number = 0;
+				if (link) {
+					linkIdx = match.groupIndex[1];
+					this._delta.retain(linkIdx - (nameIdx + name.length), {color: this.style.linkChevron})
+						.retain(link.length, {color: this.style.link});
+				}
+
+				const title: string = match.result[3];
+				let titleIdx: number = 0;
+				if (title) {
+					titleIdx = match.groupIndex[2];
+					this._delta.retain(titleIdx - (linkIdx + link.length), {color: this.style.linkChevron})
+						.retain(title.length, {color: this.style.linkTitle});
+				}
+
+				this._delta.retain(1, {color: this.style.linkChevron});
+				offset = match.end + 1;
+			}
+
+			if (this._delta.ops.length > 0) {
+				this.quill.updateContents(this._delta, 'silent');
+			}
+		}
+
+		return this._delta;
 	}
 
 	/**
@@ -216,18 +287,20 @@ export abstract class BaseMarkupMode {
 	 * @param re {RegExp} the regular expression used for the search
 	 */
 	public codify(text: string, re: RegExp) {
+		// TODO: convert this to delta usage
+
 		for (const match of matches(text, re)) {
 			// debug('colorize match (%s): %o', match.text, match);
 
 			const header = getLine(match.text, 0).text;
 			const start = match.start + header.length;
-			const len = match.end - match.start - (header.length + 3);
+			const len = match.end - match.start - (header.length + 3) + 1;
 			const code = match.text.slice(header.length, match.text.length - 4);
 
 			this.quill.formatText(match.start, 3, {color: this.style.fence}, 'silent');
 			this.quill.formatText(match.start + 3, header.length - 3, {color: this.style.language}, 'silent');
 			this.quill.formatText(start, len, 'code-block', code, 'silent');
-			this.quill.formatText(match.end - 3, 3, {color: this.style.fence}, 'silent');
+			this.quill.formatText(match.end - 3, 4, {color: this.style.fence}, 'silent');
 		}
 	}
 

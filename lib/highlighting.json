@@ -14,6 +14,11 @@
 	"underline": "green",
 	"strikethrough": "maroon",
 	"mono": "#8a8a8a",
+	"blockquote": "gray",
 	"fence": "silver",
-	"language": "gray"
+	"language": "gray",
+  "linkName": "#7aa6da",
+	"link": "#b9ca4a",
+	"linkTitle": "#e7c547",
+	"linkChevron": "gray"
 }

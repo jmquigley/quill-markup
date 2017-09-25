@@ -6,11 +6,28 @@ const debug = require('debug')('Markdown');
 
 export class Markdown extends BaseMarkupMode {
 
-	private _bold: RegExp = /(\*{2}).+?\1/gi;
-	private _italic: RegExp = /(\*{1}).+?\1/gi;
+	private _bold: RegExp = /(\*{2})[^\*]*?\1/gi;
+	private _italic: RegExp = /(\*)[^\*]*?\1/gi;
 	private _underline: RegExp = /(\_{1}).+?\1/gi;
 	private _strikethrough: RegExp = /(\~{1}).+?\1/gi;
+
+	// `text`
 	private _mono: RegExp = /(`{1})(?!\`).+?\1/gi;
+
+	// > text
+	private _blockquote: RegExp = /^>\s*.*/gi;
+
+	// [text]
+	private _link1: RegExp = /\[([^\]]*)\]/gi;
+
+	// [text](link) or ![text](link)
+	private _link2: RegExp = /!?\[([^\]^\]\[^\]\]]*)\]\(([^\]\)]*)\)/gi;
+
+	// [text][id] or ![text][id]
+	private _link3: RegExp = /!?\[([^\]^\]\[^\]\]]*)\]\[([^\]]*)\]/gi;
+
+	// [text]: [url] "title"
+	private _link4: RegExp = /\[([^\]^\]\[^\]\]]*)\]\:\s+([^\s]+)\s+"([^"]*)?"/gi;
 
 	private _h1: RegExp = /.+(\r\n|\r|\n)==+|# .*/gi;
 	private _h2: RegExp = /.+(\r\n|\r|\n)--+|## .*/gi;
@@ -32,6 +49,7 @@ export class Markdown extends BaseMarkupMode {
 		this.colorize(this.subText, this._strikethrough, this.style.strikethrough);
 		this.colorize(this.subText, this._underline, this.style.underline);
 		this.colorize(this.subText, this._mono, this.style.mono);
+		this.colorize(this.subText, this._blockquote, this.style.blockquote);
 		this.colorize(this.subText, this._h1, this.style.h1);
 		this.colorize(this.subText, this._h2, this.style.h2);
 		this.colorize(this.subText, this._h3, this.style.h3);
@@ -40,6 +58,11 @@ export class Markdown extends BaseMarkupMode {
 		this.colorize(this.subText, this._h6, this.style.h6);
 
 		this.codify(this.text, this._code);
+
+		this.colorizeLink(this.subText, this._link1);
+		this.colorizeLink(this.subText, this._link2);
+		this.colorizeLink(this.subText, this._link3);
+		this.colorizeLink(this.subText, this._link4);
 	}
 
 	public handleBold() {
