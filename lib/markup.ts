@@ -53,7 +53,7 @@
 'use strict';
 
 import {line as getLine, Section} from 'util.section';
-import {getQuill} from './helpers';
+import {Quill} from './helpers';
 import {BaseMarkupMode, Markdown, Text} from './modes';
 
 export enum MarkupMode {
@@ -77,8 +77,6 @@ const debug = require('debug')('markup');
 const fonts = require('./fonts/fonts.css');
 const pkg = require('../package.json');
 debug(`fonts: ${JSON.stringify(fonts)}`);
-
-const Quill = getQuill();
 
 export class Markup {
 

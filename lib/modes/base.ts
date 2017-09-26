@@ -9,10 +9,8 @@ import {
 	section as getSection,
 	word as getWord
 } from 'util.section';
-import {getQuill} from '../helpers';
+import {Delta} from '../helpers';
 
-const Quill = getQuill();
-const Delta = Quill.import('delta');
 const debug = require('debug')('base');
 const hash = require('hash.js');
 
@@ -205,6 +203,7 @@ export abstract class BaseMarkupMode {
 	 * @param text {string} the text buffer where the regex will look for
 	 * matches.
 	 * @param re {RegExp} the regular expression used for the search
+	 * @return {Delta} the Delta created by this change
 	 */
 	public codify(text: string, re: RegExp) {
 		return this.processRegex(text, re, this.processCodeTokens, ParseType.BLOCK);
@@ -226,6 +225,17 @@ export abstract class BaseMarkupMode {
 		return this.processRegex(text, re, this.processInlineTokens, ParseType.INLINE, {color: color});
 	}
 
+	/**
+	 * Applies a single color over a given buffer based on the given regex.
+	 * This call can span multiple lines in the regex, where the regular
+	 * colorize works on a single line.
+	 * @param text {string} the text buffer where the regex will look for
+	 * matches.
+	 * @param re {RegExp} the regular expression used for the search
+	 * @param color {string} the color string (hex or named) used for the
+	 * formatting of the color.
+	 * @return {Delta} the Delta created by this change
+	 */
 	public colorizeBlock(text: string, re: RegExp, color: string) {
 		return this.processRegex(text, re, this.processBlockTokens, ParseType.BLOCK, {color: color});
 	}
@@ -325,7 +335,7 @@ export abstract class BaseMarkupMode {
 
 			for (let i = 1; i < arr.length; i += 2) {
 				this._subText = this.text.substring(this._start, this._end);
-				this.quill.removeFormat(this._start, this._end - this._start, 'silent');
+				this.quill.removeFormat(this._start, this._end - this._start + 1, 'silent');
 				this.highlightInline();
 				this._start = arr[i] + 1;
 				this._end = arr[i + 1] - 1;

@@ -7,7 +7,6 @@ import * as fs from 'fs-extra';
 import * as path from 'path';
 import {join} from 'util.join';
 // import {Fixture} from 'util.fixture';
-import {getQuill} from '../lib/helpers';
 import {cleanup} from './helpers';
 
 const debug = require('debug')('markup.test');
@@ -19,7 +18,10 @@ require('./helpers/MutationObserver')(global);
 require('./helpers/getSelection')(global);
 
 (global as any).Quill = require('quill');
-const Quill = getQuill();
+
+// can't use this before the global require and jsdom global
+// initialization
+import {Quill} from '../lib/helpers';
 let quill: any = null;
 
 import {Markup, MarkupMode} from '../index';
