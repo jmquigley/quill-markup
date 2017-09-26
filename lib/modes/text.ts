@@ -10,7 +10,8 @@ export class Text extends BaseMarkupMode {
 		debug('creating text mode %o', quill);
 	}
 
-	public highlight() {}
+	public highlightInline() {}
+	public highlightBlock() {}
 
 	public handleBold() {}
 	public handleHeader(level: number) { level = 0; }

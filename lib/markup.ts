@@ -52,7 +52,7 @@
 
 'use strict';
 
-import {Section, section as getSection} from 'util.section';
+import {line as getLine, Section} from 'util.section';
 import {getQuill} from './helpers';
 import {BaseMarkupMode, Markdown, Text} from './modes';
 
@@ -64,9 +64,11 @@ export enum MarkupMode {
 export interface MarkupOptions {
 	content?: string;
 	custom?: any;
+	dirtyLimit?: number;
 	fontName?: string;
 	fontSize?: number;
-	mode: MarkupMode;
+	idleDelay?: number;
+	mode?: MarkupMode;
 }
 
 require('./styles.css');
@@ -80,14 +82,14 @@ const Quill = getQuill();
 
 export class Markup {
 
-	// The number of lines above and below the current position that will be
-	// repainted with the processor
-	private static readonly SECTION_SIZE: number = 0;
-	private static readonly THRESHOLD: number = 0;
-	private static readonly DIRTY_LIMIT: number = 10;
-
-	private _dirty: boolean = false;
-	private _dirtyCount: number = 0;
+	// As the document is modified the number of characters that are changed
+	// is counted.  When a "dirty" limit is reached and the user is idle then
+	// a full rescan of the document block elements will occur.  The smaller
+	// the limit, the sooner this will occur when idle.
+	private _dirtyIdle: boolean = false;
+	private _dirtyInline: boolean = false;
+	private _dirtyCount: number = 10;
+	private _dirtyLimit: number;
 
 	// The time between each incremental section scan
 	private _delay: number = 250;
@@ -95,7 +97,7 @@ export class Markup {
 
 	// The time before idle detection
 	private _idle: boolean = true;
-	private _idleDelay: number = 3000;
+	private _idleDelay: number = 2000;
 	private _idleTimer: any;
 
 	// A reference to the DOM editor node
@@ -106,16 +108,16 @@ export class Markup {
 		'firamono',
 		'sourcecodepro'
 	];
+	private _line: Section = {
+		start: 0,
+		end: 0,
+		text: ''
+	};
 	private _modes: Map<MarkupMode, any> = new Map<MarkupMode, any>();
 	private _opts: MarkupOptions;
 	private _paste: boolean = false;
 	private _processor: BaseMarkupMode;
 	private _quill: any;
-	private _section: Section = {
-		start: 0,
-		end: 0,
-		text: ''
-	};
 
 	constructor(quill: any, opts: MarkupOptions) {
 		debug('Initializing markup module');
@@ -124,8 +126,10 @@ export class Markup {
 		this._opts = Object.assign({
 			content: '',
 			custom: {},
+			dirtyLimit: 20,
 			fontName: 'inconsolata',
 			fontSize: 13,
+			idleDelay: 2000,
 			mode: MarkupMode.text
 		}, opts);
 
@@ -187,13 +191,17 @@ export class Markup {
 	 * expensive operation and we need to find the tradeoff limit
 	 */
 	private markIdle() {
-		// debug('idle');
 		this._idle = true;
 
-		if (this._dirty) {
-			// this.refresh();
-			this._dirty = false;
+		if (this._dirtyIdle) {
+			this._dirtyIdle = false;
 			this._dirtyCount = 0;
+			this._processor.refreshBlock();
+		}
+
+		if (this._dirtyInline) {
+			this._processor.refreshInline();
+			this._dirtyInline = false;
 		}
 	}
 
@@ -207,10 +215,14 @@ export class Markup {
 	}
 
 	/**
-	 * Rescans the entire document for highlighting
+	 * Rescans the entire document for highlighting.  This is a wrapper around
+	 * the processor's full refresh function.
 	 */
 	public refresh() {
-		this._processor.handleChange(0, this._quill.getLength());
+		this._processor.refreshFull();
+		this._dirtyIdle = false;
+		this._dirtyCount = 0;
+		this._dirtyInline = false;
 	}
 
 	/**
@@ -227,6 +239,9 @@ export class Markup {
 		this._opts = opts = Object.assign(this._opts, opts);
 		debug('current markup options: %o', this._opts);
 		this._processor = this._modes[opts.mode];
+
+		this._dirtyLimit = this._opts.dirtyLimit;
+		this._idleDelay = this._opts.idleDelay;
 
 		this._processor.style = Object.assign(
 			{
@@ -261,8 +276,8 @@ export class Markup {
 		this._editor.style['color'] = this._processor.style.foreground;
 		this._editor.style['background-color'] = this._processor.style.background;
 
-		this._section = getSection(opts.content, 0, Markup.SECTION_SIZE, Markup.THRESHOLD);
-		this.refresh();
+		this._line = getLine(opts.content, 0);
+		this._processor.refreshFull();
 	}
 
 	/**
@@ -367,12 +382,8 @@ export class Markup {
 				this._processor.pos = range.index;
 			}
 
-			// Compute the region that will be involved in highlighting.
-			this._section = getSection(
-				this._processor.text,
-				this._processor.pos,
-				Markup.SECTION_SIZE
-			);
+			// Compute the line that will be involved in highlighting
+			this._line = getLine(this._processor.text, this._processor.pos);
 		}
 	}
 
@@ -398,18 +409,20 @@ export class Markup {
 	private handleTextChange(delta?: any, old?: any, source?: string) {
 		delta = old = null;
 
-		if (source === 'user' && this._dirtyCount++ > Markup.DIRTY_LIMIT) {
-			this._dirty = true;
+		if (source === 'user' && this._dirtyCount++ > this._dirtyLimit) {
+			this._dirtyIdle = true;
 		}
+
+		this._dirtyInline = true;
 
 		if (!this._changing || this._paste) {
 			this._changing = true;
 			setTimeout(() => {
 				if (this._paste) {
-					this.refresh();
+					this._processor.refreshFull();
 					this._paste = false;
 				} else {
-					this._processor.handleChange(this._section.start, this._section.end);
+					this._processor.handleChange(this._line.start, this._line.end);
 				}
 
 				this._changing = false;

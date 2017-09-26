@@ -3120,7 +3120,7 @@ hash-base@^3.0.0:
     inherits "^2.0.1"
     safe-buffer "^5.0.1"
 
-hash.js@^1.0.0, hash.js@^1.0.3:
+hash.js@^1.0.0, hash.js@^1.0.3, hash.js@^1.1.3:
   version "1.1.3"
   resolved "https://registry.yarnpkg.com/hash.js/-/hash.js-1.1.3.tgz#340dedbe6290187151c1ea1d777a3448935df846"
   dependencies:
@@ -6287,6 +6287,10 @@ split-string@^3.0.1:
   dependencies:
     extend-shallow "^2.0.1"
 
+sprintf-js@^1.1.1:
+  version "1.1.1"
+  resolved "https://registry.yarnpkg.com/sprintf-js/-/sprintf-js-1.1.1.tgz#36be78320afe5801f6cea3ee78b6e5aab940ea0c"
+
 sprintf-js@~1.0.2:
   version "1.0.3"
   resolved "https://registry.yarnpkg.com/sprintf-js/-/sprintf-js-1.0.3.tgz#04e6926f662895354f3dd015203633b857297e2c"
@@ -6895,6 +6899,14 @@ util.chdir@0.0.30:
   resolved "https://registry.yarnpkg.com/util.chdir/-/util.chdir-0.0.30.tgz#f8c5f4d76e8fc5598225152204a96d724be9ea86"
   dependencies:
     fs-extra "^4.0.1"
+    util.pkgwrap "0.0.68"
+
+util.ds@^0.0.30:
+  version "0.0.30"
+  resolved "https://registry.yarnpkg.com/util.ds/-/util.ds-0.0.30.tgz#0903819b8e8c317c1fd7f2fe8fd0c018d96edf18"
+  dependencies:
+    fs-extra "^4.0.1"
+    sprintf-js "^1.1.1"
     util.pkgwrap "0.0.68"
 
 util.filelist@0.0.24:

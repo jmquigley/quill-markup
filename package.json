@@ -17,9 +17,11 @@
     "node": ">=7.5"
   },
   "dependencies": {
+    "hash.js": "^1.1.3",
     "highlight.js": "^9.12.0",
     "parchment": "^1.1.0",
     "quill": "^1.3.2",
+    "util.ds": "^0.0.30",
     "util.join": "^0.0.14",
     "util.matches": "^0.0.3",
     "util.pkgwrap": "0.0.68",

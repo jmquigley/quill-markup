@@ -43,8 +43,8 @@ export class Markdown extends BaseMarkupMode {
 	private _h5: RegExp = /##### .*/gi;
 	private _h6: RegExp = /###### .*/gi;
 
-	// private _h1block: RegExp = /.+(\r\n|\r|\n)==+/gi;
-	// private _h2block: RegExp = /.+(\r\n|\r|\n)--+/gi;
+	private _h1block: RegExp = /.+(\r\n|\r|\n)==+/gi;
+	private _h2block: RegExp = /.+(\r\n|\r|\n)--+/gi;
 
 	private _code: RegExp = /(```)[^`]+?\1/gi;
 
@@ -53,12 +53,7 @@ export class Markdown extends BaseMarkupMode {
 		debug('creating markdown mode %o', quill);
 	}
 
-	public highlight() {
-		this.highlightInline();
-		this.highlightBlock();
-	}
-
-	private highlightInline() {
+	public highlightInline() {
 		this.colorize(this.subText, this._italic, this.style.italic);
 		this.colorize(this.subText, this._bold, this.style.bold);
 		this.colorize(this.subText, this._strikethrough, this.style.strikethrough);
@@ -77,7 +72,9 @@ export class Markdown extends BaseMarkupMode {
 		this.colorizeLink(this.subText, this._link4);
 	}
 
-	private highlightBlock() {
+	public highlightBlock() {
+		this.colorizeBlock(this.text, this._h1block, this.style.h1);
+		this.colorizeBlock(this.text, this._h2block, this.style.h2);
 		this.codify(this.text, this._code);
 	}
 
