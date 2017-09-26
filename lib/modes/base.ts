@@ -1,6 +1,6 @@
 'use strict';
 
-import {matches} from 'util.matches';
+import {Match, matches} from 'util.matches';
 import {rstrip} from 'util.rstrip';
 import {
 	line as getLine,
@@ -12,6 +12,11 @@ import {getQuill} from '../helpers';
 const Quill = getQuill();
 const Delta = Quill.import('delta');
 const debug = require('debug')('base');
+
+enum ParseType {
+	BLOCK,
+	INLINE
+}
 
 export abstract class BaseMarkupMode {
 
@@ -28,6 +33,10 @@ export abstract class BaseMarkupMode {
 
 	constructor(quill: any) {
 		this._quill = quill;
+
+		this.processInlineTokens = this.processInlineTokens.bind(this);
+		this.processLinkTokens = this.processLinkTokens.bind(this);
+		this.processCodeTokens = this.processCodeTokens.bind(this);
 	}
 
 	get end() {
@@ -179,6 +188,16 @@ export abstract class BaseMarkupMode {
 	}
 
 	/**
+	 * Searches for a fenced code region and applies syntax highlighting to it.
+	 * @param text {string} the text buffer where the regex will look for
+	 * matches.
+	 * @param re {RegExp} the regular expression used for the search
+	 */
+	public codify(text: string, re: RegExp) {
+		return this.processRegex(text, re, this.processCodeTokens, ParseType.BLOCK);
+	}
+
+	/**
 	 * Applies a single color format to the given buffer based on the given regex
 	 * string. This uses the selected section from the main buffer to compute the
 	 * start offset.  This doesn't search the whole buffer, but a "subText"
@@ -191,27 +210,7 @@ export abstract class BaseMarkupMode {
 	 * @return {Delta} the Delta created by this change
 	 */
 	public colorize(text: string, re: RegExp, color: string) {
-		let offset = 0;
-
-		// debug('colorizing, start %d', this.start);
-		this._delta.ops.length = 0;
-
-		const tokens = matches(text, re);
-		if (tokens.length > 0) {
-			this._delta.retain(this.start);
-
-			for (const match of tokens) {
-				this._delta.retain(match.start - offset)
-					.retain(match.end - match.start + 1, {color: color});
-				offset = match.end + 1;
-			}
-
-			if (this._delta.ops.length > 0) {
-				return this.quill.updateContents(this._delta, 'silent');
-			}
-		}
-
-		return this._delta;
+		return this.processRegex(text, re, this.processInlineTokens, ParseType.INLINE, {color: color});
 	}
 
 	/**
@@ -231,77 +230,7 @@ export abstract class BaseMarkupMode {
 	 * @return {Delta} the delta structure created
 	 */
 	public colorizeLink(text: string, re: RegExp) {
-		let offset = 0;
-
-		// debug('colorizing, start %d', this.start);
-		this._delta.ops.length = 0;
-
-		const tokens = matches(text, re);
-		if (tokens.length > 0) {
-
-			this._delta.retain(this.start);
-
-			for (const match of tokens) {
-				this._delta.retain(match.start - offset);
-
-				const name: string = match.result[1];
-				let nameIdx: number = 0;
-				if (name) {
-					nameIdx = match.groupIndex[0];
-					this._delta.retain(nameIdx, {color: this.style.linkChevron})
-						.retain(name.length, {color: this.style.linkName});
-				}
-
-				const link: string = match.result[2];
-				let linkIdx: number = 0;
-				if (link) {
-					linkIdx = match.groupIndex[1];
-					this._delta.retain(linkIdx - (nameIdx + name.length), {color: this.style.linkChevron})
-						.retain(link.length, {color: this.style.link});
-				}
-
-				const title: string = match.result[3];
-				let titleIdx: number = 0;
-				if (title) {
-					titleIdx = match.groupIndex[2];
-					this._delta.retain(titleIdx - (linkIdx + link.length), {color: this.style.linkChevron})
-						.retain(title.length, {color: this.style.linkTitle});
-				}
-
-				this._delta.retain(1, {color: this.style.linkChevron});
-				offset = match.end + 1;
-			}
-
-			if (this._delta.ops.length > 0) {
-				this.quill.updateContents(this._delta, 'silent');
-			}
-		}
-
-		return this._delta;
-	}
-
-	/**
-	 * Searches for a fenced code region and applies syntax highlighting to it.
-	 * @param text {string} the text buffer where the regex will look for
-	 * matches.
-	 * @param re {RegExp} the regular expression used for the search
-	 */
-	public codify(text: string, re: RegExp) {
-		// TODO: convert this to delta usage
-
-		for (const match of matches(text, re)) {
-			// debug('colorize match (%s): %o', match.text, match);
-
-			const header = getLine(match.text, 0).text;
-			const start = match.start + header.length;
-			const len = match.end - match.start - (header.length + 3) + 1;
-			const code = match.text.slice(header.length, match.text.length - 4);
-
-			this.quill.formatText(match.start, 3, {color: this.style.fence}, 'silent');
-			this.quill.formatText(match.start + 3, header.length - 3, {color: this.style.language}, 'silent');
-			this.quill.formatText(start, len, 'code-block', code, 'silent');
-			this.quill.formatText(match.end - 3, 4, {color: this.style.fence}, 'silent');
-		}
+		return this.processRegex(text, re, this.processLinkTokens, ParseType.INLINE);
 	}
 
 	/**
@@ -320,5 +249,108 @@ export abstract class BaseMarkupMode {
 		this._subText = this.text.substring(start, end);
 		this.quill.removeFormat(start, end - start, 'silent');
 		this.highlight();
+	}
+
+	private processCodeTokens(tokens: Match[]) {
+		let offset: number = tokens[0].start;
+
+		for (const match of tokens) {
+			const header = getLine(match.text, 0).text;
+
+			// Size of the code section minus the header, end chevrons
+			// and the final newline
+			const len = match.end - match.start - (header.length + 3);
+
+			this._delta.retain(match.start - offset)
+				.retain(3, {color: this.style.fence})
+				.retain(header.length - 3, {color: this.style.language})
+				.retain(len + 1, {'code-block': true})
+				.retain(3, {color: this.style.fence});
+
+			offset = match.end + 1;
+		}
+	}
+
+	private processInlineTokens(tokens: Match[], styling: any) {
+		let offset: number = 0;
+
+		for (const match of tokens) {
+			this._delta.retain(match.start - offset)
+				.retain(match.end - match.start + 1, {color: styling.color});
+			offset = match.end + 1;
+		}
+	}
+
+	private processLinkTokens(tokens: Match[]) {
+		let offset: number = 0;
+
+		for (const match of tokens) {
+			this._delta.retain(match.start - offset);
+
+			const name: string = match.result[1];
+			let nameIdx: number = 0;
+			if (name) {
+				nameIdx = match.groupIndex[0];
+				this._delta.retain(nameIdx, {color: this.style.linkChevron})
+					.retain(name.length, {color: this.style.linkName});
+			}
+
+			const link: string = match.result[2];
+			let linkIdx: number = 0;
+			if (link) {
+				linkIdx = match.groupIndex[1];
+				this._delta.retain(linkIdx - (nameIdx + name.length), {color: this.style.linkChevron})
+					.retain(link.length, {color: this.style.link});
+			}
+
+			const title: string = match.result[3];
+			let titleIdx: number = 0;
+			if (title) {
+				titleIdx = match.groupIndex[2];
+				this._delta.retain(titleIdx - (linkIdx + link.length), {color: this.style.linkChevron})
+					.retain(title.length, {color: this.style.linkTitle});
+			}
+
+			this._delta.retain(1, {color: this.style.linkChevron});
+
+			offset = match.end + 1;
+		}
+	}
+
+	/**
+	 * Takes a string and a given regex, finds matches, and then loops through
+	 * each match calling a handler function to process the matches.  The
+	 * handler function is dynamic.  There are two start locations: INLINE and
+	 * BLOCK.  The INLINE type computes a start location based on the current
+	 * line position.  The BLOCK type uses the location of the first match
+	 * in the regex.
+	 * @param text {string} the data the regex will use to find matches.
+	 * @param re {RegExp} the regular expression used to find matching tokens
+	 * @param handler {Function} the function that will process all of the
+	 * matches found by the regex matcher.
+	 * @param styling {any} custom styling object used by the handler.  This
+	 * is just passed through to the handler function.
+	 * @return {Delta} the delta object generate from the regex matches.
+	 */
+	private processRegex(text: string, re: RegExp, fn: any, parseType: ParseType, styling?: any) {
+		this._delta.ops.length = 0;
+		const tokens = matches(text, re);
+
+		if (tokens.length > 0) {
+
+			if (parseType === ParseType.INLINE) {
+				this._delta.retain(this.start);
+			} else {
+				this._delta.retain(tokens[0].start);
+			}
+
+			fn(tokens, styling);
+
+			if (this._delta.ops.length > 0) {
+				return this.quill.updateContents(this._delta, 'silent');
+			}
+		}
+
+		return this._delta;
 	}
 }

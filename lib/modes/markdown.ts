@@ -6,9 +6,16 @@ const debug = require('debug')('Markdown');
 
 export class Markdown extends BaseMarkupMode {
 
-	private _bold: RegExp = /(\*{2})[^\*]*?\1/gi;
-	private _italic: RegExp = /(\*)[^\*]*?\1/gi;
+	// **text**
+	private _bold: RegExp = /(\*{2})[^\*\n]*?\1/gi;
+
+	// *text*
+	private _italic: RegExp = /(\*)[^\*\n]*?\1/gi;
+
+	// _text_
 	private _underline: RegExp = /(\_{1}).+?\1/gi;
+
+	// ~text~
 	private _strikethrough: RegExp = /(\~{1}).+?\1/gi;
 
 	// `text`
@@ -29,12 +36,15 @@ export class Markdown extends BaseMarkupMode {
 	// [text]: [url] "title"
 	private _link4: RegExp = /\[([^\]^\]\[^\]\]]*)\]\:\s+([^\s]+)\s+"([^"]*)?"/gi;
 
-	private _h1: RegExp = /.+(\r\n|\r|\n)==+|# .*/gi;
-	private _h2: RegExp = /.+(\r\n|\r|\n)--+|## .*/gi;
+	private _h1: RegExp = /# .*/gi;
+	private _h2: RegExp = /## .*/gi;
 	private _h3: RegExp = /### .*/gi;
 	private _h4: RegExp = /#### .*/gi;
 	private _h5: RegExp = /##### .*/gi;
 	private _h6: RegExp = /###### .*/gi;
+
+	// private _h1block: RegExp = /.+(\r\n|\r|\n)==+/gi;
+	// private _h2block: RegExp = /.+(\r\n|\r|\n)--+/gi;
 
 	private _code: RegExp = /(```)[^`]+?\1/gi;
 
@@ -44,6 +54,11 @@ export class Markdown extends BaseMarkupMode {
 	}
 
 	public highlight() {
+		this.highlightInline();
+		this.highlightBlock();
+	}
+
+	private highlightInline() {
 		this.colorize(this.subText, this._italic, this.style.italic);
 		this.colorize(this.subText, this._bold, this.style.bold);
 		this.colorize(this.subText, this._strikethrough, this.style.strikethrough);
@@ -56,13 +71,14 @@ export class Markdown extends BaseMarkupMode {
 		this.colorize(this.subText, this._h4, this.style.h4);
 		this.colorize(this.subText, this._h5, this.style.h5);
 		this.colorize(this.subText, this._h6, this.style.h6);
-
-		this.codify(this.text, this._code);
-
 		this.colorizeLink(this.subText, this._link1);
 		this.colorizeLink(this.subText, this._link2);
 		this.colorizeLink(this.subText, this._link3);
 		this.colorizeLink(this.subText, this._link4);
+	}
+
+	private highlightBlock() {
+		this.codify(this.text, this._code);
 	}
 
 	public handleBold() {
