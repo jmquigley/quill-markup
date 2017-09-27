@@ -106,6 +106,10 @@
   version "2.3.1"
   resolved "https://registry.yarnpkg.com/@types/tough-cookie/-/tough-cookie-2.3.1.tgz#2688836dc4535d3156d1789e5ee58d068b992715"
 
+"@types/xregexp@^3.0.29":
+  version "3.0.29"
+  resolved "https://registry.yarnpkg.com/@types/xregexp/-/xregexp-3.0.29.tgz#9f2f819712ab41fd8b434036ec4b14cbb9dbe654"
+
 abab@^1.0.3:
   version "1.0.4"
   resolved "https://registry.yarnpkg.com/abab/-/abab-1.0.4.tgz#5faad9c2c07f60dd76770f71cf025b62a63cfd4e"
@@ -7237,6 +7241,10 @@ xml-name-validator@^2.0.1:
 xmlcreate@^1.0.1:
   version "1.0.2"
   resolved "https://registry.yarnpkg.com/xmlcreate/-/xmlcreate-1.0.2.tgz#fa6bf762a60a413fb3dd8f4b03c5b269238d308f"
+
+xregexp@^3.2.0:
+  version "3.2.0"
+  resolved "https://registry.yarnpkg.com/xregexp/-/xregexp-3.2.0.tgz#cb3601987bfe2695b584000c18f1c4a8c322878e"
 
 xtend@^4.0.0, xtend@~4.0.1:
   version "4.0.1"

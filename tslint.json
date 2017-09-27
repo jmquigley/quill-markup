@@ -2,7 +2,7 @@
 	"extends": "tslint:recommended",
 	"rules": {
 		"arrow-parens": [true, "ban-single-arg-parens"],
-		"curly": true,
+		"curly": [true, "ignore-same-line"],
 		"indent": [true, "tabs"],
 		"interface-name": [true, "never-prefix"],
 		"max-line-length": false,

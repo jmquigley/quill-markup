@@ -21,7 +21,7 @@ enum ParseType {
 
 export abstract class BaseMarkupMode {
 
-	private static readonly INLINE_SIZE: 10;
+	private static readonly INLINE_SIZE: 40;
 
 	protected _blocksDirty: boolean = false;
 	protected _blocks: SortedList<number> = new SortedList<number>();
@@ -288,7 +288,6 @@ export abstract class BaseMarkupMode {
 
 		if (this._blocks.length > 0 && this._blocksDirty) {
 			const arr = this._blocks.array;
-			debug('blocks: %O', arr);
 
 			for (let i = 0; i < arr.length; i += 2) {
 				this._start = arr[i];
@@ -326,12 +325,15 @@ export abstract class BaseMarkupMode {
 		const section: Section = getSection(this.text, this.pos, BaseMarkupMode.INLINE_SIZE);
 
 		if (this._blocks.length > 0) {
-			const arr = this._blocks.array.filter((pos: number) => {
-				return pos >= section.start && pos <= section.end;
-			});
 
+			// This is the list of blocks that reside within the refresh region
+			const arr = this.getBlocks(section.start, section.end);
 			this._start = section.start;
 			this._end = arr[0] - 1;
+
+			if (this._end < this._start) {
+				this._start = this._end;
+			}
 
 			for (let i = 1; i < arr.length; i += 2) {
 				this._subText = this.text.substring(this._start, this._end);
@@ -351,6 +353,40 @@ export abstract class BaseMarkupMode {
 	private clearBlockDetails() {
 		this._blocksDirty = false;
 		this._blocks.clear();
+	}
+
+	/**
+	 * Retrieves an array of blocks that would appear within an insline
+	 * section of the document.  It searches for points where the Section
+	 * may bisect the block element and fixes the start/end index of the
+	 * block when that happens.  The returned blocks should always have
+	 * an even number of members (each block must have a start/end)
+	 * @param start {number} the starting position within the section where
+	 * the block may be.
+	 * @param end {number} the ending position within the section where
+	 * the block may be
+	 * @return {number[]} an array containing the start/end locations for
+	 * blocks that reside within a region.
+	 */
+	private getBlocks(start: number, end: number): number[] {
+		let bstart: number = 0;
+		let bend: number = 0;
+		const arr = this._blocks.array;
+
+		for (const pos of arr) {
+			if (pos < start) bstart++;
+
+			if (pos < end) {
+				bend++;
+			} else {
+				break; // short circuit searching for blocks out of range
+			}
+		}
+
+		if (bstart % 2) bstart--;
+		if (bend % 2) bend++;
+
+		return arr.slice(bstart, bend + 1);
 	}
 
 	private processBlockTokens(tokens: Match[], styling: any) {
@@ -457,7 +493,6 @@ export abstract class BaseMarkupMode {
 		const tokens = matches(text, re);
 
 		if (tokens.length > 0) {
-
 			if (parseType === ParseType.INLINE) {
 				this._delta.retain(this.start);
 			} else {
@@ -494,7 +529,7 @@ export abstract class BaseMarkupMode {
 	 */
 	private saveBlockDetails(match: Match) {
 		this._blocks.insert(match.start);
-		this._blocks.insert(match.end);
+		this._blocks.insert(match.end + 1);
 
 		const blockHash = hash.sha256().update(match.text).digest('hex');
 
