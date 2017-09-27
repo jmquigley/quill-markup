@@ -79,13 +79,17 @@
   version "2.0.0"
   resolved "https://registry.yarnpkg.com/@types/mime/-/mime-2.0.0.tgz#5a7306e367c539b9f6543499de8dd519fac37a8b"
 
-"@types/node@*", "@types/node@^8.0.30":
+"@types/node@*":
   version "8.0.30"
   resolved "https://registry.yarnpkg.com/@types/node/-/node-8.0.30.tgz#aa3c42946fc6357737eb215349fe728b38679d05"
 
 "@types/node@^6.0.46":
   version "6.0.88"
   resolved "https://registry.yarnpkg.com/@types/node/-/node-6.0.88.tgz#f618f11a944f6a18d92b5c472028728a3e3d4b66"
+
+"@types/node@^8.0.31":
+  version "8.0.31"
+  resolved "https://registry.yarnpkg.com/@types/node/-/node-8.0.31.tgz#d9af61093cf4bfc9f066ca34de0175012cfb0ce9"
 
 "@types/quill@^1.3.3":
   version "1.3.3"
@@ -6719,9 +6723,9 @@ type-is@~1.6.15:
     media-typer "0.3.0"
     mime-types "~2.1.15"
 
-typescript@^2.5.2:
-  version "2.5.2"
-  resolved "https://registry.yarnpkg.com/typescript/-/typescript-2.5.2.tgz#038a95f7d9bbb420b1bf35ba31d4c5c1dd3ffe34"
+typescript@^2.5.3:
+  version "2.5.3"
+  resolved "https://registry.yarnpkg.com/typescript/-/typescript-2.5.3.tgz#df3dcdc38f3beb800d4bc322646b04a3f6ca7f0d"
 
 typical@^2.4.2, typical@^2.6.0, typical@^2.6.1:
   version "2.6.1"
@@ -6901,11 +6905,11 @@ util.chdir@0.0.30:
     fs-extra "^4.0.1"
     util.pkgwrap "0.0.68"
 
-util.ds@^0.0.30:
-  version "0.0.30"
-  resolved "https://registry.yarnpkg.com/util.ds/-/util.ds-0.0.30.tgz#0903819b8e8c317c1fd7f2fe8fd0c018d96edf18"
+util.ds@^0.0.31:
+  version "0.0.31"
+  resolved "https://registry.yarnpkg.com/util.ds/-/util.ds-0.0.31.tgz#d5bcf6af06155087bb9ae3fa2fd90a2da92da03f"
   dependencies:
-    fs-extra "^4.0.1"
+    fs-extra "^4.0.2"
     sprintf-js "^1.1.1"
     util.pkgwrap "0.0.68"
 
@@ -6948,9 +6952,9 @@ util.join@0.0.14, util.join@^0.0.14:
     util.home "0.0.19"
     util.pkgwrap "0.0.68"
 
-util.matches@^0.0.3:
-  version "0.0.3"
-  resolved "https://registry.yarnpkg.com/util.matches/-/util.matches-0.0.3.tgz#2e017e471c5754f0d83193c917af74047b31f97c"
+util.matches@^0.0.4:
+  version "0.0.4"
+  resolved "https://registry.yarnpkg.com/util.matches/-/util.matches-0.0.4.tgz#ab46e2a084f51130fa289c959d3632a2afea6a66"
   dependencies:
     util.pkgwrap "0.0.68"
 

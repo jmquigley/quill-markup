@@ -36,6 +36,12 @@ export class Markdown extends BaseMarkupMode {
 	// [text]: [url] "title"
 	private _link4: RegExp = /\[([^\]^\]\[^\]\]]*)\]\:\s+([^\s]+)\s+"([^"]*)?"/gi;
 
+	// + {text}
+	// - {text}
+	// * {text}
+	// ##. {text}
+	private _list: RegExp = /\s*([\*\-\+]{1})[ \t]+|\s*\d+\.[ \t]+/gi;
+
 	private _h1: RegExp = /# .*/gi;
 	private _h2: RegExp = /## .*/gi;
 	private _h3: RegExp = /### .*/gi;
@@ -54,11 +60,11 @@ export class Markdown extends BaseMarkupMode {
 	}
 
 	public highlightInline() {
+		this.colorize(this.subText, this._list, this.style.list);
 		this.colorize(this.subText, this._italic, this.style.italic);
 		this.colorize(this.subText, this._bold, this.style.bold);
 		this.colorize(this.subText, this._strikethrough, this.style.strikethrough);
 		this.colorize(this.subText, this._underline, this.style.underline);
-		this.colorize(this.subText, this._mono, this.style.mono);
 		this.colorize(this.subText, this._blockquote, this.style.blockquote);
 		this.colorize(this.subText, this._h1, this.style.h1);
 		this.colorize(this.subText, this._h2, this.style.h2);
@@ -70,6 +76,7 @@ export class Markdown extends BaseMarkupMode {
 		this.colorizeLink(this.subText, this._link2);
 		this.colorizeLink(this.subText, this._link3);
 		this.colorizeLink(this.subText, this._link4);
+		this.colorize(this.subText, this._mono, this.style.mono);
 	}
 
 	public highlightBlock() {

@@ -14,7 +14,8 @@ let keybindings = {
 	'embed left': null,
 	'embed right': null,
 	'embed left shift': null,
-	'embed right shift': null
+	'embed right shift': null,
+	'list autofill': null
 };
 
 Quill.register('modules/markup', Markup);
