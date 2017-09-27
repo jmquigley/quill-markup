@@ -25,16 +25,16 @@ export class Markdown extends BaseMarkupMode {
 	private _blockquote: RegExp = /^>\s*.*/gi;
 
 	// [text]
-	private _link1: RegExp = /\[([^\]]*)\]/gi;
+	private _link1: RegExp = /(\[)([^\]]*)(\])(?![\[\(])/gi;
 
 	// [text](link) or ![text](link)
-	private _link2: RegExp = /!?\[([^\]^\]\[^\]\]]*)\]\(([^\]\)]*)\)/gi;
+	private _link2: RegExp = /(!?\[)([^\]^\]\[^\]\]]*)(\]\()([^\]\)]*)(\))/gi;
 
 	// [text][id] or ![text][id]
-	private _link3: RegExp = /!?\[([^\]^\]\[^\]\]]*)\]\[([^\]]*)\]/gi;
+	private _link3: RegExp = /(!?\[)([^\]^\]\[^\]\]]*)(\]\[)([^\]]*)(\])/gi;
 
 	// [text]: [url] "title"
-	private _link4: RegExp = /\[([^\]^\]\[^\]\]]*)\]\:\s+([^\s]+)\s+"([^"]*)?"/gi;
+	private _link4: RegExp = /(\[)([^\]^\]\[^\]\]]*)(\]\:\s+)([^\s]+)(\s+)("[^"]*?"){0,1}/gi;
 
 	// + {text}
 	// - {text}
@@ -72,10 +72,12 @@ export class Markdown extends BaseMarkupMode {
 		this.colorize(this.subText, this._h4, this.style.h4);
 		this.colorize(this.subText, this._h5, this.style.h5);
 		this.colorize(this.subText, this._h6, this.style.h6);
+
 		this.colorizeLink(this.subText, this._link1);
 		this.colorizeLink(this.subText, this._link2);
 		this.colorizeLink(this.subText, this._link3);
 		this.colorizeLink(this.subText, this._link4);
+
 		this.colorize(this.subText, this._mono, this.style.mono);
 	}
 

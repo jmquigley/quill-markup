@@ -403,31 +403,35 @@ export abstract class BaseMarkupMode {
 		for (const match of tokens) {
 			this._delta.retain(match.start - offset);
 
-			const name: string = match.result[1];
-			let nameIdx: number = 0;
-			if (name) {
-				nameIdx = match.groupIndex[0];
-				this._delta.retain(nameIdx, {color: this.style.linkChevron})
-					.retain(name.length, {color: this.style.linkName});
+			// left paren/bracket
+			if (match.result[1]) {
+				this._delta.retain(match.result[1].length, {color: this.style.linkChevron});
 			}
 
-			const link: string = match.result[2];
-			let linkIdx: number = 0;
-			if (link) {
-				linkIdx = match.groupIndex[1];
-				this._delta.retain(linkIdx - (nameIdx + name.length), {color: this.style.linkChevron})
-					.retain(link.length, {color: this.style.link});
+			// link name
+			if (match.result[2]) {
+				this._delta.retain(match.result[2].length, {color: this.style.linkName});
 			}
 
-			const title: string = match.result[3];
-			let titleIdx: number = 0;
-			if (title) {
-				titleIdx = match.groupIndex[2];
-				this._delta.retain(titleIdx - (linkIdx + link.length), {color: this.style.linkChevron})
-					.retain(title.length, {color: this.style.linkTitle});
+			// right paren/bracket group
+			if (match.result[3]) {
+				this._delta.retain(match.result[3].length, {color: this.style.linkChevron});
 			}
 
-			this._delta.retain(1, {color: this.style.linkChevron});
+			// link url/reference
+			if (match.result[4]) {
+				this._delta.retain(match.result[4].length, {color: this.style.link});
+			}
+
+			// left paren/bracket group
+			if (match.result[5]) {
+				this._delta.retain(match.result[5].length, {color: this.style.linkChevron});
+			}
+
+			// optional title
+			if (match.result[6]) {
+				this._delta.retain(match.result[6].length, {color: this.style.linkTitle});
+			}
 
 			offset = match.end + 1;
 		}
