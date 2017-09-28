@@ -39,10 +39,17 @@ export abstract class BaseMarkupMode {
 	constructor(quill: any) {
 		this._quill = quill;
 
-		this.processBlockTokens = this.processBlockTokens.bind(this);
-		this.processInlineTokens = this.processInlineTokens.bind(this);
-		this.processLinkTokens = this.processLinkTokens.bind(this);
-		this.processCodeTokens = this.processCodeTokens.bind(this);
+		[
+			'processBlockTokens',
+			'processInlineTokens',
+			'processLinkTokens',
+			'processCodeTokens',
+			'processInlineGroupTokens'
+		]
+		.forEach((fn: string) => {
+			this[fn] = this[fn].bind(this);
+		});
+
 	}
 
 	get end() {
@@ -223,6 +230,10 @@ export abstract class BaseMarkupMode {
 	 */
 	public colorize(text: string, re: RegExp, color: string) {
 		return this.processRegex(text, re, this.processInlineTokens, ParseType.INLINE, {color: color});
+	}
+
+	public colorizeGroup(text: string, re: RegExp, styling: any) {
+		return this.processRegex(text, re, this.processInlineGroupTokens, ParseType.INLINE, styling);
 	}
 
 	/**
@@ -433,6 +444,40 @@ export abstract class BaseMarkupMode {
 		}
 	}
 
+	private processInlineGroupTokens(tokens: Match[], styling: any) {
+		let offset: number = 0;
+
+		styling = Object.assign(
+			{background: this.style.background},
+			styling);
+
+		for (const match of tokens) {
+			this._delta.retain(match.start - offset);
+
+			debug('inline group match: %O', match);
+
+			// left chevron grouping
+			if (match.result[1]) {
+				this._delta.retain(match.result[1].length, {color: this.style.chevron});
+			}
+
+			// token name
+			if (match.result[2]) {
+				this._delta.retain(match.result[2].length, {
+					background: styling.background,
+					color: styling.color
+				});
+			}
+
+			// right chevron grouping
+			if (match.result[3]) {
+				this._delta.retain(match.result[3].length, {color: this.style.chevron});
+			}
+
+			offset = match.end + 1;
+		}
+	}
+
 	private processLinkTokens(tokens: Match[]) {
 		let offset: number = 0;
 
@@ -441,7 +486,7 @@ export abstract class BaseMarkupMode {
 
 			// left paren/bracket
 			if (match.result[1]) {
-				this._delta.retain(match.result[1].length, {color: this.style.linkChevron});
+				this._delta.retain(match.result[1].length, {color: this.style.chevron});
 			}
 
 			// link name
@@ -451,7 +496,7 @@ export abstract class BaseMarkupMode {
 
 			// right paren/bracket group
 			if (match.result[3]) {
-				this._delta.retain(match.result[3].length, {color: this.style.linkChevron});
+				this._delta.retain(match.result[3].length, {color: this.style.chevron});
 			}
 
 			// link url/reference
@@ -461,7 +506,7 @@ export abstract class BaseMarkupMode {
 
 			// left paren/bracket group
 			if (match.result[5]) {
-				this._delta.retain(match.result[5].length, {color: this.style.linkChevron});
+				this._delta.retain(match.result[5].length, {color: this.style.chevron});
 			}
 
 			// optional title

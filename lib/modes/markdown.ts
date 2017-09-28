@@ -25,6 +25,9 @@ export class Markdown extends BaseMarkupMode {
 	// > text
 	private _blockquote: RegExp = XRegExp(/^>\s.*/gmi);
 
+	// TODO: FIXME:
+	private _admonition: RegExp = XRegExp(/^(\s*)(TODO|FIXME|IMPORTANT|WARNING|TIP)(:\s+)/gmi);
+
 	// [text]
 	private _link1: RegExp = XRegExp(/(\[)([^\]]*)(\])(?![\[\(])/gi);
 
@@ -115,6 +118,11 @@ export class Markdown extends BaseMarkupMode {
 		this.colorizeLink(this.subText, this._link2);
 		this.colorizeLink(this.subText, this._link3);
 		this.colorizeLink(this.subText, this._link4);
+
+		this.colorizeGroup(this.subText, this._admonition, {
+			color: this.style.admonition,
+			background: this.style.admonitionBackground
+		});
 
 		this.colorize(this.subText, this._formulaInline, this.style.formula);
 		this.colorize(this.subText, this._mono, this.style.mono);

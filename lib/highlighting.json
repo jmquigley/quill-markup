@@ -9,6 +9,7 @@
 	"h5": "#ff5f00",
 	"h6": "#ff0000",
 
+	"chevron": "gray",
 	"bold": "#0087ff",
 	"italic": "#af00ff",
 	"underline": "green",
@@ -20,7 +21,8 @@
   "linkName": "#7aa6da",
 	"link": "#b9ca4a",
 	"linkTitle": "#e7c547",
-	"linkChevron": "gray",
 	"list": "#e2b228",
-	"formula": "#c397d8"
+	"formula": "#c397d8",
+	"admonition": "white",
+	"admonitionBackground": "red"
 }
