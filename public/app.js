@@ -1,5 +1,9 @@
 'use strict';
 
+hljs.configure({
+    tabReplace: '    '
+});
+
 let keybindings = {
 	tab: {
     	key: 9,

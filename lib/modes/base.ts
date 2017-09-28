@@ -9,6 +9,7 @@ import {
 	section as getSection,
 	word as getWord
 } from 'util.section';
+import * as XRegExp from 'xregexp';
 import {Delta} from '../helpers';
 
 const debug = require('debug')('base');
@@ -35,6 +36,38 @@ export abstract class BaseMarkupMode {
 	protected _style: any;
 	protected _subText: string;
 	protected _text: string;
+
+	// TODO: FIXME:
+	protected _admonition: RegExp = XRegExp(/^(\s*)(TODO|FIXME|IMPORTANT|WARNING|TIP)(:\s+)/gmi);
+
+	// ```{language}
+	// {code}
+	// ```
+	protected _code: RegExp = XRegExp(/(```)[^`]+?\1/gi);
+
+	// ${formula}$
+	// \({formula}\)
+	// \[{formula}\]
+	protected _formulaInline: RegExp = XRegExp(/(\$(?!$))[^\$^\n]+\1|(\\\()[^(\\\)\n)]*?\\\)|(\\\[)[^(\\\]\n)]*?\\\]/gi);
+
+	// $$
+	// {formula}
+	// $$
+	//
+	// \\(
+	// {formula}
+	// \\)
+	//
+	// \\[
+	// {formula}
+	// \\]
+	protected _formulaBlock: RegExp = XRegExp(/^(\${2})[^\1]*?\1|^(\\{2}\()[^(\\\))]*?\\{2}\)|^(\\{2}\[)[^(\\\])]*?\\{2}\]/gmi);
+
+	// a valid URL
+	protected _url: RegExp = XRegExp(/[hflix][timr][tplnae][pekgf]?[se]?:.+?[]]\\|[hfli][tim][tplna][pekg]?[se]?:.+?[\s]/gi);
+
+	// [[{name}|{reference}]
+	protected _wiki: RegExp = XRegExp(/(\[\[)([^|\]^\]]+)(\|{0,1})([^\]^\]]*){0,1}(\]\])/gi);
 
 	constructor(quill: any) {
 		this._quill = quill;
@@ -157,8 +190,27 @@ export abstract class BaseMarkupMode {
 	public abstract handleItalic(): void;
 	public abstract handleStrikeThrough(): void;
 	public abstract handleUnderline(): void;
-	public abstract highlightInline(): void;
-	public abstract highlightBlock(): void;
+
+	public highlightBlock() {
+		this.colorizeBlock(this.text, this._formulaBlock, this.style.formula);
+		this.codify(this.text, this._code);
+	};
+
+	public highlightInline() {
+		this.colorize(this._subText, this._url, this.style.link);
+
+		this.colorizeGroup(this.subText, this._wiki, {
+			color: this.style.wiki,
+			refColor: this.style.link
+		});
+
+		this.colorizeGroup(this.subText, this._admonition, {
+			color: this.style.admonition,
+			background: this.style.admonitionBackground
+		});
+
+		this.colorize(this.subText, this._formulaInline, this.style.formula);
+	};
 
 	/**
 	 * Takes a selection area from a document and applies a markup annotation
@@ -232,6 +284,23 @@ export abstract class BaseMarkupMode {
 		return this.processRegex(text, re, this.processInlineTokens, ParseType.INLINE, {color: color});
 	}
 
+	/**
+	 * An inline color processor that uses regex groups to color a 3 part token
+	 * The regex for this should have three groups:
+	 *
+	 * 1. initial chevron (like parens, bracket)
+	 * 2. token string
+	 * 3. closing chevron
+	 *
+	 * The color for 1 & 3 are determined by the chevron style color.  The token
+	 * colors are set using the styling parameter object passed to the function.  This
+	 * object should have `color` and/or `background` set to change the colors for The
+	 * matched string.
+	 * @param re {RegExp} the regular expression used for the search
+	 * @param color {string} the color string (hex or named) used for the
+	 * formatting of the color.
+	 * @return {Delta} the Delta created by this change
+	 */
 	public colorizeGroup(text: string, re: RegExp, styling: any) {
 		return this.processRegex(text, re, this.processInlineGroupTokens, ParseType.INLINE, styling);
 	}
@@ -447,14 +516,15 @@ export abstract class BaseMarkupMode {
 	private processInlineGroupTokens(tokens: Match[], styling: any) {
 		let offset: number = 0;
 
-		styling = Object.assign(
-			{background: this.style.background},
-			styling);
+		styling = Object.assign({
+			color: this.style.foreground,
+			background: this.style.background,
+			refColor: this.style.foreground,
+			refBackground: this.style.background
+		}, styling);
 
 		for (const match of tokens) {
 			this._delta.retain(match.start - offset);
-
-			debug('inline group match: %O', match);
 
 			// left chevron grouping
 			if (match.result[1]) {
@@ -469,9 +539,22 @@ export abstract class BaseMarkupMode {
 				});
 			}
 
-			// right chevron grouping
+			// center chevron grouping
 			if (match.result[3]) {
 				this._delta.retain(match.result[3].length, {color: this.style.chevron});
+			}
+
+			// reference name
+			if (match.result[4]) {
+				this._delta.retain(match.result[4].length, {
+					background: styling.refBackground,
+					color: styling.refColor
+				});
+			}
+
+			// right chevron grouping
+			if (match.result[5]) {
+				this._delta.retain(match.result[5].length, {color: this.style.chevron});
 			}
 
 			offset = match.end + 1;

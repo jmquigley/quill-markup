@@ -24,5 +24,7 @@
 	"list": "#e2b228",
 	"formula": "#c397d8",
 	"admonition": "white",
-	"admonitionBackground": "red"
+	"admonitionBackground": "red",
+	"wiki": "#7aa6da",
+	"hr": "#fc9584"
 }

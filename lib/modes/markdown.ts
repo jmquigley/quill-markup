@@ -25,9 +25,6 @@ export class Markdown extends BaseMarkupMode {
 	// > text
 	private _blockquote: RegExp = XRegExp(/^>\s.*/gmi);
 
-	// TODO: FIXME:
-	private _admonition: RegExp = XRegExp(/^(\s*)(TODO|FIXME|IMPORTANT|WARNING|TIP)(:\s+)/gmi);
-
 	// [text]
 	private _link1: RegExp = XRegExp(/(\[)([^\]]*)(\])(?![\[\(])/gi);
 
@@ -72,28 +69,7 @@ export class Markdown extends BaseMarkupMode {
 	// ------
 	private _h2block: RegExp = XRegExp(/.+(\r\n|\r|\n)--+/gi);
 
-	// ```{language}
-	// {code}
-	// ```
-	private _code: RegExp = XRegExp(/(```)[^`]+?\1/gi);
-
-	// ${formula}$
-	// \({formula}\)
-	// \[{formula}\]
-	private _formulaInline: RegExp = XRegExp(/(\$(?!$))[^\$^\n]+\1|(\\\()[^(\\\)\n)]*?\\\)|(\\\[)[^(\\\]\n)]*?\\\]/gi);
-
-	// $$
-	// {formula}
-	// $$
-	//
-	// \\(
-	// {formula}
-	// \\)
-	//
-	// \\[
-	// {formula}
-	// \\]
-	private _formulaBlock: RegExp = XRegExp(/^(\${2})[^\1]*?\1|^(\\{2}\()[^(\\\))]*?\\{2}\)|^(\\{2}\[)[^(\\\])]*?\\{2}\]/gmi);
+	private _hr: RegExp = XRegExp(/^\-{3,}|^\*{3,}|^_{3,}/gmi);
 
 	constructor(quill: any) {
 		super(quill);
@@ -107,6 +83,7 @@ export class Markdown extends BaseMarkupMode {
 		this.colorize(this.subText, this._bold, this.style.bold);
 		this.colorize(this.subText, this._strikethrough, this.style.strikethrough);
 		this.colorize(this.subText, this._underline, this.style.underline);
+		this.colorize(this.subText, this._hr, this.style.hr);
 		this.colorize(this.subText, this._h1, this.style.h1);
 		this.colorize(this.subText, this._h2, this.style.h2);
 		this.colorize(this.subText, this._h3, this.style.h3);
@@ -119,20 +96,16 @@ export class Markdown extends BaseMarkupMode {
 		this.colorizeLink(this.subText, this._link3);
 		this.colorizeLink(this.subText, this._link4);
 
-		this.colorizeGroup(this.subText, this._admonition, {
-			color: this.style.admonition,
-			background: this.style.admonitionBackground
-		});
-
-		this.colorize(this.subText, this._formulaInline, this.style.formula);
 		this.colorize(this.subText, this._mono, this.style.mono);
+
+		super.highlightInline();
 	}
 
 	public highlightBlock() {
 		this.colorizeBlock(this.text, this._h1block, this.style.h1);
 		this.colorizeBlock(this.text, this._h2block, this.style.h2);
-		this.colorizeBlock(this.text, this._formulaBlock, this.style.formula);
-		this.codify(this.text, this._code);
+
+		super.highlightBlock();
 	}
 
 	public handleBold() {
