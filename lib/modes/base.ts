@@ -1,6 +1,6 @@
 'use strict';
 
-import {BinaryTree, SortedList} from 'util.ds';
+import {BinaryTree, Comparator, SortedList} from 'util.ds';
 import {Match, matches} from 'util.matches';
 import {rstrip} from 'util.rstrip';
 import {
@@ -20,6 +20,21 @@ enum ParseType {
 	INLINE
 }
 
+export interface MatchData {
+	key: string;
+	link?: Match;
+}
+
+const cmp: Comparator<MatchData> = (o1: MatchData, o2: MatchData): number => {
+	if (o1.key === o2.key) {
+		return 0;
+	} else if (o1.key > o2.key) {
+		return 1;
+	}
+
+	return -1;
+};
+
 export abstract class BaseMarkupMode {
 
 	private static readonly INLINE_SIZE: 40;
@@ -29,6 +44,7 @@ export abstract class BaseMarkupMode {
 	protected _blockID: BinaryTree<string> = new BinaryTree<string>();
 	protected _delta: any = new Delta();
 	protected _end: number;
+	protected _links: BinaryTree<MatchData> = new BinaryTree<MatchData>(null, cmp);
 	protected _pos: number = 0;
 	protected _quill: any;
 	protected _range: any;
@@ -64,7 +80,7 @@ export abstract class BaseMarkupMode {
 	protected _formulaBlock: RegExp = XRegExp(/^(\${2})[^\1]*?\1|^(\\{2}\()[^(\\\))]*?\\{2}\)|^(\\{2}\[)[^(\\\])]*?\\{2}\]/gmi);
 
 	// a valid URL
-	protected _url: RegExp = XRegExp(/[hflix][timr][tplnae][pekgf]?[se]?:.+?[]]\\|[hfli][tim][tplna][pekg]?[se]?:.+?[\s]/gi);
+	protected _url: RegExp = XRegExp(/(\s*)([hflix][timr][tplnae][pekgf]?[se]?:.+?[]]\\|[hfli][tim][tplna][pekg]?[se]?:.+?)([\s])/gi);
 
 	// [[{name}|{reference}]
 	protected _wiki: RegExp = XRegExp(/(\[\[)([^|\]^\]]+)(\|{0,1})([^\]^\]]*){0,1}(\]\])/gi);
@@ -82,7 +98,6 @@ export abstract class BaseMarkupMode {
 		.forEach((fn: string) => {
 			this[fn] = this[fn].bind(this);
 		});
-
 	}
 
 	get end() {
@@ -99,6 +114,10 @@ export abstract class BaseMarkupMode {
 	 */
 	get line(): Section {
 		return getLine(this.text, this.pos);
+	}
+
+	get links(): BinaryTree<MatchData> {
+		return this._links;
 	}
 
 	/**
@@ -194,10 +213,10 @@ export abstract class BaseMarkupMode {
 	public highlightBlock() {
 		this.colorizeBlock(this.text, this._formulaBlock, this.style.formula);
 		this.codify(this.text, this._code);
-	};
+	}
 
 	public highlightInline() {
-		this.colorize(this._subText, this._url, this.style.link);
+		this.colorizeLink(this._subText, this._url, {linkName: this.style.link});
 
 		this.colorizeGroup(this.subText, this._wiki, {
 			color: this.style.wiki,
@@ -210,7 +229,7 @@ export abstract class BaseMarkupMode {
 		});
 
 		this.colorize(this.subText, this._formulaInline, this.style.formula);
-	};
+	}
 
 	/**
 	 * Takes a selection area from a document and applies a markup annotation
@@ -336,8 +355,8 @@ export abstract class BaseMarkupMode {
 	 * @param re {RegExp} the regular expression used for the search
 	 * @return {Delta} the delta structure created
 	 */
-	public colorizeLink(text: string, re: RegExp) {
-		return this.processRegex(text, re, this.processLinkTokens, ParseType.INLINE);
+	public colorizeLink(text: string, re: RegExp, styling: any = {}) {
+		return this.processRegex(text, re, this.processLinkTokens, ParseType.INLINE, styling);
 	}
 
 	/**
@@ -561,11 +580,22 @@ export abstract class BaseMarkupMode {
 		}
 	}
 
-	private processLinkTokens(tokens: Match[]) {
+	private processLinkTokens(tokens: Match[], styling: any) {
 		let offset: number = 0;
+
+		styling = Object.assign({
+			linkName: this.style.linkName,
+			link: this.style.link,
+			linkTitle: this.style.linkTitle
+		}, styling);
 
 		for (const match of tokens) {
 			this._delta.retain(match.start - offset);
+
+			if (this._links.contains({key: match.text})) {
+				this._links.remove({key: match.text});
+			}
+			this._links.insert({key: match.text, link: match});
 
 			// left paren/bracket
 			if (match.result[1]) {
@@ -574,7 +604,7 @@ export abstract class BaseMarkupMode {
 
 			// link name
 			if (match.result[2]) {
-				this._delta.retain(match.result[2].length, {color: this.style.linkName});
+				this._delta.retain(match.result[2].length, {color: styling.linkName});
 			}
 
 			// right paren/bracket group
@@ -584,7 +614,7 @@ export abstract class BaseMarkupMode {
 
 			// link url/reference
 			if (match.result[4]) {
-				this._delta.retain(match.result[4].length, {color: this.style.link});
+				this._delta.retain(match.result[4].length, {color: styling.link});
 			}
 
 			// left paren/bracket group
@@ -594,7 +624,7 @@ export abstract class BaseMarkupMode {
 
 			// optional title
 			if (match.result[6]) {
-				this._delta.retain(match.result[6].length, {color: this.style.linkTitle});
+				this._delta.retain(match.result[6].length, {color: styling.linkTitle});
 			}
 
 			offset = match.end + 1;

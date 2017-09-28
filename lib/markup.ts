@@ -56,6 +56,12 @@ import {line as getLine, Section} from 'util.section';
 import {Quill} from './helpers';
 import {BaseMarkupMode, Markdown, Text} from './modes';
 
+export type EventCallback = (val: any) => void;
+
+const nilEvent: EventCallback = (val: any): void => {
+	val = null;
+};
+
 export enum MarkupMode {
 	markdown,
 	text
@@ -67,8 +73,12 @@ export interface MarkupOptions {
 	dirtyLimit?: number;
 	fontName?: string;
 	fontSize?: number;
+	followLinks?: boolean;
 	idleDelay?: number;
 	mode?: MarkupMode;
+	onChange?: EventCallback;
+	onClick?: EventCallback;
+	onClickLink?: EventCallback;
 }
 
 require('./styles.css');
@@ -127,8 +137,12 @@ export class Markup {
 			dirtyLimit: 20,
 			fontName: 'inconsolata',
 			fontSize: 13,
+			followLinks: false,
 			idleDelay: 2000,
-			mode: MarkupMode.text
+			mode: MarkupMode.text,
+			onChange: nilEvent,
+			onClick: nilEvent,
+			onClickLink: nilEvent
 		}, opts);
 
 		this._editor = document.getElementById('editor');
@@ -141,6 +155,7 @@ export class Markup {
 
 		// bind all potential callbacks to the class.
 		[
+			'handleClick',
 			'handleEditorChange',
 			'handlePaste',
 			'handleTextChange',
@@ -166,6 +181,8 @@ export class Markup {
 		quill.on('text-change', this.handleTextChange);
 
 		this._editor.addEventListener('paste', this.handlePaste);
+		this._editor.addEventListener('click', this.handleClick);
+
 		window.addEventListener('load', this.resetInactivityTimer);
 		document.addEventListener('mousemove', this.resetInactivityTimer);
 		document.addEventListener('click', this.resetInactivityTimer);
@@ -367,6 +384,31 @@ export class Markup {
 	}
 
 	/**
+	 * This event is invoked whenever the mouse is clicked within the editor.
+	 * It will call the user give onClick handler and pass the position within
+	 * the editor that was clicked.
+	 *
+	 * If the `followLinks` configuration option is given, then another handler
+	 * is called that will check if the clicked position is a link.  If it is,
+	 * then the regex match object that found this link is returned to the
+	 * callback (giving the full text, start/end offsets, and groups).
+	 */
+	private handleClick() {
+		this._opts.onClick(this._processor.pos);
+
+		if (this._opts.followLinks) {
+			const pos: number = this._processor.pos;
+			for (const it of this._processor.links) {
+
+				if (pos >= it.link.start && pos <= it.link.end) {
+					this._opts.onClickLink(it.link);
+					break;
+				}
+			}
+		}
+	}
+
+	/**
 	 * This event is invoked whenever a change occurs in the editor (any type).
 	 * @param eventName {string} the name of the event that occurred.
 	 * @param args {any[]} the dyanamic parameter list passed to this event.
@@ -422,6 +464,8 @@ export class Markup {
 				} else {
 					this._processor.handleChange(this._line.start, this._line.end);
 				}
+
+				this._opts.onChange(this._processor.text);
 
 				this._changing = false;
 			}, this._delay);

@@ -36,6 +36,16 @@ let quill = new Quill('#editor', {
 		    bindings: keybindings
 		},
 		markup: {
+			followLinks: true,
+			onChange: (text) => {
+				// console.log(`Changing text: ${text}`);
+			},
+			onClick: (pos) => {
+				console.log(`clicked pos: ${pos}`);
+			},
+			onClickLink: (link) => {
+				console.log(`clicked link: ${link.text}`);
+			}
 		},
 		syntax: {
 			delay: 100
