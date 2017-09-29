@@ -52,6 +52,8 @@
 
 'use strict';
 
+import {union} from 'lodash';
+import {getFontList} from 'util.fontlist';
 import {line as getLine, Section} from 'util.section';
 import {Quill} from './helpers';
 import {BaseMarkupMode, Markdown, Text} from './modes';
@@ -84,9 +86,7 @@ export interface MarkupOptions {
 require('./styles.css');
 
 const debug = require('debug')('markup');
-const fonts = require('./fonts/fonts.css');
 const pkg = require('../package.json');
-debug(`fonts: ${JSON.stringify(fonts)}`);
 
 export class Markup {
 
@@ -112,9 +112,9 @@ export class Markup {
 	private _editor: HTMLElement;
 
 	private _fonts: string[] = [
-		'inconsolata',
-		'firamono',
-		'sourcecodepro'
+		'Fira Code',
+		'Inconsolata',
+		'Source Code Pro'
 	];
 	private _line: Section = {
 		start: 0,
@@ -135,8 +135,8 @@ export class Markup {
 			content: '',
 			custom: {},
 			dirtyLimit: 20,
-			fontName: 'inconsolata',
-			fontSize: 13,
+			fontName: 'Fira Code',
+			fontSize: 12,
 			followLinks: false,
 			idleDelay: 2000,
 			mode: MarkupMode.text,
@@ -152,6 +152,9 @@ export class Markup {
 
 		this._modes[MarkupMode.markdown] = new Markdown(quill);
 		this._modes[MarkupMode.text] = new Text(quill);
+
+		this._fonts = union(this._fonts, getFontList());
+		debug('available fonts: %O', this.fonts);
 
 		// bind all potential callbacks to the class.
 		[
@@ -189,6 +192,10 @@ export class Markup {
 		document.addEventListener('keydown', this.resetInactivityTimer);
 
 		this.set(opts);
+	}
+
+	get fonts() {
+		return this._fonts;
 	}
 
 	/**
@@ -318,18 +325,12 @@ export class Markup {
 	 * @param fontName {string} the name of the font to set.
 	 */
 	public setFont(fontName: string) {
-
-		fontName = fontName.toLowerCase();
 		if (!this._fonts.includes(fontName)) {
 			fontName = this._fonts[0];
 		}
 
 		debug('setting font: %s', fontName);
-
-		for (const className of this._fonts) {
-			this._editor.classList.remove(fonts[`font-${className}`]);
-		}
-		this._editor.classList.add(fonts[`font-${fontName}`]);
+		this._editor.style.fontFamily = fontName;
 	}
 
 	/**
