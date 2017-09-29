@@ -263,12 +263,11 @@ export class Markup {
 	 */
 	public set(opts: MarkupOptions) {
 
-		debug('current options before set: %o', this._opts);
 		this._opts = Object.assign({}, defaultOptions, this._opts, opts);
-		debug('current options: %o, new options: %o', this._opts, opts);
+		debug('options: %o', this._opts);
 
 		this._processor = this._modes[this._opts.mode];
-		debug('using processor: %O', this._processor)
+		debug('using processor: %o', this._processor);
 
 		this._dirtyLimit = this._opts.dirtyLimit;
 		this._idleDelay = this._opts.idleDelay;
@@ -281,8 +280,7 @@ export class Markup {
 			(this._opts.mode === MarkupMode.text) ? {} : require('./highlighting.json'),
 			this._opts.custom
 		);
-		debug('current highlighting styles: %o', this._processor.style);
-
+		debug('current highlighting colors: %o', this._processor.style);
 
 		this.setContent(this._opts.content);
 		this.setFont(this._opts.fontName);
