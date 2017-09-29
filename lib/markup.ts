@@ -83,6 +83,20 @@ export interface MarkupOptions {
 	onClickLink?: EventCallback;
 }
 
+const defaultOptions: MarkupOptions = {
+	content: '',
+	custom: {},
+	dirtyLimit: 20,
+	fontName: 'Fira Code',
+	fontSize: 12,
+	followLinks: false,
+	idleDelay: 2000,
+	mode: MarkupMode.text,
+	onChange: nilEvent,
+	onClick: nilEvent,
+	onClickLink: nilEvent
+};
+
 require('./styles.css');
 
 const debug = require('debug')('markup');
@@ -121,7 +135,7 @@ export class Markup {
 		end: 0,
 		text: ''
 	};
-	private _modes: Map<MarkupMode, any> = new Map<MarkupMode, any>();
+	private _modes: any = {};
 	private _opts: MarkupOptions;
 	private _paste: boolean = false;
 	private _processor: BaseMarkupMode;
@@ -131,19 +145,7 @@ export class Markup {
 		debug('Initializing markup module');
 
 		this._quill = quill;
-		this._opts = Object.assign({
-			content: '',
-			custom: {},
-			dirtyLimit: 20,
-			fontName: 'Fira Code',
-			fontSize: 12,
-			followLinks: false,
-			idleDelay: 2000,
-			mode: MarkupMode.text,
-			onChange: nilEvent,
-			onClick: nilEvent,
-			onClickLink: nilEvent
-		}, opts);
+		this._opts = Object.assign({}, defaultOptions, opts);
 
 		this._editor = document.getElementById('editor');
 
@@ -152,6 +154,8 @@ export class Markup {
 
 		this._modes[MarkupMode.markdown] = new Markdown(quill);
 		this._modes[MarkupMode.text] = new Text(quill);
+
+		debug('modes: %O', this._modes);
 
 		this._fonts = union(this._fonts, getFontList());
 		debug('available fonts: %O', this.fonts);
@@ -172,6 +176,7 @@ export class Markup {
 			'setFont',
 			'setFontSize',
 			'setHeader',
+			'setMode',
 			'setStrikeThrough',
 			'setUnderline',
 			'undo'
@@ -258,9 +263,12 @@ export class Markup {
 	 */
 	public set(opts: MarkupOptions) {
 
-		this._opts = opts = Object.assign(this._opts, opts);
-		debug('current markup options: %o', this._opts);
-		this._processor = this._modes[opts.mode];
+		debug('current options before set: %o', this._opts);
+		this._opts = Object.assign({}, defaultOptions, this._opts, opts);
+		debug('current options: %o, new options: %o', this._opts, opts);
+
+		this._processor = this._modes[this._opts.mode];
+		debug('using processor: %O', this._processor)
 
 		this._dirtyLimit = this._opts.dirtyLimit;
 		this._idleDelay = this._opts.idleDelay;
@@ -270,35 +278,20 @@ export class Markup {
 				foreground: 'black',
 				background: 'white'
 			},
-			(opts.mode === MarkupMode.text) ? {} : require('./highlighting.json'),
-			opts.custom
+			(this._opts.mode === MarkupMode.text) ? {} : require('./highlighting.json'),
+			this._opts.custom
 		);
 		debug('current highlighting styles: %o', this._processor.style);
 
-		if (opts.content) {
 
-			// Temporary code below.  This is just conveniece code for
-			// testing.
-			if (pkg['debug']) {
-				opts.content = '*Hello World* \n';
-				for (let i = 0; i < 25; i++) {
-					for (let j = 0; j < 40; j++) {
-						opts.content += `${String.fromCharCode(i + 97)} `;
-					}
-					opts.content += '\n';
-				}
-			}
-
-			this.setContent(opts.content);
-		}
-
-		this.setFont(opts.fontName);
-		this.setFontSize(opts.fontSize);
+		this.setContent(this._opts.content);
+		this.setFont(this._opts.fontName);
+		this.setFontSize(this._opts.fontSize);
 
 		this._editor.style['color'] = this._processor.style.foreground;
 		this._editor.style['background-color'] = this._processor.style.background;
 
-		this._line = getLine(opts.content, 0);
+		this._line = getLine(this._opts.content, 0);
 		this._processor.refreshFull();
 	}
 
@@ -315,6 +308,20 @@ export class Markup {
 	 * @param content {string} the new content settting for the editor.
 	 */
 	public setContent(content: string) {
+
+		if (!content && pkg['debug']) {
+			// Temporary code below.  This is just convenience code for
+			// testing.
+			content = '*Hello World* \n';
+			for (let i = 0; i < 25; i++) {
+				for (let j = 0; j < 40; j++) {
+					content += `${String.fromCharCode(i + 97)} `;
+				}
+				content += '\n';
+			}
+		}
+
+		this._opts.content = content;
 		this._processor.text = content;
 	}
 
@@ -330,6 +337,7 @@ export class Markup {
 		}
 
 		debug('setting font: %s', fontName);
+		this._opts.fontName = fontName;
 		this._editor.style.fontFamily = fontName;
 	}
 
@@ -340,6 +348,7 @@ export class Markup {
 	 */
 	public setFontSize(fontSize: number) {
 		debug('setting font size: %spx', fontSize);
+		this._opts.fontSize = fontSize;
 		this._editor.style['font-size'] = `${fontSize}px`;
 	}
 
@@ -357,6 +366,21 @@ export class Markup {
 	 */
 	public setItalic() {
 		this._processor.handleItalic();
+	}
+
+	/**
+	 * Changes the current display mode for the markup processor
+	 * @param mode {string} the name of the mode to set
+	 */
+	public setMode(mode: string) {
+		// TODO: add check on mode in enum
+
+		debug('setting mode: %s', mode);
+
+		this.set({
+			content: this._processor.text,
+			mode: MarkupMode[mode]
+		});
 	}
 
 	/**

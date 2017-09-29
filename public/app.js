@@ -57,7 +57,6 @@ let quill = new Quill('#editor', {
 
 let markup = quill.getModule('markup');
 markup.set({
-	content: 'Hello World',
 	custom: {
 		background: 'black',
 		foreground: 'white'
@@ -108,4 +107,8 @@ document.getElementById("undo-button").onclick = (e) => {
 
 document.getElementById("redo-button").onclick = (e) => {
 	markup.redo();
+}
+
+document.getElementById("mode").onchange = (e) => {
+	markup.setMode(e.target.value);
 }
