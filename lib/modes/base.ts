@@ -89,6 +89,8 @@ export abstract class BaseMarkupMode {
 		this._quill = quill;
 
 		[
+			'annotateBlock',
+			'annotateInline',
 			'processBlockTokens',
 			'processInlineTokens',
 			'processLinkTokens',
@@ -242,10 +244,18 @@ export abstract class BaseMarkupMode {
 	 */
 	public annotateInline(selection: Section, chevron: string) {
 		if (selection && selection.text) {
-			debug('annotating inline: "%o" with "%s"', selection, chevron);
+			this._delta.ops.length = 0;
+			debug('annotating inline: "%o" with "%s", %O', selection, chevron, this);
 
-			this.quill.insertText(selection.end + 1, chevron);
-			this.quill.insertText(selection.start, chevron);
+			this._delta.retain(selection.start)
+				.insert(chevron)
+				.retain(selection.text.length)
+				.insert(chevron);
+
+			if (this._delta.ops.length > 0) {
+				this.quill.setSelection(selection.end + 1);
+				return this.quill.updateContents(this._delta);
+			}
 		}
 	}
 
@@ -261,19 +271,29 @@ export abstract class BaseMarkupMode {
 	 * of the block.
 	 */
 	public annotateBlock(selection: Section, startChevron: string, endChevron?: string) {
+		let delta: any = null;
+
 		if (selection && selection.text) {
+			this._delta.ops.length = 0;
 			debug('annotating block: "%o" with "%s":"%s"', selection, startChevron, endChevron);
 
-			this.quill.insertText(selection.start, `${startChevron} `);
+			this._delta.retain(selection.start)
+				.insert(`${startChevron} `)
+				.retain(selection.text.length);
 
 			let endWidth: number = 0;
 			if (endChevron) {
 				endWidth = endChevron.length;
-				this.quill.insertText(selection.end + 2, endChevron);
+				this._delta.insert(endChevron);
 			}
 
-			this.quill.setSelection(selection.end + startChevron.length + endWidth + 1);
+			if (this._delta.ops.length > 0) {
+				delta = this.quill.updateContents(this._delta);
+				this.quill.setSelection(selection.end + startChevron.length + endWidth + 1);
+			}
 		}
+
+		return delta;
 	}
 
 	/**
@@ -487,6 +507,14 @@ export abstract class BaseMarkupMode {
 
 		return arr.slice(bstart, bend + 1);
 	}
+
+	/* private moveToEndOfLine() {
+	   const text: string = this.text;
+	   let pos: number = this.pos;
+
+	   while (text[pos++] !== nl) {};
+	   this.quill.setSelection(pos - 1);
+	   }*/
 
 	private processBlockTokens(tokens: Match[], styling: any) {
 		let offset: number = tokens[0].start;
