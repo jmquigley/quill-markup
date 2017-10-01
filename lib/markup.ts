@@ -203,6 +203,10 @@ export class Markup {
 		return this._fonts;
 	}
 
+	get quill() {
+		return this._quill;
+	}
+
 	/**
 	 * Resets the idle timer when the user does something in the app.
 	 */
