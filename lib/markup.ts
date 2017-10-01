@@ -141,7 +141,7 @@ export class Markup {
 	private _processor: BaseMarkupMode;
 	private _quill: any;
 
-	constructor(quill: any, opts: MarkupOptions) {
+	constructor(quill: any, opts: MarkupOptions = {}) {
 		debug('Initializing markup module');
 
 		this._quill = quill;
@@ -199,8 +199,16 @@ export class Markup {
 		this.set(opts);
 	}
 
+	get editor() {
+		return this._editor;
+	}
+
 	get fonts() {
 		return this._fonts;
+	}
+
+	get opts() {
+		return this._opts;
 	}
 
 	get quill() {

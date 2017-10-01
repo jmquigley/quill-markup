@@ -49,3 +49,6 @@ TODO: Add usage documentation
 #### attributes
 
 #### methods
+
+
+Note that some of the testing is limited due to use of JSDOM.  This library, and Quill, rely on `getSelection` to deterime positions within the editor.  This function is not available in JSDOM and is a helper stub in this module (see `./test/helpers/getSelection.js`).  Right now I don't see a way to move around within the an instantiated editor within this DOM (to test things like inserting new characters randomly and testing undo/redo).  If any ever uses this and has suggestions on how to overcome this it would be most welcome.
