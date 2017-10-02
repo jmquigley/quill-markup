@@ -56,6 +56,7 @@ import {union} from 'lodash';
 import {getFontList} from 'util.fontlist';
 import {line as getLine, Section} from 'util.section';
 import {Quill} from './helpers';
+import {cssHighlights} from './highlights';
 import {BaseMarkupMode, Markdown, Text} from './modes';
 
 export type EventCallback = (val: any) => void;
@@ -205,6 +206,10 @@ export class Markup {
 
 	get fonts() {
 		return this._fonts;
+	}
+
+	get highlights() {
+		return Object.keys(cssHighlights);
 	}
 
 	get opts() {
@@ -368,6 +373,19 @@ export class Markup {
 	 */
 	public setHeader(level: string) {
 		this._processor.handleHeader(Number(level));
+	}
+
+	public setHighlight(name: string) {
+		debug('setting highlight: %s', name);
+		const oldlink = document.getElementById('highlights');
+		const newlink = document.createElement('link');
+
+		newlink.setAttribute('id', 'highlights');
+		newlink.setAttribute('rel', 'stylesheet');
+		newlink.setAttribute('type', 'text/css');
+		newlink.setAttribute('href', `highlights/${name}.style`);
+
+		document.getElementsByTagName('head').item(0).replaceChild(newlink, oldlink);
 	}
 
 	/**

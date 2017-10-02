@@ -112,3 +112,7 @@ document.getElementById("redo-button").onclick = (e) => {
 document.getElementById("mode").onchange = (e) => {
 	markup.setMode(e.target.value);
 }
+
+document.getElementById("highlight").onchange = (e) => {
+	markup.setHighlight(e.target.value);
+}

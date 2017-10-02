@@ -1,6 +1,8 @@
 'use strict';
 
-require('mock-css-modules');
+const mockCssModules = require('mock-css-modules');
+mockCssModules.register(['.style', '.css']);
+
 require('browser-env')();
 require('./helpers/MutationObserver')(global);
 require('./helpers/getSelection')(global);

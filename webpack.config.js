@@ -40,9 +40,14 @@ module.exports = {
 					'postcss-loader'
 					]}
 				)
-			},			{
+			},
+			{
 				test: /\.ttf$/,
 				loader: "file-loader?name=[name].[ext]"
+			},
+			{
+				test: /\.style$/,
+				loader: "file-loader?name=./highlights/[name].[ext]"
 			}
 		]
 	},

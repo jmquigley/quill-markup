@@ -5,9 +5,9 @@
 	<title>Quill Highlight Demo</title>
 	<link rel="icon" href="data:,">
 
+	<link rel="stylesheet" href="highlights/solarized-light.style" type="text/css" id="highlights">
   	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/quill/1.3.2/quill.snow.min.css">
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/solarized-light.min.css">
   	<link rel="stylesheet" href="./styles.css" type="text/css" media="screen" />
 
 	<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
@@ -53,6 +53,12 @@
     <option value="markdown" selected>markdown</option>
     <option value="text">text</option>
   </select>
+  <select id="highlight">
+    <option value="darcula">Darkula</option>
+	<option value="monokai">Monokai</option>
+    <option value="solarized-light" selected>Solarized Light</option>
+  </select>
+
 </div>
 
 <div id="editor" spellcheck="false"></div>

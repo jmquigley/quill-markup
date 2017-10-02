@@ -8,10 +8,12 @@
 [![NPM](https://img.shields.io/npm/v/quill-markup.svg)](https://www.npmjs.com/package/quill-markup)
 [![Coverage Status](https://coveralls.io/repos/github/jmquigley/quill-markup/badge.svg?branch=master)](https://coveralls.io/github/jmquigley/quill-markup?branch=master)
 
+
 ## Requirements
 
 - Quill v1.3.2
 - Yarn 1.0.x
+- Node 7.5.x+
 
 
 ## Installation
@@ -41,6 +43,8 @@ $ yarn start watch
 ```
 This will detect changes and rebuild the bundle for testing with the web server in the previous step.  Both should be running.
 
+See the sample application code located in `./public/app.js` and `./public/index.html`.  Using `yarn run all && yarn start` will build the application and serve it locally.
+
 
 ## Overview
 This is a custom [Quill](https://quilljs.com/) module turns the WYSIWYG editor into a a fixed text markup editor (for modes like markdown, restructured text, etc).  It takes advantage of the underlying api for styling, undo/redo, keyboard handling, and syntax highlighting.
@@ -48,6 +52,7 @@ This is a custom [Quill](https://quilljs.com/) module turns the WYSIWYG editor i
 
 ## Usage
 
+#### Application Code
 ```javascript
 import {Markup, MarkupMode} from 'quill-markup';
 
@@ -113,9 +118,18 @@ markup.set({
 });
 ```
 
-The code above registers a new module named `Markup' with Quill.  Once it is registered, and quill is instantiated, the reference to the module can be retrieved.  We use this reference and the api below to interact with the document (outside of normal editing).  This example creates a markdown editor instance.
+The code above registers a new module named `Markup` with Quill.  Once it is registered, and quill is instantiated, the reference to the module can be retrieved.  We use this reference and the api below to interact with the document (outside of normal editing).  This example creates a markdown editor instance.
 
 ![Markdown](markdown.png)
+
+#### Syles
+
+The CSS style sheets for the module and for the syntax highlighting are included with the npm package.  The files are located in `./public`.
+
+- `./public/styles.css`
+- `./public/highlights/*.style`
+
+The module will look for these files from the root of the site serving them.  Note that if serving with express one must add a mime type for `*.style` files (`express.static.mime.define({'text/css': ['style']});`)
 
 
 ## API
@@ -142,6 +156,7 @@ Once the module is created in Quill the instance can be retrieved.  This instanc
 
 - `.editor` - a property reference to the editor DOM node.
 - `.fonts` - an array of all fonts that can be used by this editor.  The module will attempt to detect all available fonts from the browser environment.
+- `.highlights` - an array of all fenced code region highlight color schemes.  One of these values can be sent to the `setHighlight()` call to change the current highlight mode.
 - `.opts` - the options that were used when the module was created or changed by `.set`.  This is an object that contains all of the attributes listed above.
 - `.quill` - a reference to this mode's quill instance (not the global Quill)
 - `.redo()` - a wrapper for the quill redo function.
@@ -152,6 +167,7 @@ Once the module is created in Quill the instance can be retrieved.  This instanc
 - `.setFont(name: string)` - changes the current font by name.
 - `.setFontSize(size: number)` - changes the current font size by pixels (so 12 would be '12px')
 - `.setHeader(level: string)` - sets the sizing on the current content location position to one of six header sizes (1 - 6).  e.g. `setHeader('1')` will set the current location to an `h1` header.
+- `.setHighlight(name: string)` - changes the [syntax highlighting color scheme](https://github.com/isagalaev/highlight.js/tree/master/src/styles).  Quill uses [highlight.js](https://highlightjs.org/) for code highlighting.
 - `.setItalic()` - calls the current syntax processor mode's italic function and applies the italic formatting to either the selection area or the word at the current cursor.
 - `.setMode(mode: string)` - the name of the highlighting mode to use.  The use case for this is a drop down list that contains the names of all modes that may be passed to this call (which is why it's a string instead of the `MarkupMode.{val}`)
 - `.setStrikeThrough()` - calls the current syntax processor mode's strikethrough function and applies the strikethrough formatting to either the selection area or the word at the current cursor.
@@ -167,7 +183,7 @@ The mode exposes three events as part of the configuration:
 - `onClickLink(link: string)` - A mode that contains links will invoke this callback when one of the links are clicked.  It is passed the string of the link that was pressed.
 
 
-## Customization
+## Highlight Customization
 
 The module attributes above contain a key named `.custom`.  This is an object that contains color settings used to override the defaults.  Each value is either a hex or named color.  The default values can be found in [highlight.json](https://github.com/jmquigley/quill-markup/blob/master/lib/highlighting.json).  The idea is that most editing modes contain many of the same highlights (with differing syntax).  This is an attempt to create a base set of highlights that would be applied to any mode.  It contains the following options:
 

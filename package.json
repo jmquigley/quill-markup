@@ -65,6 +65,7 @@
     "postcss-modules": "^0.8.0",
     "precss": "^2.0.0",
     "process-nextick-args": "^1.0.7",
+    "shelljs": "^0.7.8",
     "sinon": "^4.0.0",
     "style-loader": "^0.18.2",
     "tslint": "^5.7.0",
@@ -75,8 +76,9 @@
   "main": "./index.js",
   "types": "./index.d.ts",
   "scripts": {
-    "all": "yarn install && yarn run clean && yarn run lint && yarn run build && yarn test && yarn run report",
+    "all": "yarn install && yarn run clean && yarn run build:highlights && yarn run lint && yarn run build && yarn test && yarn run report",
     "build": "pkgwrap --build --webpack",
+    "build:highlights": "node bin/buildHighlights.js",
     "clean": "pkgwrap --clean",
     "coverage": "pkgwrap --coverage",
     "lint": "pkgwrap --lint",
