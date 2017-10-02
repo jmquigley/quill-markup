@@ -135,12 +135,6 @@ acorn-dynamic-import@^2.0.0:
   dependencies:
     acorn "^4.0.3"
 
-acorn-globals@^3.1.0:
-  version "3.1.0"
-  resolved "https://registry.yarnpkg.com/acorn-globals/-/acorn-globals-3.1.0.tgz#fd8270f71fbb4996b004fa880ee5d46573a731bf"
-  dependencies:
-    acorn "^4.0.4"
-
 acorn-globals@^4.0.0:
   version "4.0.0"
   resolved "https://registry.yarnpkg.com/acorn-globals/-/acorn-globals-4.0.0.tgz#0d771eb8c5b8e244124af193d006e21bd7d309c6"
@@ -157,7 +151,7 @@ acorn@^3.0.4, acorn@^3.3.0:
   version "3.3.0"
   resolved "https://registry.yarnpkg.com/acorn/-/acorn-3.3.0.tgz#45e37fb39e8da3f25baee3ff5369e2bb5f22017a"
 
-acorn@^4.0.3, acorn@^4.0.4:
+acorn@^4.0.3:
   version "4.0.13"
   resolved "https://registry.yarnpkg.com/acorn/-/acorn-4.0.13.tgz#105495ae5361d697bd195c825192e1ad7f253787"
 
@@ -1360,11 +1354,11 @@ brorand@^1.0.1:
   version "1.1.0"
   resolved "https://registry.yarnpkg.com/brorand/-/brorand-1.1.0.tgz#12c25efe40a45e3c323eb8675a0a0ce57b22371f"
 
-browser-env@^3.2.0:
-  version "3.2.0"
-  resolved "https://registry.yarnpkg.com/browser-env/-/browser-env-3.2.0.tgz#c6b8d3d0cd9e4ba352c64d4d4c0aaf1c5b954c06"
+browser-env@^3.2.1:
+  version "3.2.1"
+  resolved "https://registry.yarnpkg.com/browser-env/-/browser-env-3.2.1.tgz#ffedc10045554ef7e82703b19645c3ebe9e1e187"
   dependencies:
-    window "4.2.0"
+    window "4.2.1"
 
 browserify-aes@^1.0.0, browserify-aes@^1.0.4:
   version "1.0.8"
@@ -2489,7 +2483,7 @@ escape-string-regexp@^1.0.2, escape-string-regexp@^1.0.4, escape-string-regexp@^
   version "1.0.5"
   resolved "https://registry.yarnpkg.com/escape-string-regexp/-/escape-string-regexp-1.0.5.tgz#1b61c0562190a8dff6ae3bb2cf0200ca130b86d4"
 
-escodegen@^1.6.1, escodegen@^1.9.0:
+escodegen@^1.9.0:
   version "1.9.0"
   resolved "https://registry.yarnpkg.com/escodegen/-/escodegen-1.9.0.tgz#9811a2f265dc1cd3894420ee3717064b632b8852"
   dependencies:
@@ -3788,33 +3782,7 @@ jsdoc@^3.5.4:
     taffydb "2.6.2"
     underscore "~1.8.3"
 
-jsdom@11.2.0:
-  version "11.2.0"
-  resolved "https://registry.yarnpkg.com/jsdom/-/jsdom-11.2.0.tgz#4f6b8736af3357c3af7227a3b54a5bda1c513fd6"
-  dependencies:
-    abab "^1.0.3"
-    acorn "^4.0.4"
-    acorn-globals "^3.1.0"
-    array-equal "^1.0.0"
-    content-type-parser "^1.0.1"
-    cssom ">= 0.3.2 < 0.4.0"
-    cssstyle ">= 0.2.37 < 0.3.0"
-    escodegen "^1.6.1"
-    html-encoding-sniffer "^1.0.1"
-    nwmatcher "^1.4.1"
-    parse5 "^3.0.2"
-    pn "^1.0.0"
-    request "^2.79.0"
-    request-promise-native "^1.0.3"
-    sax "^1.2.1"
-    symbol-tree "^3.2.1"
-    tough-cookie "^2.3.2"
-    webidl-conversions "^4.0.0"
-    whatwg-encoding "^1.0.1"
-    whatwg-url "^6.1.0"
-    xml-name-validator "^2.0.1"
-
-jsdom@^11.3.0:
+jsdom@11.3.0, jsdom@^11.3.0:
   version "11.3.0"
   resolved "https://registry.yarnpkg.com/jsdom/-/jsdom-11.3.0.tgz#7b2dfe6227d014084d80f6b3e98fa1e4cef199e7"
   dependencies:
@@ -6719,7 +6687,7 @@ to-regex@^3.0.1:
     extend-shallow "^2.0.1"
     regex-not "^1.0.0"
 
-tough-cookie@>=2.3.3, tough-cookie@^2.3.2, tough-cookie@^2.3.3, tough-cookie@~2.3.0, tough-cookie@~2.3.3:
+tough-cookie@>=2.3.3, tough-cookie@^2.3.3, tough-cookie@~2.3.0, tough-cookie@~2.3.3:
   version "2.3.3"
   resolved "https://registry.yarnpkg.com/tough-cookie/-/tough-cookie-2.3.3.tgz#0b618a5565b6dea90bf3425d04d55edc475a7561"
   dependencies:
@@ -7055,6 +7023,21 @@ util.pkgwrap@0.0.68:
     workerpool "^2.2.4"
     yargs "^8.0.2"
 
+util.pkgwrap@0.0.69:
+  version "0.0.69"
+  resolved "https://registry.yarnpkg.com/util.pkgwrap/-/util.pkgwrap-0.0.69.tgz#adc60da2c8f2b0ac428477849c72f9f9ae25a37f"
+  dependencies:
+    expand-home-dir "github:jmquigley/expand-home-dir"
+    fs-extra "^4.0.1"
+    globby "^6.1.0"
+    jsdoc "^3.5.4"
+    jsdoc-to-markdown "^3.0.0"
+    klaw-sync "^3.0.0"
+    lodash "^4.17.4"
+    rimraf "^2.6.1"
+    workerpool "^2.2.4"
+    yargs "^8.0.2"
+
 util.promisify@^1.0.0:
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/util.promisify/-/util.promisify-1.0.0.tgz#440f7165a459c9a16dc145eb8e72f35687097030"
@@ -7152,7 +7135,7 @@ watchpack@^1.4.0:
     chokidar "^1.7.0"
     graceful-fs "^4.1.2"
 
-webidl-conversions@^4.0.0, webidl-conversions@^4.0.1, webidl-conversions@^4.0.2:
+webidl-conversions@^4.0.1, webidl-conversions@^4.0.2:
   version "4.0.2"
   resolved "https://registry.yarnpkg.com/webidl-conversions/-/webidl-conversions-4.0.2.tgz#a855980b1f0b6b359ba1d5d9fb39ae941faa63ad"
 
@@ -7200,7 +7183,7 @@ whatwg-encoding@^1.0.1:
   dependencies:
     iconv-lite "0.4.13"
 
-whatwg-url@^6.1.0, whatwg-url@^6.3.0:
+whatwg-url@^6.3.0:
   version "6.3.0"
   resolved "https://registry.yarnpkg.com/whatwg-url/-/whatwg-url-6.3.0.tgz#597ee5488371abe7922c843397ddec1ae94c048d"
   dependencies:
@@ -7238,11 +7221,11 @@ window-size@0.1.0:
   version "0.1.0"
   resolved "https://registry.yarnpkg.com/window-size/-/window-size-0.1.0.tgz#5438cd2ea93b202efa3a19fe8887aee7c94f9c9d"
 
-window@4.2.0:
-  version "4.2.0"
-  resolved "https://registry.yarnpkg.com/window/-/window-4.2.0.tgz#dcf73615f6e19299d69a9b2a5ed07909e400d13b"
+window@4.2.1:
+  version "4.2.1"
+  resolved "https://registry.yarnpkg.com/window/-/window-4.2.1.tgz#919f0abf15ad9872167ba902496b0ab4920f7dc2"
   dependencies:
-    jsdom "11.2.0"
+    jsdom "11.3.0"
 
 wordwrap@0.0.2:
   version "0.0.2"

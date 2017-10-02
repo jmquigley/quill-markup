@@ -26,7 +26,7 @@
     "util.fontlist": "^0.0.3",
     "util.join": "^0.0.14",
     "util.matches": "^0.0.4",
-    "util.pkgwrap": "0.0.68",
+    "util.pkgwrap": "0.0.69",
     "util.rstrip": "^0.0.26",
     "util.section": "^0.0.6",
     "xregexp": "^3.2.0"
@@ -47,7 +47,7 @@
     "babel-minify-webpack-plugin": "^0.2.0",
     "babel-preset-env": "^1.6.0",
     "babel-preset-minify": "^0.2.0",
-    "browser-env": "^3.2.0",
+    "browser-env": "^3.2.1",
     "coveralls": "^3.0.0",
     "css-loader": "^0.28.7",
     "express": "^4.16.1",
