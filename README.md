@@ -127,9 +127,9 @@ The code above registers a new module named `Markup` with Quill.  Once it is reg
 The CSS style sheets for the module and for the syntax highlighting are included with the npm package.  The files are located in `./public`.
 
 - `./public/styles.css`
-- `./public/highlights/*.style`
+- `./public/highlights/*.css`
 
-The module will look for these files from the root of the site serving them.  Note that if serving with express one must add a mime type for `*.style` files (`express.static.mime.define({'text/css': ['style']});`)
+The module will look for these files from the root of the site serving them.
 
 
 ## API
