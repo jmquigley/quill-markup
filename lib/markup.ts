@@ -380,19 +380,22 @@ export class Markup {
 
 	public setHighlight(name: string) {
 		debug('setting highlight: %s', name);
-		const oldlink = document.getElementById('highlights');
-		const newlink = document.createElement('link');
 
-		newlink.setAttribute('id', 'highlights');
-		newlink.setAttribute('rel', 'stylesheet');
-		newlink.setAttribute('type', 'text/css');
-		newlink.setAttribute('href', `highlights/${name}.style`);
+		if (name in cssHighlights) {
+			const oldlink = document.getElementById('highlights');
+			const newlink = document.createElement('link');
 
-		const head = document.getElementsByTagName('head').item(0);
-		if (oldlink) {
-			head.replaceChild(newlink, oldlink);
-		} else {
-			head.appendChild(newlink);
+			newlink.setAttribute('id', 'highlights');
+			newlink.setAttribute('rel', 'stylesheet');
+			newlink.setAttribute('type', 'text/css');
+			newlink.setAttribute('href', cssHighlights[name]);
+
+			const head = document.getElementsByTagName('head').item(0);
+			if (oldlink) {
+				head.replaceChild(newlink, oldlink);
+			} else {
+				head.appendChild(newlink);
+			}
 		}
 	}
 
