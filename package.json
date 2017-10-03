@@ -1,6 +1,6 @@
 {
   "name": "quill-markup",
-  "version": "0.0.6",
+  "version": "0.0.7",
   "author": "jmquigley <jmquigley@outlook.com>",
   "description": "A markup highlighting module for the Quill text editor",
   "private": false,
