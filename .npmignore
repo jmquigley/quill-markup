@@ -25,7 +25,6 @@ server.*
 .babelrc
 .DS_Store
 docs/
-public/*.ttf
 public/app.js
 public/bundle.js
 public/bundle.js.map
