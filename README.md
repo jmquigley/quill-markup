@@ -144,6 +144,7 @@ The following attributes are used to configure the module when it is created or 
 - `fontName {string} ('Fira Code')` - the font that will be applied to the contents of the editor.
 - `fontSize {number} (12)` - the size of the font in pixels
 - `followLinks {boolean} (false)` - if a mode parses links (urls, wiki, etc) such as markdown then this will enable the `onClickLink` callback.  This callback is invoked when a user clicks on a link within the editor.  e.g. in markdown a link is `[name](link)`.  If this is clicked, then the callback is executed and passed the full parsing of the link.  This editor will not open the links by default, but will give the developer the option on how to handle the clicked link.
+- `highlight {string} ('solarized-light')` - the name of the syntax highlight scheme from highlight.js
 - `idleDelay {number} (2000)` - the number of milliseconds the UI will wait for user input before signalling that the UI is idle.
 - `mode {MarkupMode} (MarkupMode.text)` - the document highlighting mode.  This is where a user would select markdown, asciidoc, rst, etc.
 - `onChange` - event handler invoked when the contents of the editor change (see below)

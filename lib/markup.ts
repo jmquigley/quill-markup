@@ -77,6 +77,7 @@ export interface MarkupOptions {
 	fontName?: string;
 	fontSize?: number;
 	followLinks?: boolean;
+	highlight?: string;
 	idleDelay?: number;
 	mode?: MarkupMode;
 	onChange?: EventCallback;
@@ -91,6 +92,7 @@ const defaultOptions: MarkupOptions = {
 	fontName: 'Fira Code',
 	fontSize: 12,
 	followLinks: false,
+	highlight: 'solarized-light',
 	idleDelay: 2000,
 	mode: MarkupMode.text,
 	onChange: nilEvent,
@@ -302,6 +304,7 @@ export class Markup {
 		this.setContent(this._opts.content);
 		this.setFont(this._opts.fontName);
 		this.setFontSize(this._opts.fontSize);
+		this.setHighlight(this._opts.highlight);
 
 		this._editor.style['color'] = this._processor.style.foreground;
 		this._editor.style['background-color'] = this._processor.style.background;
@@ -385,7 +388,12 @@ export class Markup {
 		newlink.setAttribute('type', 'text/css');
 		newlink.setAttribute('href', `highlights/${name}.style`);
 
-		document.getElementsByTagName('head').item(0).replaceChild(newlink, oldlink);
+		const head = document.getElementsByTagName('head').item(0);
+		if (oldlink) {
+			head.replaceChild(newlink, oldlink);
+		} else {
+			head.appendChild(newlink);
+		}
 	}
 
 	/**
@@ -401,9 +409,11 @@ export class Markup {
 	 * @param mode {string} the name of the mode to set
 	 */
 	public setMode(mode: string) {
-		// TODO: add check on mode in enum
-
 		debug('setting mode: %s', mode);
+
+		if (!(mode in MarkupMode)) {
+			mode = 'text';
+		}
 
 		this.set({
 			content: this._processor.text,
