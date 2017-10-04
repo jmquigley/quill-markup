@@ -5,7 +5,7 @@
   "description": "A markup highlighting module for the Quill text editor",
   "private": false,
   "debug": true,
-  "license": "MIT",
+  "license": "BSD-3-Clause",
   "repository": {
     "type": "git",
     "url": "https://github.com/jmquigley/quill-markup"
