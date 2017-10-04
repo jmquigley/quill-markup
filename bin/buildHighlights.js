@@ -24,6 +24,7 @@ console.log('Processing CSS highlight styles');
 
 let src = join(process.cwd(), 'node_modules', 'highlight.js', 'styles');
 let dst = join(process.cwd(), 'public', 'highlights');
+let license = join(process.cwd(), 'node_modules', 'highlight.js', 'LICENSE');
 
 if (fs.existsSync(dst)) {
 	shell.rm('-rf', dst);
@@ -44,6 +45,8 @@ for (const filename of files) {
 
 	styles[filename.slice(0, filename.length - 4)] = `highlights/${filename}`;
 }
+
+shell.cp(license, dst);
 
 const json = JSON.stringify(styles, null, '\t').replace(/\"/g, '\'');
 const s = `export const cssHighlights: any = ${json};\n`;
