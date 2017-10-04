@@ -50,3 +50,4 @@ tmp-unit-test-data
 !public/app.js
 !test/helpers/getSelection.js
 !test/helpers/MutationObserver.js
+!bin/**
