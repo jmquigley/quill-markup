@@ -13,6 +13,8 @@
   "bugs": {
     "url": "https://github.com/jmquigley/quill-markup/issues"
   },
+  "main": "./public/bundle.js",
+  "types": "./index.d.ts",
   "engines": {
     "node": ">=7.5"
   },
@@ -76,8 +78,6 @@
     "util.fixture": "0.0.58",
     "webpack": "^3.6.0"
   },
-  "main": ".public/bundle.js",
-  "types": "./index.d.ts",
   "scripts": {
     "all": "yarn install && yarn run clean && yarn run build:highlights && yarn run lint && yarn run build && yarn test && yarn run report",
     "build": "pkgwrap --build --webpack",
