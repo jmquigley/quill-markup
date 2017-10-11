@@ -218,6 +218,12 @@ export class Markup {
 		return Object.keys(cssHighlights);
 	}
 
+	get modes() {
+		return Object.keys(MarkupMode)
+			.map(key => MarkupMode[key])
+			.filter(it => typeof it === 'string');
+	}
+
 	get opts() {
 		return this._opts;
 	}

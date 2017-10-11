@@ -10,12 +10,10 @@ require('./helpers/getSelection')(global);
 import test from 'ava';
 import * as fs from 'fs-extra';
 import * as path from 'path';
-// import * as sinon from 'sinon';
-// import {Fixture} from 'util.fixture';
 import {join} from 'util.join';
 import {cleanup} from './helpers';
 
-const debug = require('debug')('markup.test');
+// const debug = require('debug')('markup.test');
 const data = fs.readFileSync(join(__dirname, 'fixtures', 'empty-html', 'index.html')).toString('utf8');
 
 (global as any).Quill = require('quill');
@@ -24,7 +22,7 @@ const data = fs.readFileSync(join(__dirname, 'fixtures', 'empty-html', 'index.ht
 import {Quill} from '../lib/helpers';
 let quill: any = null;
 
-// import {Markup, MarkupMode} from '../index';
+import {Markup} from '../index';
 
 test.after.always.cb(t => {
 	cleanup(path.basename(__filename), t);
@@ -32,14 +30,21 @@ test.after.always.cb(t => {
 
 test.beforeEach(t => {
 	document.body.innerHTML = data;
+	Quill.register('modules/markup', Markup);
 	quill = new Quill('#editor', {
-		theme: 'snow'
+		theme: 'snow',
+		modules: {
+			markup: true
+		}
 	});
 
 	t.truthy(quill);
 });
 
 test('Test adding the markup module to quill', t => {
-	debug('test markup/quill interaction');
-	t.pass();
+	const markup = quill.getModule('markup');
+	t.truthy(markup);
+	t.truthy(markup.editor);
+	t.truthy(markup.editorKey);
+	t.deepEqual(markup.modes, ['markdown', 'text']);
 });

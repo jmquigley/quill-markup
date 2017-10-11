@@ -51,3 +51,6 @@ tmp-unit-test-data
 !test/helpers/getSelection.js
 !test/helpers/MutationObserver.js
 !bin/**
+public/highlights
+public/*.ttf
+public/styles.css

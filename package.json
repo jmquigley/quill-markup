@@ -43,8 +43,11 @@
     "@types/xregexp": "^3.0.29",
     "ava": "^0.22.0",
     "awesome-typescript-loader": "^3.2.3",
+    "babel-core": "^6.26.0",
+    "babel-loader": "^7.1.2",
     "babel-minify": "^0.2.0",
     "babel-minify-webpack-plugin": "^0.2.0",
+    "babel-plugin-transform-runtime": "^6.23.0",
     "babel-preset-env": "^1.6.0",
     "babel-preset-minify": "^0.2.0",
     "browser-env": "^3.2.1",
@@ -73,7 +76,7 @@
     "util.fixture": "0.0.58",
     "webpack": "^3.6.0"
   },
-  "main": "./index.js",
+  "main": ".public/bundle.js",
   "types": "./index.d.ts",
   "scripts": {
     "all": "yarn install && yarn run clean && yarn run build:highlights && yarn run lint && yarn run build && yarn test && yarn run report",

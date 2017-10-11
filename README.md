@@ -157,8 +157,9 @@ Once the module is created in Quill the instance can be retrieved.  This instanc
 
 - `.editor` - a property reference to the editor DOM node.
 - `.editorKey` - the string name of the id selector where this editor instance resides in the DOM.
-- `.fonts` - an array of all fonts that can be used by this editor.  The module will attempt to detect all available fonts from the browser environment.
+- `.fonts` - an array of strings of all fonts that can be used by this editor.  The module will attempt to detect all available fonts from the browser environment.
 - `.highlights` - an array of all fenced code region highlight color schemes.  One of these values can be sent to the `setHighlight()` call to change the current highlight mode.
+- `.modes` - an array of strings of all modes available to the editor.
 - `.opts` - the options that were used when the module was created or changed by `.set`.  This is an object that contains all of the attributes listed above.
 - `.quill` - a reference to this mode's quill instance (not the global Quill)
 - `.redo()` - a wrapper for the quill redo function.

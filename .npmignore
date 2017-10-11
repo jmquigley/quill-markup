@@ -11,11 +11,13 @@ tslint.json
 
 coverage
 .nyc_output
-*.ts
-!*.d.ts
 test.js
 test.d.ts
 
+index.js
+server.d.ts
+.DS_Store
+markdown.png
 *.js.map
 jsdoc.json
 gulpfile.js
@@ -26,8 +28,14 @@ server.*
 .DS_Store
 docs/
 public/app.js
-public/bundle.js
 public/bundle.js.map
 public/index.html
 webpack.config.js
 postcss.config.js
+lib/**/*.css
+lib/**/*.css.json
+bin/**/*.js
+lib/**/*.js
+lib/fonts
+*.ts
+!*.d.ts

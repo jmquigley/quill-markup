@@ -1,6 +1,21 @@
 const ExtractTextPlugin = require("extract-text-webpack-plugin");
-// const MinifyPlugin = require("babel-minify-webpack-plugin");
+const MinifyPlugin = require("babel-minify-webpack-plugin");
 const path = require('path');
+const webpack = require('webpack');
+const pkg = require('./package.json');
+
+const banner = new webpack.BannerPlugin({
+	banner:
+		'quill-markup v' + pkg.version + '\n' +
+		'https://www.npmjs.com/package/quill-markup\n' +
+		'Copyright (c) 2017, James Quigley\n',
+	entryOnly: true
+});
+
+const constants = new webpack.DefinePlugin({
+	MARKUP_VERSION: JSON.stringify(pkg.version),
+	NODE_ENV: JSON.stringify("production")
+});
 
 module.exports = {
 	entry: [
@@ -13,7 +28,11 @@ module.exports = {
 		libraryTarget: "umd"
 	},
 	resolve: {
-		extensions: ['.ts', '.js', '.css']
+		extensions: ['.ts', '.js', '.css'],
+		alias: {
+			"lodash": path.resolve(__dirname, 'node_modules', 'lodash', 'lodash.min.js'),
+			"quill": path.resolve(__dirname, 'node_modules', 'quill', 'dist', 'quill.min.js')
+		}
 	},
 	resolveLoader: {
 		modules: [path.join(__dirname, "node_modules")]
@@ -24,7 +43,7 @@ module.exports = {
 			{
 				test: /\.ts$/,
 				exclude: /node_modules|public/,
-				loader: 'js-output-loader!awesome-typescript-loader?useBabel=true&useCache=true'
+				loader: 'js-output-loader!babel-loader!awesome-typescript-loader'
 			},
 			{
 				test: /\.css$/,
@@ -48,7 +67,9 @@ module.exports = {
 		]
 	},
 	plugins: [
-		new ExtractTextPlugin({filename: "styles.css"})
-    	// new MinifyPlugin()
+		banner,
+		constants,
+		new ExtractTextPlugin({filename: "styles.css"}),
+    	new MinifyPlugin()
   	]
 }

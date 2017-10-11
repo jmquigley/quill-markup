@@ -1,5 +1,14 @@
 {
-	"presets": [
-		"env"
-	]
+		"presets": [
+				"env"
+		],
+		"sourceMaps": "inline",
+		"plugins": [
+				["transform-runtime", {
+						"helpers": true,
+						"polyfill": false,
+						"regenerator": true,
+						"moduleName": "babel-runtime"
+				}]
+		]
 }
