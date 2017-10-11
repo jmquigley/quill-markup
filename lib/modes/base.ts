@@ -5,6 +5,7 @@ import {Match, matches} from 'util.matches';
 import {rstrip} from 'util.rstrip';
 import {
 	line as getLine,
+	nl,
 	Section,
 	section as getSection,
 	word as getWord
@@ -203,7 +204,7 @@ export abstract class BaseMarkupMode {
 	 * @param val {string} the string used to replace current content in the editor
 	 */
 	set text(val: string) {
-		this._quill.setText(val);
+		this._quill.setText(val + nl);
 	}
 
 	public abstract handleBold(): void;
