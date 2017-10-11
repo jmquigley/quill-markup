@@ -441,6 +441,8 @@ export abstract class BaseMarkupMode {
 	public refreshInline() {
 		debug('refreshInline');
 
+		this.validatePosition();
+
 		const section: Section = getSection(this.text, this.pos, BaseMarkupMode.INLINE_SIZE);
 
 		if (this._blocks.length > 0) {
@@ -725,4 +727,20 @@ export abstract class BaseMarkupMode {
 		}
 	}
 
+	/**
+	 * Checks the range of the current position and fixes/adjusts.  Problems with
+	 * paste operations can push the current position past the end of the buffer
+	 * by one character.  e.g. the buffer is 500 chars (0-499), but the pos is
+	 * set to 500, which is not a valid location.  This checks for those issues
+	 * and corrects the position.
+	 */
+	private validatePosition() {
+		if (this.pos < 0) {
+			this.quill.setSelection(0, 0, 'silent');
+			this.pos = 0;
+		} else if (this.pos >= this.quill.length) {
+			this.quill.setSelection(this.quill.length - 1, 0, 'silent');
+			this.pos = this.quill.length - 1;
+		}
+	}
 }

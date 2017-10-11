@@ -103,7 +103,6 @@ const defaultOptions: MarkupOptions = {
 require('./styles.css');
 
 const debug = require('debug')('markup');
-const pkg = require('../package.json');
 
 export class Markup {
 
@@ -336,19 +335,6 @@ export class Markup {
 	 * @param content {string} the new content settting for the editor.
 	 */
 	public setContent(content: string) {
-
-		if (!content && pkg['debug']) {
-			// Temporary code below.  This is just convenience code for
-			// testing.
-			content = '*Hello World* \n';
-			for (let i = 0; i < 25; i++) {
-				for (let j = 0; j < 40; j++) {
-					content += `${String.fromCharCode(i + 97)} `;
-				}
-				content += '\n';
-			}
-		}
-
 		this._opts.content = content;
 		this._processor.text = content;
 	}

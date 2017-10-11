@@ -4,7 +4,7 @@
   "author": "jmquigley <jmquigley@outlook.com>",
   "description": "A markup highlighting module for the Quill text editor",
   "private": false,
-  "debug": true,
+  "debug": false,
   "license": "BSD-3-Clause",
   "repository": {
     "type": "git",
