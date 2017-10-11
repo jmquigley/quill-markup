@@ -149,11 +149,11 @@ export class Markup {
 
 		this._quill = quill;
 		this._opts = Object.assign({}, defaultOptions, opts);
-
-		this._editor = document.getElementById('editor');
+		this._editor = quill.container;
 
 		debug('quill (local): %o', quill);
-		debug('Quill (global) %o', Quill);
+		debug('Quill (global): %o', Quill);
+		debug('Editor id: %s', this.editorKey);
 
 		this._modes[MarkupMode.markdown] = new Markdown(quill);
 		this._modes[MarkupMode.text] = new Text(quill);
@@ -204,6 +204,10 @@ export class Markup {
 
 	get editor() {
 		return this._editor;
+	}
+
+	get editorKey() {
+		return this.quill.container.id;
 	}
 
 	get fonts() {
