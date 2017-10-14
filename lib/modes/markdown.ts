@@ -71,6 +71,11 @@ export class Markdown extends BaseMarkupMode {
 
 	private _hr: RegExp = XRegExp(/^\-{3,}|^\*{3,}|^_{3,}/gmi);
 
+	// ```{language}
+	// {code}
+	// ```
+	protected _code: RegExp = XRegExp(/(```)[^`]+?\1/gi);
+
 	constructor(quill: any) {
 		super(quill);
 		debug('creating markdown mode %o', quill);
@@ -91,6 +96,11 @@ export class Markdown extends BaseMarkupMode {
 		this.colorize(this.subText, this._h5, this.style.h5);
 		this.colorize(this.subText, this._h6, this.style.h6);
 
+		this.colorizeLink(this._subText, this._url, {
+			linkName: this.style.link,
+			link: this.style.linkName
+		});
+
 		this.colorizeLink(this.subText, this._link1);
 		this.colorizeLink(this.subText, this._link2);
 		this.colorizeLink(this.subText, this._link3);
@@ -104,6 +114,7 @@ export class Markdown extends BaseMarkupMode {
 	public highlightBlock() {
 		this.colorizeBlock(this.text, this._h1block, this.style.h1);
 		this.colorizeBlock(this.text, this._h2block, this.style.h2);
+		this.codify(this.text, this._code);
 
 		super.highlightBlock();
 	}

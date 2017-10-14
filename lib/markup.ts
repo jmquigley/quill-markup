@@ -57,7 +57,12 @@ import {getFontList} from 'util.fontlist';
 import {line as getLine, Section} from 'util.section';
 import {Quill} from './helpers';
 import {cssHighlights} from './highlights';
-import {BaseMarkupMode, Markdown, Text} from './modes';
+import {
+	Asciidoc,
+	BaseMarkupMode,
+	Markdown,
+	Text
+} from './modes';
 
 export type EventCallback = (val: any) => void;
 
@@ -66,6 +71,7 @@ const nilEvent: EventCallback = (val: any): void => {
 };
 
 export enum MarkupMode {
+	asciidoc,
 	markdown,
 	text
 }
@@ -154,6 +160,7 @@ export class Markup {
 		debug('Quill (global): %o', Quill);
 		debug('Editor id: %s', this.editorKey);
 
+		this._modes[MarkupMode.asciidoc] = new Asciidoc(quill);
 		this._modes[MarkupMode.markdown] = new Markdown(quill);
 		this._modes[MarkupMode.text] = new Text(quill);
 

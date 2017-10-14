@@ -57,10 +57,6 @@ export abstract class BaseMarkupMode {
 	// TODO: FIXME:
 	protected _admonition: RegExp = XRegExp(/^(\s*)(TODO|FIXME|IMPORTANT|WARNING|TIP)(:\s+)/gmi);
 
-	// ```{language}
-	// {code}
-	// ```
-	protected _code: RegExp = XRegExp(/(```)[^`]+?\1/gi);
 
 	// ${formula}$
 	// \({formula}\)
@@ -81,7 +77,8 @@ export abstract class BaseMarkupMode {
 	protected _formulaBlock: RegExp = XRegExp(/^(\${2})[^\1]*?\1|^(\\{2}\()[^(\\\))]*?\\{2}\)|^(\\{2}\[)[^(\\\])]*?\\{2}\]/gmi);
 
 	// a valid URL
-	protected _url: RegExp = XRegExp(/(\s*)([hflix][timr][tplnae][pekgf]?[se]?:.+?[]]\\|[hfli][tim][tplna][pekg]?[se]?:.+?)([\s])/gi);
+	// protected _url: RegExp = XRegExp(/(\s*)(\w*?:.+?[]]\\|\w*?:.+?)([\[\s]+)/gi);
+	protected _url: RegExp = XRegExp(/([ \t]*)([hflixm][atimr][itplnae][lpekgf]?[tse]?[o]?:\/{0,3}[^\[\s]*)(\[|\1)([^\]\n]*?)(\]|\n)([ \t]+"[^"]*?"){0,1}/gi)
 
 	// [[{name}|{reference}]
 	protected _wiki: RegExp = XRegExp(/(\[\[)([^|\]^\]]+)(\|{0,1})([^\]^\]]*){0,1}(\]\])/gi);
@@ -215,12 +212,9 @@ export abstract class BaseMarkupMode {
 
 	public highlightBlock() {
 		this.colorizeBlock(this.text, this._formulaBlock, this.style.formula);
-		this.codify(this.text, this._code);
 	}
 
 	public highlightInline() {
-		this.colorizeLink(this._subText, this._url, {linkName: this.style.link});
-
 		this.colorizeGroup(this.subText, this._wiki, {
 			color: this.style.wiki,
 			refColor: this.style.link

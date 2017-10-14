@@ -120,7 +120,7 @@ markup.set({
 
 The code above registers a new module named `Markup` with Quill.  Once it is registered, and quill is instantiated, the reference to the module can be retrieved.  We use this reference and the api below to interact with the document (outside of normal editing).  This example creates a markdown editor instance.
 
-![Markdown](markdown.png)
+![Markdown](images/markdown.png)
 
 #### Syles
 

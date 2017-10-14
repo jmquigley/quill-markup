@@ -61,7 +61,7 @@ markup.set({
 		background: 'black',
 		foreground: 'white'
 	},
-	mode: MarkupMode.markdown
+	mode: MarkupMode.asciidoc
 });
 
 document.getElementById("refresh-button").onclick = (e) => {
