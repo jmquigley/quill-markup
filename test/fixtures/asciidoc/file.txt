@@ -17,12 +17,16 @@ test
 test
 ++++
 
+test
+####
 
-= 
-== 
-=== 
-==== 
-===== 
+= test
+== test
+=== test
+==== test
+===== test
+====== test
+
 
 http://www.google.com[Google] "this is some more text"
 https://www.example.com[Example]
@@ -37,23 +41,21 @@ mailto:joe.bloggs@foobar.com[email Joe Bloggs]
 
 .Optional title
 [test configuration block for code]
-
 ----------
 Code Section
 ----------
 
-  -------------
+-------------
 
   More Code
 
-  -------------
+-------------
 
 ----------
 
 Code
 
 ----------
-
 
 
 ----------
@@ -170,3 +172,9 @@ between
   ** alksdjflaksdjf
   * alksjdflkajsdfklj
 - laksjdflaksdjflkajsdlfkjklajsdlfkjalsdkf
+
+TODO: lorem ipsum
+FIXME: lorem ipsum
+IMPORTANT: lorem ipsum
+WARNING: lorem ipsum
+TIP: lorem ipsum
