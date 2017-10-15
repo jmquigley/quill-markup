@@ -28,6 +28,25 @@ test
 ====== test
 
 
+this is *bold*
+this is _italic_
+this is +mono+
+this is _underline_
+this is ~strikthrough~
+
+
+[red]#this is a span of text#
+
+[block] with some other text [then another block]
+
+[[block id element]]
+
+Symbols: (R) (C) (V) (TM) -> <- => <= &#182; -- 
+
+// Keywords
+ifdef:: ifndef:: endif:: ifeval:: include:: include1:: sys:: eval:: template::
+
+
 http://www.google.com[Google] "this is some more text"
 https://www.example.com[Example]
 ftp://www.example.com[Example]
@@ -80,25 +99,6 @@ SQL> describe flight;
 
 test
 ----------
-
-
-[red]#this is a span of text#
-
-[block] with some other text [then another block]
-
-[[block id element]]
-// OutputDirectory C:/Users/jmquigley/Dropbox/School/Classes/UIS-CSC438-Information_Security_Capstone/vocab
-
-this is a *testing of bold* characters *test*.  *something*. *stuff*
-
-this is a _testing of italic_ characters _test_.  _something_. A _sentence!  This should _not match.
-
-this is a +testing of mono+ characters +test+.  +soemthing+. A +sentence!  This should +not match.
-
-Symbols: (R) (C) (V) (TM) -> <- => <= &#182; -- 
-
-// Keywords
-ifdef:: ifndef:: endif:: ifeval:: include:: include1:: sys:: eval:: template::
 
 
 
