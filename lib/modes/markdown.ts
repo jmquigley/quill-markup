@@ -44,22 +44,22 @@ export class Markdown extends BaseMarkupMode {
 	private _list: RegExp = XRegExp(/^\s*([\*\-\+]{1})[ \t]+|^\s*\w+\.[ \t]+/gmi);
 
 	// # {text}
-	private _h1: RegExp = XRegExp(/^# .*/gmi);
+	private _h1: RegExp = XRegExp(/^#\s+.*/gmi);
 
 	// ## {text}
-	private _h2: RegExp = XRegExp(/^#{2} .*/gmi);
+	private _h2: RegExp = XRegExp(/^#{2}\s+.*/gmi);
 
 	// ### {text}
-	private _h3: RegExp = XRegExp(/^#{3} .*/gmi);
+	private _h3: RegExp = XRegExp(/^#{3}\s+.*/gmi);
 
 	// #### {text}
-	private _h4: RegExp = XRegExp(/^#{4} .*/gmi);
+	private _h4: RegExp = XRegExp(/^#{4}\s+.*/gmi);
 
 	// ##### {text}
-	private _h5: RegExp = XRegExp(/^#{5} .*/gmi);
+	private _h5: RegExp = XRegExp(/^#{5}\s+.*/gmi);
 
 	// ###### {text}
-	private _h6: RegExp = XRegExp(/^#{6} .*/gmi);
+	private _h6: RegExp = XRegExp(/^#{6}\s+.*/gmi);
 
 	// {text}
 	// ======
@@ -74,7 +74,7 @@ export class Markdown extends BaseMarkupMode {
 	// ```{language}
 	// {code}
 	// ```
-	protected _code: RegExp = XRegExp(/(```)[^`]+?\1/gi);
+	protected _code: RegExp = XRegExp(/(^\n[ \t]*```)(.*\s)([^`]*?)(```.*\s)/gmi);
 
 	constructor(quill: any) {
 		super(quill);

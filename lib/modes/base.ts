@@ -533,17 +533,27 @@ export abstract class BaseMarkupMode {
 		for (const match of tokens) {
 			this.saveBlockDetails(match);
 
-			const header = getLine(match.text, 0).text;
+			this._delta.retain(match.start - offset);
 
-			// Size of the code section minus the header, end chevrons
-			// and the final newline
-			const len = match.end - match.start - (header.length + 3);
+			// starting fence
+			if (match.result[1]) {
+				this._delta.retain(match.result[1].length, {color: this.style.fence});
+			}
 
-			this._delta.retain(match.start - offset)
-				.retain(3, {color: this.style.fence})
-				.retain(header.length - 3, {color: this.style.language})
-				.retain(len + 1, {'code-block': true})
-				.retain(3, {color: this.style.fence});
+			// language name
+			if (match.result[2]) {
+				this._delta.retain(match.result[2].length, {color: this.style.language});
+			}
+
+			// code block
+			if (match.result[3]) {
+				this._delta.retain(match.result[3].length, {'code-block': true});
+			}
+
+			// ending fence
+			if (match.result[4]) {
+				this._delta.retain(match.result[4].length, {color: this.style.fence});
+			}
 
 			offset = match.end + 1;
 		}

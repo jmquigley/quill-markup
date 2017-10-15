@@ -8,22 +8,22 @@ const debug = require('debug')('Asciidoc');
 export class Asciidoc extends BaseMarkupMode {
 
 	// = {text}
-	private _h1: RegExp = XRegExp(/^= .*/gmi);
+	private _h1: RegExp = XRegExp(/^=\s+.*/gmi);
 
 	// == {text}
-	private _h2: RegExp = XRegExp(/^={2} .*/gmi);
+	private _h2: RegExp = XRegExp(/^={2}\s+.*/gmi);
 
 	// === {text}
-	private _h3: RegExp = XRegExp(/^={3} .*/gmi);
+	private _h3: RegExp = XRegExp(/^={3}\s+.*/gmi);
 
 	// ==== {text}
-	private _h4: RegExp = XRegExp(/^={4} .*/gmi);
+	private _h4: RegExp = XRegExp(/^={4}\s+.*/gmi);
 
 	// ===== {text}
-	private _h5: RegExp = XRegExp(/^={5} .*/gmi);
+	private _h5: RegExp = XRegExp(/^={5}\s+.*/gmi);
 
 	// ====== {text}
-	private _h6: RegExp = XRegExp(/^={6} .*/gmi);
+	private _h6: RegExp = XRegExp(/^={6}\s+.*/gmi);
 
 	// {text}
 	// ======
@@ -52,7 +52,9 @@ export class Asciidoc extends BaseMarkupMode {
 	// -----------
 	// code section
 	// -----------
-	protected _code: RegExp = XRegExp(/^\n([ \t]*-+$\n)([\S\s]+?)(^[ \t]*-+$\n)/gmi);
+	protected _code: RegExp = XRegExp(/(^(?:\r|\n|\r\n)^[ \t]*-+)(.*(?:\r|\n|\r\n))([\S\s]*?)(^[ \t]*-+$)/gmi);
+
+	protected _codeSection: RegExp = XRegExp(/(^\[.*?\](?:\r|\n|\r\n)^-+)(.*(?:\r|\n|\r\n))([\S\s]*?)(^[ \t]*-+$)/gmi);
 
 	constructor(quill: any) {
 		super(quill);
@@ -86,6 +88,7 @@ export class Asciidoc extends BaseMarkupMode {
 		this.colorizeBlock(this.text, this._h6block, this.style.h6);
 
 		this.codify(this.text, this._code);
+		this.codify(this.text, this._codeSection);
 
 		super.highlightBlock();
 	}
