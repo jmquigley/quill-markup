@@ -10,10 +10,12 @@ require('./helpers/getSelection')(global);
 import test from 'ava';
 import * as fs from 'fs-extra';
 import * as path from 'path';
+// import * as sinon from 'sinon';
+import {Fixture} from 'util.fixture';
 import {join} from 'util.join';
 import {cleanup} from './helpers';
 
-// const debug = require('debug')('markup.test');
+const debug = require('debug')('asciidoc.test');
 const data = fs.readFileSync(join(__dirname, 'fixtures', 'empty-html', 'index.html')).toString('utf8');
 
 (global as any).Quill = require('quill');
@@ -22,7 +24,7 @@ const data = fs.readFileSync(join(__dirname, 'fixtures', 'empty-html', 'index.ht
 import {Quill} from '../lib/helpers';
 let quill: any = null;
 
-import {Markup} from '../index';
+import {Markup, MarkupMode} from '../index';
 
 test.after.always.cb(t => {
 	cleanup(path.basename(__filename), t);
@@ -30,21 +32,34 @@ test.after.always.cb(t => {
 
 test.beforeEach(t => {
 	document.body.innerHTML = data;
-	Quill.register('modules/markup', Markup);
 	quill = new Quill('#editor', {
-		theme: 'snow',
-		modules: {
-			markup: true
-		}
+		theme: 'snow'
 	});
 
 	t.truthy(quill);
 });
 
-test('Test adding the markup module to quill', t => {
-	const markup = quill.getModule('markup');
+test('Create Markup instance with Asciidoc mode', t => {
+	const fixture = new Fixture('asciidoc');
+	t.truthy(fixture);
+
+	const txt = fixture.read('file.txt');
+	t.truthy(txt);
+
+	const markup = new Markup(quill, {
+		content: txt,
+		mode: MarkupMode.asciidoc
+	});
+
 	t.truthy(markup);
+	t.truthy(markup.quill);
 	t.truthy(markup.editor);
-	t.truthy(markup.editorKey);
-	t.deepEqual(markup.modes, ['asciidoc', 'markdown', 'text']);
+
+	markup.refresh();
+
+	const delta = markup.quill.getContents();
+	t.truthy(delta);
+	debug('%j', delta);
+
+	t.snapshot(delta);
 });

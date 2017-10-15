@@ -57,6 +57,8 @@ export abstract class BaseMarkupMode {
 	// TODO: FIXME:
 	protected _admonition: RegExp = XRegExp(/^(\s*)(TODO|FIXME|IMPORTANT|WARNING|TIP)(:\s+)/gmi);
 
+	// example@example.com
+	protected _email: RegExp = XRegExp(/[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?/gi);
 
 	// ${formula}$
 	// \({formula}\)
@@ -78,7 +80,7 @@ export abstract class BaseMarkupMode {
 
 	// a valid URL
 	// protected _url: RegExp = XRegExp(/(\s*)(\w*?:.+?[]]\\|\w*?:.+?)([\[\s]+)/gi);
-	protected _url: RegExp = XRegExp(/([ \t]*)([hflixm][atimr][itplnae][lpekgf]?[tse]?[o]?:\/{0,3}[^\[\s]*)(\[|\1)([^\]\n]*?)(\]|\n)([ \t]+"[^"]*?"){0,1}/gi)
+	protected _url: RegExp = XRegExp(/([ \t]*)([hflixm][atimr][itplnae][lpekgf]?[tse]?[o]?:\/{0,3}[^\[\s]*)(\[|\1)([^\]\n]*?)(\]|\n)([ \t]+"[^"]*?"){0,1}/gi);
 
 	// [[{name}|{reference}]
 	protected _wiki: RegExp = XRegExp(/(\[\[)([^|\]^\]]+)(\|{0,1})([^\]^\]]*){0,1}(\]\])/gi);

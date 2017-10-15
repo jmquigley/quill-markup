@@ -18,6 +18,8 @@ export class Asciidoc extends BaseMarkupMode {
 			link: this.style.linkName
 		});
 
+		this.colorize(this._subText, this._email, this.style.link);
+
 		super.highlightInline();
 	}
 
@@ -25,9 +27,9 @@ export class Asciidoc extends BaseMarkupMode {
 		super.highlightBlock();
 	}
 
-	public handleBold(): void {};
-	public handleHeader(level: number): void { level = 0 };
-	public handleItalic(): void {};
-	public handleStrikeThrough(): void {};
-	public handleUnderline(): void {};
+	public handleBold(): void {}
+	public handleHeader(level: number): void { level = 0; }
+	public handleItalic(): void {}
+	public handleStrikeThrough(): void {}
+	public handleUnderline(): void {}
 }
