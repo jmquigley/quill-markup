@@ -47,27 +47,27 @@ export class Markdown extends BaseMarkupMode {
 	private _h1: RegExp = XRegExp(/^# .*/gmi);
 
 	// ## {text}
-	private _h2: RegExp = XRegExp(/^## .*/gmi);
+	private _h2: RegExp = XRegExp(/^#{2} .*/gmi);
 
 	// ### {text}
-	private _h3: RegExp = XRegExp(/^### .*/gmi);
+	private _h3: RegExp = XRegExp(/^#{3} .*/gmi);
 
 	// #### {text}
-	private _h4: RegExp = XRegExp(/^#### .*/gmi);
+	private _h4: RegExp = XRegExp(/^#{4} .*/gmi);
 
 	// ##### {text}
-	private _h5: RegExp = XRegExp(/^##### .*/gmi);
+	private _h5: RegExp = XRegExp(/^#{5} .*/gmi);
 
 	// ###### {text}
-	private _h6: RegExp = XRegExp(/^###### .*/gmi);
+	private _h6: RegExp = XRegExp(/^#{6} .*/gmi);
 
 	// {text}
 	// ======
-	private _h1block: RegExp = XRegExp(/.+(\r\n|\r|\n)==+/gi);
+	private _h1block: RegExp = XRegExp(/^[^=\s]+(\r\n|\r|\n)==+/gmi);
 
 	// {text}
 	// ------
-	private _h2block: RegExp = XRegExp(/.+(\r\n|\r|\n)--+/gi);
+	private _h2block: RegExp = XRegExp(/^[^-\s]+(\r\n|\r|\n)--+/gmi);
 
 	private _hr: RegExp = XRegExp(/^\-{3,}|^\*{3,}|^_{3,}/gmi);
 
