@@ -141,7 +141,8 @@ export class Markup {
 	private _line: Section = {
 		start: 0,
 		end: 0,
-		text: ''
+		text: '',
+		multiLine: false
 	};
 	private _modes: any = {};
 	private _opts: MarkupOptions;

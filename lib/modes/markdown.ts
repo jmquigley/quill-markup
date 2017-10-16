@@ -131,12 +131,12 @@ export class Markdown extends BaseMarkupMode {
 
 	public handleHeader(level: number) {
 		switch (level) {
-			case 1: this.annotateBlock(this.line, '#'); break;
-			case 2: this.annotateBlock(this.line, '##'); break;
-			case 3: this.annotateBlock(this.line, '###'); break;
-			case 4: this.annotateBlock(this.line, '####'); break;
-			case 5: this.annotateBlock(this.line, '#####'); break;
-			case 6: this.annotateBlock(this.line, '######'); break;
+			case 1: this.annotateLine(this.line, '#'); break;
+			case 2: this.annotateLine(this.line, '##'); break;
+			case 3: this.annotateLine(this.line, '###'); break;
+			case 4: this.annotateLine(this.line, '####'); break;
+			case 5: this.annotateLine(this.line, '#####'); break;
+			case 6: this.annotateLine(this.line, '######'); break;
 
 			case 0:
 			default:
@@ -149,9 +149,8 @@ export class Markdown extends BaseMarkupMode {
 	}
 
 	public handleMono() {
-		debug('selection: %O', this.selection);
-		if (this.selection.start === this.selection.end) {
-			this.annotateBlock(this.selection, '\n```\n', '```\n', '');
+		if (this.selection.start === this.selection.end || this.selection.multiLine) {
+			this.annotateBlock(this.selection, '```', '```');
 		} else {
 			this.annotateInline(this.selection, '`');
 		}

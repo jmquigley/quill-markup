@@ -8,31 +8,31 @@ const debug = require('debug')('Asciidoc');
 export class Asciidoc extends BaseMarkupMode {
 
 	// *test*
-	private _bold: RegExp = XRegExp(/(\*)[^\*\n]*?\1/gi);
+	private _bold: RegExp = XRegExp(/(\*)[^\*\n]*?\1/gmi);
 
 	// _test_
-	private _italic: RegExp = XRegExp(/(\_)[^\_\n]*?\1/gi);
+	private _italic: RegExp = XRegExp(/(\_)[^\_\n]*?\1/gmi);
 
 	// +test+ or `test`
-	private _mono: RegExp = XRegExp(/(\+)[^\+\n]*?\1|(`)[^`\n]*?\2/gi);
+	private _mono: RegExp = XRegExp(/(\+)[^\+\n]*?\1|(`)[^`\n]*?\2/gmi);
 
 	// [underline]#test#
-	private _underline: RegExp = XRegExp(/\[underline\]#[^#]*?#/gi);
+	private _underline: RegExp = XRegExp(/\[underline\]#[^#]*?#/gmi);
 
 	// [line-through]#test#
-	private _strikethrough: RegExp = XRegExp(/\[line-through\]#[^#]*?#/gi);
+	private _strikethrough: RegExp = XRegExp(/\[line-through\]#[^#]*?#/gmi);
 
 	// {attribute}
-	private _attribute: RegExp = XRegExp(/{[^}]*?}|\[.*\]#+[^#]*?#+|:.*?:/gi);
+	private _attribute: RegExp = XRegExp(/{[^}]*?}|\[.*\]#+[^#]*?#+|:.*?:/gmi);
 
 	// keywords for this mode
-	private _keyword: RegExp = XRegExp(/\w*::/gi);
+	private _keyword: RegExp = XRegExp(/\w+::/gmi);
 
 	// .text to end of line
 	private _option: RegExp = XRegExp(/^[ \t]*\.(?![\s.]).+/gmi);
 
 	// [text]
-	private _link1: RegExp = XRegExp(/(\[)([^\]]*)(\])(?![\[\(])/gi);
+	private _link1: RegExp = XRegExp(/(\[)([^\]]*)(\])(?![\[\(])/gmi);
 
 	// . {text}
 	// + {text}
@@ -155,12 +155,12 @@ export class Asciidoc extends BaseMarkupMode {
 
 	public handleHeader(level: number) {
 		switch (level) {
-			case 1: this.annotateBlock(this.line, '='); break;
-			case 2: this.annotateBlock(this.line, '=='); break;
-			case 3: this.annotateBlock(this.line, '==='); break;
-			case 4: this.annotateBlock(this.line, '===='); break;
-			case 5: this.annotateBlock(this.line, '====='); break;
-			case 6: this.annotateBlock(this.line, '======'); break;
+			case 1: this.annotateLine(this.line, '='); break;
+			case 2: this.annotateLine(this.line, '=='); break;
+			case 3: this.annotateLine(this.line, '==='); break;
+			case 4: this.annotateLine(this.line, '===='); break;
+			case 5: this.annotateLine(this.line, '====='); break;
+			case 6: this.annotateLine(this.line, '======'); break;
 
 			case 0:
 			default:
@@ -173,19 +173,18 @@ export class Asciidoc extends BaseMarkupMode {
 	}
 
 	public handleMono() {
-		debug('selection: %O', this.selection);
-		if (this.selection.start === this.selection.end) {
-			this.annotateBlock(this.selection, '\n----\n', '----\n', '');
+		if (this.selection.start === this.selection.end || this.selection.multiLine) {
+			this.annotateBlock(this.selection, '----', '----');
 		} else {
 			this.annotateInline(this.selection, '+');
 		}
 	}
 
 	public handleStrikeThrough(): void {
-		this.annotateBlock(this.selection, '[line-through]#', '#', '');
+		this.annotateLine(this.selection, '[line-through]#', '#', '');
 	}
 
 	public handleUnderline(): void {
-		this.annotateBlock(this.selection, '[underline]#', '#', '');
+		this.annotateLine(this.selection, '[underline]#', '#', '');
 	}
 }

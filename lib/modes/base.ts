@@ -15,6 +15,7 @@ import {Delta} from '../helpers';
 
 const debug = require('debug')('base');
 const hash = require('hash.js');
+const ccount = require('ccount');
 
 enum ParseType {
 	BLOCK,
@@ -61,7 +62,7 @@ export abstract class BaseMarkupMode {
 	protected _blank: RegExp = XRegExp(/^(\r\n|\n|\r)*/gmi);
 
 	// example@example.com
-	protected _email: RegExp = XRegExp(/[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?/gi);
+	protected _email: RegExp = XRegExp(/[a-z0-9!#$%&'*+\/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+\/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?/gi);
 
 	// ${formula}$
 	// \({formula}\)
@@ -161,10 +162,13 @@ export abstract class BaseMarkupMode {
 	get selection(): Section {
 		let word: Section = null;
 		if (this.range && this.range.length > 0) {
+			const text: string = this.text.substring(this.range.index, this.range.index + this.range.length);
+
 			word = {
 				start: this.range.index,
 				end: this.range.index + this.range.length - 1,
-				text: this.text.substring(this.range.index, this.range.index + this.range.length)
+				text: text,
+				multiLine: ccount(text.substring(1, text.length - 1), nl) >= 1
 			};
 		} else {
 			word = getWord(this.text, this.pos);
@@ -235,6 +239,46 @@ export abstract class BaseMarkupMode {
 	}
 
 	/**
+	 * Inserts a block item on a blank line (like a multiline code region)
+	 * @param selection {Section} the text/location where the annotation will
+	 * be applied.
+	 * @param startChevron {string} the string that will be placed on the front
+	 * of the block.
+	 * @param [endChevron] {string} the string that will be placed on the end
+	 * of the block.
+	 */
+	public annotateBlock(selection: Section, startChevron: string, endChevron?: string) {
+		let delta: any = null;
+
+		if (selection) {
+			this._delta.ops.length = 0;
+			debug('annotating block: "%o" with "%s":"%s"', selection, startChevron, endChevron);
+
+			let xnl: string = '';
+			if (selection.multiLine) {
+				xnl = nl;
+			}
+
+			this._delta.retain(selection.start)
+				.insert(`${xnl}${nl}${startChevron}${nl}`)
+				.retain(selection.text.length);
+
+			let endWidth: number = 0;
+			if (endChevron) {
+				endWidth = endChevron.length;
+				this._delta.insert(`${nl}${endChevron}${nl}${xnl}`);
+			}
+
+			if (this._delta.ops.length > 0) {
+				delta = this.quill.updateContents(this._delta);
+				this.quill.setSelection(selection.end + startChevron.length + (2 + xnl.length * 2));
+			}
+		}
+
+		return delta;
+	}
+
+	/**
 	 * Takes a selection area from a document and applies a markup annotation
 	 * to the beginning and end of the selection area.  This only works on a
 	 * single line (inline)
@@ -261,9 +305,9 @@ export abstract class BaseMarkupMode {
 	}
 
 	/**
-	 * Takes a selection area from the document and applies a surrounding block
-	 * markup annotation (such as header).  This version allows the caller to
-	 * set a start/end chevron value to surround the block.
+	 * Takes a selection area from the document and applies a surrounding
+	 * markup annotation to the whole line (such as header).  This version
+	 * allows the caller to set a start/end chevron value to surround the line
 	 * @param selection {Section} the text/location where the annotation will
 	 * be applied.
 	 * @param startChevron {string} the string that will be placed on the front
@@ -273,7 +317,7 @@ export abstract class BaseMarkupMode {
 	 * @param [spacer] {string} a string appended to the end of the first
 	 * chevron.  It is a single space by default.  Used when created headers.
 	 */
-	public annotateBlock(selection: Section, startChevron: string, endChevron?: string, spacer: string = ' ') {
+	public annotateLine(selection: Section, startChevron: string, endChevron?: string, spacer: string = ' ') {
 		let delta: any = null;
 
 		if (selection) {
