@@ -63,3 +63,60 @@ test('Create Markup instance with Asciidoc mode', t => {
 
 	t.snapshot(delta);
 });
+
+test('Use markup set call to change the mode to asciidoc', t => {
+	const markup = new Markup(quill);
+
+	t.truthy(markup);
+	t.truthy(markup.quill);
+	t.truthy(markup.editor);
+
+	markup.set({
+		content: 'test',
+		custom: {
+			background: 'red',
+			foreground: 'yellow'
+		},
+		fontName: 'Consolas',
+		fontSize: 14,
+		mode: MarkupMode.asciidoc
+	});
+
+	t.truthy(markup.opts);
+	t.snapshot(markup.opts);
+});
+
+test('Use markup bold call with Asciidoc', t => {
+	const markup = new Markup(quill, {
+		content: 'test',
+		mode: MarkupMode.asciidoc
+	});
+
+	t.truthy(markup);
+	t.truthy(markup.quill);
+	t.truthy(markup.editor);
+
+	markup.setBold();
+
+	const delta = markup.quill.getContents();
+	t.truthy(delta);
+	debug('%j', delta);
+
+	t.snapshot(delta);
+});
+
+for (const level of ['0', '1', '2', '3', '4', '5', '6']) {
+	test(`Use markup header ${level} call with Asciidoc`, t => {
+		const markup = new Markup(quill, {content: 'test', mode: MarkupMode.asciidoc});
+
+		t.truthy(markup);
+		t.truthy(markup.quill);
+		t.truthy(markup.editor);
+
+		markup.setHeader(level);
+
+		const delta = markup.quill.getContents();
+		t.truthy(delta);
+		t.snapshot(delta);
+	});
+}
