@@ -47,7 +47,11 @@ See the sample application code located in `./public/app.js` and `./public/index
 
 
 ## Overview
-This is a custom [Quill](https://quilljs.com/) module turns the WYSIWYG editor into a a fixed text markup editor (for modes like markdown, restructured text, etc).  It takes advantage of the underlying api for styling, undo/redo, keyboard handling, and syntax highlighting.
+This is a custom [Quill](https://quilljs.com/) module turns the WYSIWYG editor into a a fixed text markup editor (for modes like markdown, restructured text, etc).  It takes advantage of the underlying api for styling, undo/redo, keyboard handling, and syntax highlighting.  It contains the following modes:
+
+- plain text
+- markdown
+- asciidoc
 
 
 ## Usage
@@ -173,6 +177,7 @@ Once the module is created in Quill the instance can be retrieved.  This instanc
 - `.setHighlight(name: string)` - changes the [syntax highlighting color scheme](https://github.com/isagalaev/highlight.js/tree/master/src/styles).  Quill uses [highlight.js](https://highlightjs.org/) for code highlighting.
 - `.setItalic()` - calls the current syntax processor mode's italic function and applies the italic formatting to either the selection area or the word at the current cursor.
 - `.setMode(mode: string)` - the name of the highlighting mode to use.  The use case for this is a drop down list that contains the names of all modes that may be passed to this call (which is why it's a string instead of the `MarkupMode.{val}`)
+- `.setMono()` - calls the current syntax processor mode's mono space font font function and applies that formatting to either the selection area or the word at the current cursor.
 - `.setStrikeThrough()` - calls the current syntax processor mode's strikethrough function and applies the strikethrough formatting to either the selection area or the word at the current cursor.
 - `.setUnderline()` - calls the current syntax processor mode's underline function and applies the underline formatting to either the selection area or the word at the current cursor.
 - `.undo()` - a wrapper for the quill undo function.
@@ -192,10 +197,12 @@ The module attributes above contain a key named `.custom`.  This is an object th
 
 - `admonition` - special strings like TODO or FIXME.  This is the foreground color
 - `admonitionBackground` - background color for special strings like TODO and FIXME
+- `attribute` - special mode attribute highlighting (like ascii doc keys and attributes)
 - `background (white)` - the editor background color
 - `blockquote`
 - `bold`
 - `chevron` - the paren, brace, brackets around an item (such as a link)
+- `comment` - a comment block within the document.  These sections are not used when the document is generated.
 - `fence` - The color of the fenced code region
 - `foreground (black)` - the editor foreground color
 - `forumula` - LaTeX formula regions or inlines
@@ -207,12 +214,14 @@ The module attributes above contain a key named `.custom`.  This is an object th
 - `h6` - header level 6
 - `hr` - horizontal line markup
 - `italic`
+- `keywords` - special keywords that are used by a mode
 - `language` - the name of the language for a fenced code region.  Today this is just decoration due to limits in Quill (it only uses code to try discover the language implicitly instead of explicit declaration)
 - `link` - URI links
 - `linkName` - The color associated with the name ([name](link)) in a link
 - `linkTitle` - optional title values on links
 - `list` - number and bullet list chevrons
 - `mono`
+- `option` - special option inline tokens (like the .Title token in asciidoc)
 - `strikethrough`
 - `underline`
 - `wiki` - wiki name coloring in [[name | link]]

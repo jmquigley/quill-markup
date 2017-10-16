@@ -24,15 +24,14 @@ ___
 ```javascript
 let blah: number = "stuff";
 
-function test() {{
-    if (test) {
-        for (let i = 0; i < 10; i++) {
-            console.log('blah');
-        }
+function test() {
+  if (test) {
+    for (let i = 0; i < 10; i++) {
+      console.log('blah');
     }
+  }
 }
 ```
-
 
 > lorem ipsum
 > lorem ipsum
@@ -48,6 +47,11 @@ http://www.example.com
 
 [[text|reference]]
 
+<!-- comment block -->
+
+<!--
+comment block
+-->
 
 * lorem ipsum 1
 * lorem ipsum 2

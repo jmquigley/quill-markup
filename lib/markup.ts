@@ -186,6 +186,7 @@ export class Markup {
 			'setFontSize',
 			'setHeader',
 			'setMode',
+			'setMono',
 			'setStrikeThrough',
 			'setUnderline',
 			'undo'
@@ -428,7 +429,15 @@ export class Markup {
 	}
 
 	/**
-	 * Calls the current processor's strikthrogh function to highlight the
+	 * Calls the current processor's mono function to hihglight the current
+	 * word/selection.
+	 */
+	public setMono() {
+		this._processor.handleMono();
+	}
+
+	/**
+	 * Calls the current processor's strikthrough function to highlight the
 	 * current word/selection.
 	 */
 	public setStrikeThrough() {

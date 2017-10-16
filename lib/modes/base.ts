@@ -55,7 +55,10 @@ export abstract class BaseMarkupMode {
 	protected _text: string;
 
 	// TODO: FIXME:
-	protected _admonition: RegExp = XRegExp(/^(\s*)(TODO|FIXME|IMPORTANT|WARNING|TIP)(:\s+)/gmi);
+	protected _admonition: RegExp = XRegExp(/^(\s*)(TODO|FIXME|IMPORTANT|WARNING|TIP|CAUTION)(:\s+)/gmi);
+
+	// blank line
+	protected _blank: RegExp = XRegExp(/^(\r\n|\n|\r)*/gmi);
 
 	// example@example.com
 	protected _email: RegExp = XRegExp(/[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?/gi);
@@ -80,7 +83,7 @@ export abstract class BaseMarkupMode {
 
 	// a valid URL
 	// protected _url: RegExp = XRegExp(/(\s*)(\w*?:.+?[]]\\|\w*?:.+?)([\[\s]+)/gi);
-	protected _url: RegExp = XRegExp(/([ \t]*)([hflixm][atimr][itplnae][lpekgf]?[tse]?[o]?:\/{0,3}[^\[\s]*)(\[|\1)([^\]\n]*?)(\]|\n)([ \t]+"[^"]*?"){0,1}/gi);
+	protected _url: RegExp = XRegExp(/([ \t]*)((?:https?|ftp|file|mailto|gopher|link|anchor|xref|image):\/{0,3}[^\[\s]*)(\[|\1)([^\]\n]*?)(\]|\n)([ \t]+"[^"]*?"){0,1}/gi);
 
 	// [[{name}|{reference}]
 	protected _wiki: RegExp = XRegExp(/(\[\[)([^|\]^\]]+)(\|{0,1})([^\]^\]]*){0,1}(\]\])/gi);
@@ -209,6 +212,7 @@ export abstract class BaseMarkupMode {
 	public abstract handleBold(): void;
 	public abstract handleHeader(level: number): void;
 	public abstract handleItalic(): void;
+	public abstract handleMono(): void;
 	public abstract handleStrikeThrough(): void;
 	public abstract handleUnderline(): void;
 
@@ -266,16 +270,18 @@ export abstract class BaseMarkupMode {
 	 * of the block.
 	 * @param [endChevron] {string} the string that will be placed on the end
 	 * of the block.
+	 * @param [spacer] {string} a string appended to the end of the first
+	 * chevron.  It is a single space by default.  Used when created headers.
 	 */
-	public annotateBlock(selection: Section, startChevron: string, endChevron?: string) {
+	public annotateBlock(selection: Section, startChevron: string, endChevron?: string, spacer: string = ' ') {
 		let delta: any = null;
 
-		if (selection && selection.text) {
+		if (selection) {
 			this._delta.ops.length = 0;
 			debug('annotating block: "%o" with "%s":"%s"', selection, startChevron, endChevron);
 
 			this._delta.retain(selection.start)
-				.insert(`${startChevron} `)
+				.insert(`${startChevron}${spacer}`)
 				.retain(selection.text.length);
 
 			let endWidth: number = 0;

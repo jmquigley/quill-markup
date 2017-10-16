@@ -41,7 +41,7 @@ export class Markdown extends BaseMarkupMode {
 	// - {text}
 	// * {text}
 	// ##. {text}
-	private _list: RegExp = XRegExp(/^\s*([\*\-\+]{1})[ \t]+|^\s*\w+\.[ \t]+/gmi);
+	private _list: RegExp = XRegExp(/^\s*(?=([\*\-\+]{1})+)\1*|^\s*(?=(\w+\.))\2*\s(?![ \t]+)/gmi);
 
 	// # {text}
 	private _h1: RegExp = XRegExp(/^#\s+.*/gmi);
@@ -76,6 +76,9 @@ export class Markdown extends BaseMarkupMode {
 	// ```
 	protected _code: RegExp = XRegExp(/(^\n[ \t]*```)(.*\s)([^`]*?)(```.*\s)/gmi);
 
+	// <!-- comment -->
+	protected _comment: RegExp = XRegExp(/<!--[\S\s]*?-->/gmi);
+
 	constructor(quill: any) {
 		super(quill);
 		debug('creating markdown mode %o', quill);
@@ -105,6 +108,7 @@ export class Markdown extends BaseMarkupMode {
 		this.colorizeLink(this.subText, this._link2);
 		this.colorizeLink(this.subText, this._link3);
 		this.colorizeLink(this.subText, this._link4);
+		this.colorize(this._subText, this._email, this.style.link);
 
 		this.colorize(this.subText, this._mono, this.style.mono);
 
@@ -112,6 +116,8 @@ export class Markdown extends BaseMarkupMode {
 	}
 
 	public highlightBlock() {
+		this.colorizeBlock(this.text, this._comment, this.style.comment);
+
 		this.colorizeBlock(this.text, this._h1block, this.style.h1);
 		this.colorizeBlock(this.text, this._h2block, this.style.h2);
 		this.codify(this.text, this._code);
@@ -140,6 +146,15 @@ export class Markdown extends BaseMarkupMode {
 
 	public handleItalic() {
 		this.annotateInline(this.selection, '*');
+	}
+
+	public handleMono() {
+		debug('selection: %O', this.selection);
+		if (this.selection.start === this.selection.end) {
+			this.annotateBlock(this.selection, '\n```\n', '```\n', '');
+		} else {
+			this.annotateInline(this.selection, '`');
+		}
 	}
 
 	public handleStrikeThrough() {

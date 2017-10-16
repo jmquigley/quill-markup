@@ -16,6 +16,7 @@ export class Text extends BaseMarkupMode {
 	public handleBold() {}
 	public handleHeader(level: number) { level = 0; }
 	public handleItalic() {}
+	public handleMono() {}
 	public handleStrikeThrough() {}
 	public handleUnderline() {}
 }

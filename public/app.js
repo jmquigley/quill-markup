@@ -61,7 +61,7 @@ markup.set({
 		background: 'black',
 		foreground: 'white'
 	},
-	mode: MarkupMode.asciidoc
+	mode: MarkupMode.markdown
 });
 
 document.getElementById("refresh-button").onclick = (e) => {
@@ -90,6 +90,10 @@ document.getElementById("underline-button").onclick = (e) => {
 
 document.getElementById("strike-button").onclick = (e) => {
 	markup.setStrikeThrough();
+}
+
+document.getElementById("code-button").onclick = (e) => {
+	markup.setMono();
 }
 
 document.getElementById("headerlevel").onchange = (e) => {
