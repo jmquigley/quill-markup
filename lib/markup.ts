@@ -149,6 +149,7 @@ export class Markup {
 			'resetInactivityTimer',
 			'markIdle',
 			'redo',
+			'refresh',
 			'set',
 			'setBold',
 			'setContent',
