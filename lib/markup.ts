@@ -1,6 +1,6 @@
 /**
  * A custom Quill highlighting module for markup modes/styles.  It manages
- * multiple mode instances  that are used to apply text formatting to the
+ * multiple mode instances that are used to apply text formatting to the
  * contents of the control.
  *
  * The module is added to the component per the API instructions:
@@ -10,41 +10,11 @@
  * the `set` functions.  This just changes what the reference internally to
  * another class that handles the formatting.
  *
- * #### Examples:
+ * See the README.md file for an example.
  *
- * ```javascript
- * import {MarkupMode, Markup} from './lib/markup';
- *
- * Quill.register('modules/markup', Markup);
- * const quill = new Quill('#editor', {
- *     modules: {
- *         history: {
- *             delay: 2000,
- *             maxStack: 500,
- *             userOnly: true
- *         },
- *         markup: {
- *             mode: MarkupMode.text,
- *             custom: {
- *                 foreground: 'black',
- *                 background: 'white',
- *             }
- *         },
- *         toolbar: false
- *     },
- *     theme: 'snow'
- * });
- * ...
- * const hl = quill.getModule('highlight');
- * hl.set({
- *     content: 'some value',
- *     mode: MarkupMode.markdown
- * });
- * ```
- *
- * Note that initial content cannot be set in the contructor to the module.
- * it is overwritten with the contents of the `#editor` div as Qill is
- * instatiated.  It can be set after creation of the Quill instance using
+ * Note that initial *content* cannot be set in the contructor to the module.
+ * it is overwritten with the contents of the `#editor` div as Quill is
+ * instantiated.  It can be set after creation of the Quill instance using
  * the `.setContent('')` function.
  *
  * @module Markup

@@ -7,39 +7,26 @@ const debug = require('debug')('Asciidoc');
 
 export class Asciidoc extends BaseMarkupMode {
 
-	// *test*
-	private _bold: RegExp = XRegExp(/(\*)[^\*\n]*?\1/gmi);
-
-	// _test_
-	private _italic: RegExp = XRegExp(/(\_)[^\_\n]*?\1/gmi);
-
-	// +test+ or `test`
-	private _mono: RegExp = XRegExp(/(\+)[^\+\n]*?\1|(`)[^`\n]*?\2/gmi);
-
-	// [underline]#test#
-	private _underline: RegExp = XRegExp(/\[underline\]#[^#]*?#/gmi);
-
-	// [line-through]#test#
-	private _strikethrough: RegExp = XRegExp(/\[line-through\]#[^#]*?#/gmi);
-
 	// {attribute}
 	private _attribute: RegExp = XRegExp(/{[^}]*?}|\[.*\]#+[^#]*?#+|:.*?:/gmi);
 
-	// keywords for this mode
-	private _keyword: RegExp = XRegExp(/\w+::/gmi);
+	// *test*
+	private _bold: RegExp = XRegExp(/(\*)[^\*\n]*?\1/gmi);
 
-	// .text to end of line
-	private _option: RegExp = XRegExp(/^[ \t]*\.(?![\s.]).+/gmi);
+	// -----------
+	// code section
+	// -----------
+	protected _code: RegExp = XRegExp(/(^(?:\r|\n|\r\n)^[ \t]*-{4,})(.*(?:\r|\n|\r\n))([\S\s]*?)(^[ \t]*-{4,}$)/gmi);
 
-	// [text]
-	private _link1: RegExp = XRegExp(/(\[)([^\]]*)(\])(?![\[\(])/gmi);
+	protected _codeSection: RegExp = XRegExp(/(^\[.*?\](?:\r|\n|\r\n)^-+)(.*(?:\r|\n|\r\n))([\S\s]*?)(^[ \t]*-+$)/gmi);
 
-	// . {text}
-	// + {text}
-	// - {text}
-	// * {text}
-	// ##. {text}
-	private _list: RegExp = XRegExp(/^\s*(?=([\*\-\+\.])+)\1*|^\s*(?=(\w+\.))\2*\s(?![ \t]+)/gmi);
+	// comment
+	protected _comment: RegExp = XRegExp(/^\s*\/\/.*/gmi);
+
+	// ////
+	// comment block
+	// ////
+	protected _commentBlock: RegExp = XRegExp(/^[ \t]*(\/{4,})[\S\s]*(\/{4}$)/gmi);
 
 	// = {text}
 	private _h1: RegExp = XRegExp(/^=\s+.*/gmi);
@@ -83,20 +70,33 @@ export class Asciidoc extends BaseMarkupMode {
 	// ######
 	private _h6block: RegExp = XRegExp(/^[^#\s]+(\r\n|\r|\n)##+/gmi);
 
-	// -----------
-	// code section
-	// -----------
-	protected _code: RegExp = XRegExp(/(^(?:\r|\n|\r\n)^[ \t]*-{4,})(.*(?:\r|\n|\r\n))([\S\s]*?)(^[ \t]*-{4,}$)/gmi);
+	// _test_
+	private _italic: RegExp = XRegExp(/(\_)[^\_\n]*?\1/gmi);
 
-	protected _codeSection: RegExp = XRegExp(/(^\[.*?\](?:\r|\n|\r\n)^-+)(.*(?:\r|\n|\r\n))([\S\s]*?)(^[ \t]*-+$)/gmi);
+	// keywords for this mode
+	private _keyword: RegExp = XRegExp(/\w+::/gmi);
 
-	// comment
-	protected _comment: RegExp = XRegExp(/^\s*\/\/.*/gmi);
+	// [text]
+	private _link1: RegExp = XRegExp(/(\[)([^\]]*)(\])(?![\[\(])/gmi);
 
-	// ////
-	// comment block
-	// ////
-	protected _commentBlock: RegExp = XRegExp(/^[ \t]*(\/{4,})[\S\s]*(\/{4}$)/gmi);
+	// . {text}
+	// + {text}
+	// - {text}
+	// * {text}
+	// ##. {text}
+	private _list: RegExp = XRegExp(/^\s*(?=([\*\-\+\.])+)\1*|^\s*(?=(\w+\.))\2*\s(?![ \t]+)/gmi);
+
+	// +test+ or `test`
+	private _mono: RegExp = XRegExp(/(\+)[^\+\n]*?\1|(`)[^`\n]*?\2/gmi);
+
+	// .text to end of line
+	private _option: RegExp = XRegExp(/^[ \t]*\.(?![\s.]).+/gmi);
+
+	// [line-through]#test#
+	private _strikethrough: RegExp = XRegExp(/\[line-through\]#[^#]*?#/gmi);
+
+	// [underline]#test#
+	private _underline: RegExp = XRegExp(/\[underline\]#[^#]*?#/gmi);
 
 	constructor(quill: any) {
 		super(quill);

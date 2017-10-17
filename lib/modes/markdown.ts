@@ -7,41 +7,19 @@ const debug = require('debug')('Markdown');
 
 export class Markdown extends BaseMarkupMode {
 
-	// **text**
-	private _bold: RegExp = XRegExp(/(\*{2})[^\*\n]*?\1/gi);
-
-	// *text*
-	private _italic: RegExp = XRegExp(/(\*)[^\*\n]*?\1/gi);
-
-	// _text_
-	private _underline: RegExp = XRegExp(/(\_{1}).+?\1/gi);
-
-	// ~text~
-	private _strikethrough: RegExp = XRegExp(/(\~{1}).+?\1/gi);
-
-	// `text`
-	private _mono: RegExp = XRegExp(/(`{1})(?!\`).+?\1/gi);
-
 	// > text
 	private _blockquote: RegExp = XRegExp(/^>\s.*/gmi);
 
-	// [text]
-	private _link1: RegExp = XRegExp(/(\[)([^\]]*)(\])(?![\[\(])/gi);
+	// **text**
+	private _bold: RegExp = XRegExp(/(\*{2})[^\*\n]*?\1/gi);
 
-	// [text](link) or ![text](link)
-	private _link2: RegExp = XRegExp(/(!?\[)([^\]^\]\[^\]\]]*)(\]\()([^\]\)]*)(\))/gi);
+	// ```{language}
+	// {code}
+	// ```
+	protected _code: RegExp = XRegExp(/(^\n[ \t]*```)(.*\s)([^`]*?)(```.*\s)/gmi);
 
-	// [text][id] or ![text][id]
-	private _link3: RegExp = XRegExp(/(!?\[)([^\]^\]\[^\]\]]*)(\]\[)([^\]]*)(\])/gi);
-
-	// [text]: [url] "title"
-	private _link4: RegExp = XRegExp(/(\[)([^\]^\]\[^\]\]]*)(\]\:\s+)([^\s]+)(\s+)("[^"]*?"){0,1}/gi);
-
-	// + {text}
-	// - {text}
-	// * {text}
-	// ##. {text}
-	private _list: RegExp = XRegExp(/^\s*(?=([\*\-\+]{1})+)\1*|^\s*(?=(\w+\.))\2*\s(?![ \t]+)/gmi);
+	// <!-- comment -->
+	protected _comment: RegExp = XRegExp(/<!--[\S\s]*?-->/gmi);
 
 	// # {text}
 	private _h1: RegExp = XRegExp(/^#\s+.*/gmi);
@@ -69,15 +47,38 @@ export class Markdown extends BaseMarkupMode {
 	// ------
 	private _h2block: RegExp = XRegExp(/^[^-\s]+(\r\n|\r|\n)--+/gmi);
 
+	// horizontal rule
 	private _hr: RegExp = XRegExp(/^\-{3,}|^\*{3,}|^_{3,}/gmi);
 
-	// ```{language}
-	// {code}
-	// ```
-	protected _code: RegExp = XRegExp(/(^\n[ \t]*```)(.*\s)([^`]*?)(```.*\s)/gmi);
+	// *text*
+	private _italic: RegExp = XRegExp(/(\*)[^\*\n]*?\1/gi);
 
-	// <!-- comment -->
-	protected _comment: RegExp = XRegExp(/<!--[\S\s]*?-->/gmi);
+	// [text]
+	private _link1: RegExp = XRegExp(/(\[)([^\]]*)(\])(?![\[\(])/gi);
+
+	// [text](link) or ![text](link)
+	private _link2: RegExp = XRegExp(/(!?\[)([^\]^\]\[^\]\]]*)(\]\()([^\]\)]*)(\))/gi);
+
+	// [text][id] or ![text][id]
+	private _link3: RegExp = XRegExp(/(!?\[)([^\]^\]\[^\]\]]*)(\]\[)([^\]]*)(\])/gi);
+
+	// [text]: [url] "title"
+	private _link4: RegExp = XRegExp(/(\[)([^\]^\]\[^\]\]]*)(\]\:\s+)([^\s]+)(\s+)("[^"]*?"){0,1}/gi);
+
+	// + {text}
+	// - {text}
+	// * {text}
+	// ##. {text}
+	private _list: RegExp = XRegExp(/^\s*(?=([\*\-\+]{1})+)\1*|^\s*(?=(\w+\.))\2*\s(?![ \t]+)/gmi);
+
+	// `text`
+	private _mono: RegExp = XRegExp(/(`{1})(?!\`).+?\1/gi);
+
+	// ~text~
+	private _strikethrough: RegExp = XRegExp(/(\~{1}).+?\1/gi);
+
+	// _text_
+	private _underline: RegExp = XRegExp(/(\_{1}).+?\1/gi);
 
 	constructor(quill: any) {
 		super(quill);

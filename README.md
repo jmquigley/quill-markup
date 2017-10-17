@@ -11,14 +11,14 @@
 
 ## Requirements
 
-- Quill v1.3.2
-- Yarn 1.0.x
-- Node 7.5.x+
+- [Quill](https://quilljs.com/) v1.3.3
+- [Yarn](https://yarnpkg.com/en/) 1.2.1
+- [Node](https://nodejs.org/en/) 7.5.x+
 
 
 ## Installation
 
-This module uses [yarn](https://yarnpkg.com/en/) to manage dependencies and run scripts for development.
+This module uses [Yarn](https://yarnpkg.com/en/) to manage dependencies and run scripts for development.
 
 To install as an application dependency:
 ```
@@ -50,8 +50,8 @@ See the sample application code located in `./public/app.js` and `./public/index
 This is a custom [Quill](https://quilljs.com/) module turns the WYSIWYG editor into a a fixed text markup editor (for modes like markdown, restructured text, etc).  It takes advantage of the underlying api for styling, undo/redo, keyboard handling, and syntax highlighting.  It contains the following modes:
 
 - plain text
-- markdown
-- asciidoc
+- [markdown](https://daringfireball.net/projects/markdown/syntax)
+- [asciidoc](http://powerman.name/doc/asciidoc)
 
 
 ## Usage
@@ -122,7 +122,7 @@ markup.set({
 });
 ```
 
-The code above registers a new module named `Markup` with Quill.  Once it is registered, and quill is instantiated, the reference to the module can be retrieved.  We use this reference and the api below to interact with the document (outside of normal editing).  This example creates a markdown editor instance.
+The code above registers a new module named `Markup` with Quill.  Once it is registered, and quill is instantiated, the reference to the module can be retrieved.  The reference is used by the api below to interact with the document (outside of normal editing).  The example above creates a markdown editor instance.
 
 ![Markdown](images/markdown.png)
 
@@ -133,7 +133,7 @@ The CSS style sheets for the module and for the syntax highlighting are included
 - `./public/styles.css`
 - `./public/highlights/*.css`
 
-The module will look for these files from the root of the site serving them.
+The module will look for these files from the root of the site serving them.  The CSS files are provided by [highlight.js](https://highlightjs.org/).
 
 
 ## API

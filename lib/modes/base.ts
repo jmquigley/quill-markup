@@ -64,11 +64,6 @@ export abstract class BaseMarkupMode {
 	// example@example.com
 	protected _email: RegExp = XRegExp(/[a-z0-9!#$%&'*+\/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+\/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?/gi);
 
-	// ${formula}$
-	// \({formula}\)
-	// \[{formula}\]
-	protected _formulaInline: RegExp = XRegExp(/(\$(?!$))[^\$^\n]+\1|(\\\()[^(\\\)\n)]*?\\\)|(\\\[)[^(\\\]\n)]*?\\\]/gi);
-
 	// $$
 	// {formula}
 	// $$
@@ -82,6 +77,11 @@ export abstract class BaseMarkupMode {
 	// \\]
 	protected _formulaBlock: RegExp = XRegExp(/^(\${2})[^\1]*?\1|^(\\{2}\()[^(\\\))]*?\\{2}\)|^(\\{2}\[)[^(\\\])]*?\\{2}\]/gmi);
 
+	// ${formula}$
+	// \({formula}\)
+	// \[{formula}\]
+	protected _formulaInline: RegExp = XRegExp(/(\$(?!$))[^\$^\n]+\1|(\\\()[^(\\\)\n)]*?\\\)|(\\\[)[^(\\\]\n)]*?\\\]/gi);
+
 	// a valid URL
 	// protected _url: RegExp = XRegExp(/(\s*)(\w*?:.+?[]]\\|\w*?:.+?)([\[\s]+)/gi);
 	protected _url: RegExp = XRegExp(/([ \t]*)((?:https?|ftp|file|mailto|gopher|link|anchor|xref|image):\/{0,3}[^\[\s]*)(\[|\1)([^\]\n]*?)(\]|\n)([ \t]+"[^"]*?"){0,1}/gi);
@@ -94,6 +94,7 @@ export abstract class BaseMarkupMode {
 
 		[
 			'annotateBlock',
+			'annotateLine',
 			'annotateInline',
 			'processBlockTokens',
 			'processInlineTokens',
@@ -322,7 +323,7 @@ export abstract class BaseMarkupMode {
 
 		if (selection) {
 			this._delta.ops.length = 0;
-			debug('annotating block: "%o" with "%s":"%s"', selection, startChevron, endChevron);
+			debug('annotating line: "%o" with "%s":"%s"', selection, startChevron, endChevron);
 
 			this._delta.retain(selection.start)
 				.insert(`${startChevron}${spacer}`)
@@ -556,14 +557,6 @@ export abstract class BaseMarkupMode {
 
 		return arr.slice(bstart, bend + 1);
 	}
-
-	/* private moveToEndOfLine() {
-	   const text: string = this.text;
-	   let pos: number = this.pos;
-
-	   while (text[pos++] !== nl) {};
-	   this.quill.setSelection(pos - 1);
-	   }*/
 
 	private processBlockTokens(tokens: Match[], styling: any) {
 		let offset: number = tokens[0].start;
