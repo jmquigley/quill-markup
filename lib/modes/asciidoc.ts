@@ -84,7 +84,7 @@ export class Asciidoc extends BaseMarkupMode {
 	// - {text}
 	// * {text}
 	// ##. {text}
-	private _list: RegExp = XRegExp(/^\s*(?=([\*\-\+\.])+)\1*|^\s*(?=(\w+\.))\2*\s(?![ \t]+)/gmi);
+	private _list: RegExp = XRegExp(/^\s*(?=([\*\-\+\.])+)\1* |^\s*(?=(\w+\.))\2*\s(?![ \t]+)/gmi);
 
 	// +test+ or `test`
 	private _mono: RegExp = XRegExp(/(\+)[^\+\n]*?\1|(`)[^`\n]*?\2/gmi);

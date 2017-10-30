@@ -15,6 +15,11 @@ text
 ----
 lorem ipsum
 
+*italic*
+**bold**
+`monospace`
+_underline_
+~strikethrough~
 
 ---
 ***
