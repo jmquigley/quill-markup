@@ -49,9 +49,10 @@ See the sample application code located in `./public/app.js` and `./public/index
 ## Overview
 This is a custom [Quill](https://quilljs.com/) module turns the WYSIWYG editor into a a fixed text markup editor (for modes like markdown, restructured text, etc).  It takes advantage of the underlying api for styling, undo/redo, keyboard handling, and syntax highlighting.  It contains the following modes:
 
-- plain text
-- [markdown](https://daringfireball.net/projects/markdown/syntax)
 - [asciidoc](http://powerman.name/doc/asciidoc)
+- [markdown](https://daringfireball.net/projects/markdown/syntax)
+- plain text
+- [restructuredtext](http://docutils.sourceforge.net/docs/user/rst/quickref.html)
 
 
 ## Usage

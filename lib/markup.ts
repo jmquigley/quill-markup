@@ -31,6 +31,7 @@ import {
 	Asciidoc,
 	BaseMarkupMode,
 	Markdown,
+	RestructuredText,
 	Text
 } from './modes';
 
@@ -43,6 +44,7 @@ const nilEvent: EventCallback = (val: any): void => {
 export enum MarkupMode {
 	asciidoc,
 	markdown,
+	restructuredtext,
 	text
 }
 
@@ -133,6 +135,7 @@ export class Markup {
 
 		this._modes[MarkupMode.asciidoc] = new Asciidoc(quill);
 		this._modes[MarkupMode.markdown] = new Markdown(quill);
+		this._modes[MarkupMode.restructuredtext] = new RestructuredText(quill);
 		this._modes[MarkupMode.text] = new Text(quill);
 
 		debug('modes: %O', this._modes);
