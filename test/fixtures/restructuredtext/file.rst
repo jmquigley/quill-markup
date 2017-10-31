@@ -1,6 +1,7 @@
 ====
 text
 ====
+lorem ipsum
 
 text
 ====
@@ -26,6 +27,39 @@ lorem ipsum
 **bold**
 ``monospace``
 
+
+reference_
+`phrase reference`_
+|substitution reference|
+[1]_
+[CIT2002]_
+.. [*] This is the first one. 
+.. _Python: http://www.python.org/
+`Python <http://www.python.org/>`_
+.. image:: images/ball1.gif
+.. |biohazard| image:: biohazard.png
+
+http://www.example.com
+test@example.com
+
+::
+
+    let blah: number = "stuff";
+
+    function test() {
+        if (test) {
+            for (let i = 0; i < 10; i++) {
+                console.log('blah');
+            }
+        }
+    }
+
+
+lorem ipsum :attribute: and a :keyword:
+
+| block text
+| block text
+| block text
 
 * lorem ipsum 1
 * lorem ipsum 2

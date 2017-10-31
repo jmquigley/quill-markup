@@ -49,6 +49,7 @@ function test() {
 [test]: https://www.example.com "title"
 
 http://www.example.com
+test@example.com
 
 [[text|reference]]
 
