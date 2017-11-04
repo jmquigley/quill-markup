@@ -38,7 +38,7 @@ import {
 export type EventCallback = (val: any) => void;
 
 const nilEvent: EventCallback = (val: any): void => {
-	val = null;
+	val = val;
 };
 
 export enum MarkupMode {
@@ -198,6 +198,10 @@ export class Markup {
 
 	get highlights() {
 		return Object.keys(cssHighlights);
+	}
+
+	get idle() {
+		return this._idle;
 	}
 
 	get modes() {
@@ -500,7 +504,7 @@ export class Markup {
 	 * idle if the keyboard is idle)
 	 */
 	private handleTextChange(delta?: any, old?: any, source?: string) {
-		delta = old = null;
+		delta = old = delta;  // stupid but satifies the linter
 
 		if (source === 'user' && this._dirtyCount++ > this._dirtyLimit) {
 			this._dirtyIdle = true;

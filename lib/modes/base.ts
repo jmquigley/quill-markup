@@ -264,9 +264,7 @@ export abstract class BaseMarkupMode {
 				.insert(`${xnl}${nl}${startChevron}${nl}`)
 				.retain(selection.text.length);
 
-			let endWidth: number = 0;
 			if (endChevron) {
-				endWidth = endChevron.length;
 				this._delta.insert(`${nl}${endChevron}${nl}${xnl}`);
 			}
 

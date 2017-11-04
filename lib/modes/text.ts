@@ -14,7 +14,7 @@ export class Text extends BaseMarkupMode {
 	public highlightBlock() {}
 
 	public handleBold() {}
-	public handleHeader(level: number) { level = 0; }
+	public handleHeader(level: number = 0) { level = level; }
 	public handleItalic() {}
 	public handleMono() {}
 	public handleStrikeThrough() {}

@@ -123,7 +123,7 @@ export class RestructuredText extends BaseMarkupMode {
 		this.annotateInline(this.selection, '**');
 	}
 
-	public handleHeader(level: number) { level = 0; }
+	public handleHeader(level: number = 0) { level = level; }
 
 	public handleItalic() {
 		this.annotateInline(this.selection, '*');
