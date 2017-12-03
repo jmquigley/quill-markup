@@ -1,16 +1,20 @@
 const ExtractTextPlugin = require("extract-text-webpack-plugin");
 const MinifyPlugin = require("babel-minify-webpack-plugin");
 const path = require('path');
+const {leader} = require('util.leader');
 const webpack = require('webpack');
 const pkg = require('./package.json');
 
 const banner = new webpack.BannerPlugin({
 	banner:
 		'quill-markup v' + pkg.version + '\n' +
+		`Mode: ${process.env.NODE_ENV || 'development'}` + '\n' +
 		'https://www.npmjs.com/package/quill-markup\n' +
 		'Copyright (c) 2017, James Quigley\n',
 	entryOnly: true
 });
+
+leader(banner.banner);
 
 const constants = new webpack.DefinePlugin({
 	MARKUP_VERSION: JSON.stringify(pkg.version),
@@ -70,6 +74,6 @@ module.exports = {
 		banner,
 		constants,
 		new ExtractTextPlugin({filename: "styles.css"}),
-    	new MinifyPlugin()
-  	]
+		new MinifyPlugin()
+	]
 }
