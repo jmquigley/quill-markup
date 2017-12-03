@@ -3,6 +3,8 @@
   "version": "0.0.21",
   "author": "jmquigley <jmquigley@outlook.com>",
   "description": "A markup highlighting module for the Quill text editor",
+  "main": "./public/bundle.js",
+  "types": "./index.d.ts",
   "private": false,
   "debug": false,
   "license": "BSD-3-Clause",
@@ -13,39 +15,36 @@
   "bugs": {
     "url": "https://github.com/jmquigley/quill-markup/issues"
   },
-  "main": "./public/bundle.js",
-  "types": "./index.d.ts",
   "engines": {
-    "node": ">=7.5"
+    "node": ">=7.x"
   },
   "dependencies": {
     "ccount": "^1.0.2",
     "hash.js": "^1.1.3",
     "highlight.js": "^9.12.0",
     "lodash": "^4.17.4",
-    "parchment": "^1.1.2",
+    "parchment": "^1.1.3",
     "quill": "^1.3.4",
-    "util.ds": "^0.0.33",
-    "util.fontlist": "^0.0.5",
-    "util.join": "^0.0.15",
-    "util.matches": "^0.0.5",
-    "util.pkgwrap": "0.0.73",
-    "util.rstrip": "^0.0.28",
-    "util.section": "^0.0.8",
+    "util.ds": "^0.0.35",
+    "util.fontlist": "^0.0.8",
+    "util.join": "^0.0.17",
+    "util.matches": "^0.0.6",
+    "util.rstrip": "^0.0.32",
+    "util.section": "^0.0.9",
     "xregexp": "^3.2.0"
   },
   "devDependencies": {
     "@types/express": "^4.0.39",
     "@types/fs-extra": "^4.0.5",
-    "@types/highlight.js": "^9.12.1",
+    "@types/highlight.js": "^9.12.2",
     "@types/jsdom": "^11.0.4",
-    "@types/lodash": "^4.14.85",
-    "@types/node": "^8.0.53",
+    "@types/lodash": "^4.14.87",
+    "@types/node": "^8.0.54",
     "@types/quill": "^1.3.3",
     "@types/sinon": "^4.0.0",
     "@types/xregexp": "^3.0.29",
-    "ava": "^0.23.0",
-    "awesome-typescript-loader": "^3.3.0",
+    "ava": "^0.24.0",
+    "awesome-typescript-loader": "^3.4.1",
     "babel-core": "^6.26.0",
     "babel-loader": "^7.1.2",
     "babel-minify": "^0.2.0",
@@ -53,7 +52,7 @@
     "babel-plugin-transform-runtime": "^6.23.0",
     "babel-preset-env": "^1.6.1",
     "babel-preset-minify": "^0.2.0",
-    "browser-env": "^3.2.2",
+    "browser-env": "^3.2.4",
     "coveralls": "^3.0.0",
     "css-loader": "^0.28.7",
     "express": "^4.16.2",
@@ -61,13 +60,13 @@
     "file-loader": "^1.1.5",
     "fs-extra": "^4.0.2",
     "js-output-loader": "^0.0.5",
-    "jsdom": "^11.3.0",
+    "jsdom": "^11.5.1",
     "lorem-ipsum": "^1.0.4",
     "mock-css-modules": "^1.0.0",
     "nyc": "^11.3.0",
     "postcss-cssnext": "^3.0.2",
     "postcss-import": "^11.0.0",
-    "postcss-loader": "^2.0.8",
+    "postcss-loader": "^2.0.9",
     "postcss-modules": "^1.1.0",
     "precss": "^2.0.0",
     "process-nextick-args": "^1.0.7",
@@ -75,22 +74,10 @@
     "sinon": "^4.1.2",
     "style-loader": "^0.19.0",
     "tslint": "^5.8.0",
-    "typescript": "^2.6.1",
-    "util.fixture": "0.0.59",
-    "webpack": "^3.8.1"
-  },
-  "scripts": {
-    "all": "yarn install && yarn run clean && yarn run build:highlights && yarn run lint && yarn run build && yarn test && yarn run report",
-    "build": "pkgwrap --build --webpack",
-    "build:highlights": "node bin/buildHighlights.js",
-    "clean": "pkgwrap --clean",
-    "coverage": "pkgwrap --coverage",
-    "lint": "pkgwrap --lint",
-    "postinstall": "pkgwrap --postinstall",
-    "report": "pkgwrap --reporting",
-    "start": "node server.js",
-    "test": "pkgwrap --testing --ava",
-    "watch": "webpack --watch --progress"
+    "typescript": "^2.6.2",
+    "util.fixture": "0.0.61",
+    "util.pkgwrap": "^0.0.88",
+    "webpack": "^3.9.1"
   },
   "pkgwrap": {
     "cleanup": [
@@ -109,5 +96,18 @@
   },
   "ava": {
     "babel": "inherit"
+  },
+  "scripts": {
+    "all": "yarn install && yarn run build && yarn test && yarn run report",
+    "build": "yarn run clean && yarn run build:highlights && yarn run lint && pkgwrap --build --webpack",
+    "build:highlights": "node bin/buildHighlights.js",
+    "clean": "pkgwrap --clean",
+    "coverage": "pkgwrap --coverage",
+    "lint": "pkgwrap --lint",
+    "prepublishOnly": "yarn run all",
+    "report": "pkgwrap --reporting",
+    "start": "node server.js",
+    "test": "pkgwrap --testing --ava",
+    "watch": "webpack --watch --progress"
   }
 }

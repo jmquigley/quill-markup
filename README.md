@@ -11,9 +11,9 @@
 
 ## Requirements
 
-- [Quill](https://quilljs.com/) v1.3.3
-- [Yarn](https://yarnpkg.com/en/) 1.2.1
-- [Node](https://nodejs.org/en/) 7.5.x+
+- [Quill](https://quilljs.com/) v1.3.4
+- [Yarn](https://yarnpkg.com/en/) 1.3.2
+- [Node](https://nodejs.org/en/) 7.x
 
 
 ## Installation
