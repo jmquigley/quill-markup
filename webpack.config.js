@@ -1,14 +1,16 @@
-const ExtractTextPlugin = require("extract-text-webpack-plugin");
+const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 const MinifyPlugin = require("babel-minify-webpack-plugin");
 const path = require('path');
 const {leader} = require('util.leader');
 const webpack = require('webpack');
 const pkg = require('./package.json');
 
+let mode = process.env.NODE_ENV || 'development';
+
 const banner = new webpack.BannerPlugin({
 	banner:
 		'quill-markup v' + pkg.version + '\n' +
-		`Mode: ${process.env.NODE_ENV || 'development'}` + '\n' +
+		`Mode: ${mode}` + '\n' +
 		'https://www.npmjs.com/package/quill-markup\n' +
 		'Copyright (c) 2017, James Quigley\n',
 	entryOnly: true
@@ -18,10 +20,12 @@ leader(banner.banner);
 
 const constants = new webpack.DefinePlugin({
 	MARKUP_VERSION: JSON.stringify(pkg.version),
-	NODE_ENV: JSON.stringify("production")
+	NODE_ENV: `${mode}`
 });
 
 module.exports = {
+	mode: `${mode}`,
+	performance: {hints: false},
 	entry: [
 		path.resolve(__dirname, 'index.ts'),
 	],
@@ -51,9 +55,9 @@ module.exports = {
 			},
 			{
 				test: /\.css$/,
-				use: ExtractTextPlugin.extract({
-					fallback: 'style-loader',
-					use: [{
+				use: [
+					MiniCssExtractPlugin.loader,
+					{
 						loader: "css-loader",
 						options: {
 							importLoaders: 1,
@@ -61,8 +65,7 @@ module.exports = {
 						}
 					},
 					'postcss-loader'
-					]}
-				)
+					]
 			},
 			{
 				test: /\.ttf$/,
@@ -73,7 +76,7 @@ module.exports = {
 	plugins: [
 		banner,
 		constants,
-		new ExtractTextPlugin({filename: "styles.css"}),
+		new MiniCssExtractPlugin({filename: "styles.css"}),
 		new MinifyPlugin()
 	]
 }
