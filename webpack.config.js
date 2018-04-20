@@ -26,6 +26,9 @@ const constants = new webpack.DefinePlugin({
 module.exports = {
 	mode: `${mode}`,
 	performance: {hints: false},
+	optimization: {
+		minimize: false
+	},
 	entry: [
 		path.resolve(__dirname, 'index.ts'),
 	],

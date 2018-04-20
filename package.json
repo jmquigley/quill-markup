@@ -66,7 +66,7 @@
     "sinon": "^4.5.0",
     "style-loader": "^0.21.0",
     "tslint": "^5.9.1",
-    "typescript": "^2.8.1",
+    "typescript": "^2.8.3",
     "util.ds": "^0.0.37",
     "util.fixture": "0.0.62",
     "util.fontlist": "^0.0.10",
