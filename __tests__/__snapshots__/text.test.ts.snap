@@ -1,0 +1,248 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Click the editor and show that the handler is called 1`] = `
+Delta {
+  "ops": Array [
+    Object {
+      "insert": "[name](link)
+",
+    },
+  ],
+}
+`;
+
+exports[`Create Markup instance with Text mode 1`] = `
+Delta {
+  "ops": Array [
+    Object {
+      "insert": "# text
+## text
+### text
+#### text
+##### text
+###### text
+
+
+text
+====
+lorem ipsum
+
+
+text
+----
+lorem ipsum
+
+
+---
+***
+___
+
+
+\`\`\`javascript
+let blah: number = \\"stuff\\";
+
+function test() {{
+    if (test) {
+        for (let i = 0; i < 10; i++) {
+            console.log('blah');
+        }
+    }
+}
+\`\`\`
+
+
+> lorem ipsum
+> lorem ipsum
+
+
+[text](link)
+![test](link)
+[test][reference]
+![test][reference]
+[test]: https://www.example.com \\"title\\"
+
+http://www.example.com
+
+[[text|reference]]
+
+
+* lorem ipsum 1
+* lorem ipsum 2
+
+- lorem ipsum 1
+- lorem ipsum 2
+
++ lorem ipsum 1
++ tlorem ipsum 2
+
+1. lorem ipsum 1
+2. lorem ipsum 2
+3. lorem ipsum 3
+	a. lorem ipsum
+	b. lorem ipsum
+	c. lorem ipsum
+
+
+TODO: lorem ipsum
+FIXME: lorem ipsum
+IMPORTANT: lorem ipsum
+WARNING: lorem ipsum
+TIP: lorem ipsum
+
+",
+    },
+  ],
+}
+`;
+
+exports[`Use Markup bold call with Text 1`] = `
+Delta {
+  "ops": Array [
+    Object {
+      "insert": "test
+",
+    },
+  ],
+}
+`;
+
+exports[`Use Markup header 0 call with Text 1`] = `
+Delta {
+  "ops": Array [
+    Object {
+      "insert": "test
+",
+    },
+  ],
+}
+`;
+
+exports[`Use Markup header 1 call with Text 1`] = `
+Delta {
+  "ops": Array [
+    Object {
+      "insert": "test
+",
+    },
+  ],
+}
+`;
+
+exports[`Use Markup header 2 call with Text 1`] = `
+Delta {
+  "ops": Array [
+    Object {
+      "insert": "test
+",
+    },
+  ],
+}
+`;
+
+exports[`Use Markup header 3 call with Text 1`] = `
+Delta {
+  "ops": Array [
+    Object {
+      "insert": "test
+",
+    },
+  ],
+}
+`;
+
+exports[`Use Markup header 4 call with Text 1`] = `
+Delta {
+  "ops": Array [
+    Object {
+      "insert": "test
+",
+    },
+  ],
+}
+`;
+
+exports[`Use Markup header 5 call with Text 1`] = `
+Delta {
+  "ops": Array [
+    Object {
+      "insert": "test
+",
+    },
+  ],
+}
+`;
+
+exports[`Use Markup header 6 call with Text 1`] = `
+Delta {
+  "ops": Array [
+    Object {
+      "insert": "test
+",
+    },
+  ],
+}
+`;
+
+exports[`Use markup italic call with Text 1`] = `
+Delta {
+  "ops": Array [
+    Object {
+      "insert": "test
+",
+    },
+  ],
+}
+`;
+
+exports[`Use markup set call to change the mode 1`] = `
+Object {
+  "content": "test",
+  "custom": Object {
+    "background": "red",
+    "foreground": "yellow",
+  },
+  "dirtyLimit": 20,
+  "followLinks": false,
+  "fontName": "Fira Code",
+  "fontSize": 14,
+  "highlight": "solarized-light",
+  "idleDelay": 2000,
+  "mode": 3,
+  "onChange": [Function],
+  "onClick": [Function],
+  "onClickLink": [Function],
+}
+`;
+
+exports[`Use markup setMode call with Text 1`] = `
+Delta {
+  "ops": Array [
+    Object {
+      "insert": "test
+",
+    },
+  ],
+}
+`;
+
+exports[`Use markup strikethrough call with Text 1`] = `
+Delta {
+  "ops": Array [
+    Object {
+      "insert": "test
+",
+    },
+  ],
+}
+`;
+
+exports[`Use markup underline call with Text 1`] = `
+Delta {
+  "ops": Array [
+    Object {
+      "insert": "test
+",
+    },
+  ],
+}
+`;

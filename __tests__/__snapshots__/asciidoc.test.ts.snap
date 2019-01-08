@@ -1,0 +1,1690 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Create Markup instance with Asciidoc mode 1`] = `
+Delta {
+  "ops": Array [
+    Object {
+      "attributes": Object {
+        "color": "",
+      },
+      "insert": ":tags:",
+    },
+    Object {
+      "insert": " test, test, test
+
+some .
+
+",
+    },
+    Object {
+      "attributes": Object {
+        "color": "#ffff00",
+      },
+      "insert": "test",
+    },
+    Object {
+      "insert": "
+",
+    },
+    Object {
+      "attributes": Object {
+        "color": "#ffff00",
+      },
+      "insert": "====",
+    },
+    Object {
+      "insert": "
+
+",
+    },
+    Object {
+      "attributes": Object {
+        "color": "#ffd700",
+      },
+      "insert": "test",
+    },
+    Object {
+      "insert": "
+",
+    },
+    Object {
+      "attributes": Object {
+        "color": "#ffd700",
+      },
+      "insert": "----",
+    },
+    Object {
+      "insert": "
+
+",
+    },
+    Object {
+      "attributes": Object {
+        "color": "#ffaf00",
+      },
+      "insert": "test",
+    },
+    Object {
+      "insert": "
+",
+    },
+    Object {
+      "attributes": Object {
+        "color": "#ffaf00",
+      },
+      "insert": "~~~~",
+    },
+    Object {
+      "insert": "
+
+",
+    },
+    Object {
+      "attributes": Object {
+        "color": "#ff8700",
+      },
+      "insert": "test",
+    },
+    Object {
+      "insert": "
+",
+    },
+    Object {
+      "attributes": Object {
+        "color": "#ff8700",
+      },
+      "insert": "^^^^",
+    },
+    Object {
+      "insert": "
+
+",
+    },
+    Object {
+      "attributes": Object {
+        "color": "#ff5f00",
+      },
+      "insert": "test",
+    },
+    Object {
+      "insert": "
+",
+    },
+    Object {
+      "attributes": Object {
+        "color": "#ff5f00",
+      },
+      "insert": "++++",
+    },
+    Object {
+      "insert": "
+
+",
+    },
+    Object {
+      "attributes": Object {
+        "color": "#ff0000",
+      },
+      "insert": "test",
+    },
+    Object {
+      "insert": "
+",
+    },
+    Object {
+      "attributes": Object {
+        "color": "#ff0000",
+      },
+      "insert": "####",
+    },
+    Object {
+      "insert": "
+
+",
+    },
+    Object {
+      "attributes": Object {
+        "color": "#ffff00",
+      },
+      "insert": "= test",
+    },
+    Object {
+      "insert": "
+",
+    },
+    Object {
+      "attributes": Object {
+        "color": "#ffd700",
+      },
+      "insert": "== test",
+    },
+    Object {
+      "insert": "
+",
+    },
+    Object {
+      "attributes": Object {
+        "color": "#ffaf00",
+      },
+      "insert": "=== test",
+    },
+    Object {
+      "insert": "
+",
+    },
+    Object {
+      "attributes": Object {
+        "color": "#ff8700",
+      },
+      "insert": "==== test",
+    },
+    Object {
+      "insert": "
+",
+    },
+    Object {
+      "attributes": Object {
+        "color": "#ff5f00",
+      },
+      "insert": "===== test",
+    },
+    Object {
+      "insert": "
+",
+    },
+    Object {
+      "attributes": Object {
+        "color": "#ff0000",
+      },
+      "insert": "====== test",
+    },
+    Object {
+      "insert": "
+
+
+this is ",
+    },
+    Object {
+      "attributes": Object {
+        "color": "#0087ff",
+      },
+      "insert": "*bold*",
+    },
+    Object {
+      "insert": "
+this is ",
+    },
+    Object {
+      "attributes": Object {
+        "color": "#af00ff",
+      },
+      "insert": "_italic_",
+    },
+    Object {
+      "insert": "
+this is ",
+    },
+    Object {
+      "attributes": Object {
+        "color": "#8a8a8a",
+      },
+      "insert": "+mono+",
+    },
+    Object {
+      "insert": " or ",
+    },
+    Object {
+      "attributes": Object {
+        "color": "#8a8a8a",
+      },
+      "insert": "\`mono\`",
+    },
+    Object {
+      "insert": "
+this is ",
+    },
+    Object {
+      "attributes": Object {
+        "color": "green",
+      },
+      "insert": "[underline]#underline#",
+    },
+    Object {
+      "insert": "
+this is ",
+    },
+    Object {
+      "attributes": Object {
+        "color": "maroon",
+      },
+      "insert": "[line-through]#strikethrough#",
+    },
+    Object {
+      "insert": "
+
+",
+    },
+    Object {
+      "attributes": Object {
+        "color": "gray",
+      },
+      "insert": "[",
+    },
+    Object {
+      "attributes": Object {
+        "color": "#7aa6da",
+      },
+      "insert": "red",
+    },
+    Object {
+      "attributes": Object {
+        "color": "gray",
+      },
+      "insert": "]",
+    },
+    Object {
+      "attributes": Object {
+        "color": "",
+      },
+      "insert": "#this is a span of text#",
+    },
+    Object {
+      "insert": "
+
+",
+    },
+    Object {
+      "attributes": Object {
+        "color": "gray",
+      },
+      "insert": "[",
+    },
+    Object {
+      "attributes": Object {
+        "color": "#7aa6da",
+      },
+      "insert": "block",
+    },
+    Object {
+      "attributes": Object {
+        "color": "gray",
+      },
+      "insert": "]",
+    },
+    Object {
+      "insert": " with some other text ",
+    },
+    Object {
+      "attributes": Object {
+        "color": "gray",
+      },
+      "insert": "[",
+    },
+    Object {
+      "attributes": Object {
+        "color": "#7aa6da",
+      },
+      "insert": "then another block",
+    },
+    Object {
+      "attributes": Object {
+        "color": "gray",
+      },
+      "insert": "]",
+    },
+    Object {
+      "insert": "
+
+",
+    },
+    Object {
+      "attributes": Object {
+        "color": "gray",
+      },
+      "insert": "[[",
+    },
+    Object {
+      "attributes": Object {
+        "background": "white",
+        "color": "#7aa6da",
+      },
+      "insert": "block id element",
+    },
+    Object {
+      "attributes": Object {
+        "color": "gray",
+      },
+      "insert": "]]",
+    },
+    Object {
+      "insert": "
+
+Symbols: (R) (C) (V) (TM) -> <- => <= &#182; -- 
+
+",
+    },
+    Object {
+      "attributes": Object {
+        "color": "#515a5a",
+      },
+      "insert": "// Keywords",
+    },
+    Object {
+      "insert": "
+",
+    },
+    Object {
+      "attributes": Object {
+        "color": "#cc9900",
+      },
+      "insert": "ifdef::",
+    },
+    Object {
+      "insert": " ",
+    },
+    Object {
+      "attributes": Object {
+        "color": "#cc9900",
+      },
+      "insert": "ifndef::",
+    },
+    Object {
+      "insert": " ",
+    },
+    Object {
+      "attributes": Object {
+        "color": "#cc9900",
+      },
+      "insert": "endif::",
+    },
+    Object {
+      "insert": " ",
+    },
+    Object {
+      "attributes": Object {
+        "color": "#cc9900",
+      },
+      "insert": "ifeval::",
+    },
+    Object {
+      "insert": " ",
+    },
+    Object {
+      "attributes": Object {
+        "color": "#cc9900",
+      },
+      "insert": "include::",
+    },
+    Object {
+      "insert": " ",
+    },
+    Object {
+      "attributes": Object {
+        "color": "#cc9900",
+      },
+      "insert": "include1::",
+    },
+    Object {
+      "insert": " ",
+    },
+    Object {
+      "attributes": Object {
+        "color": "#cc9900",
+      },
+      "insert": "sys::",
+    },
+    Object {
+      "insert": " ",
+    },
+    Object {
+      "attributes": Object {
+        "color": "#cc9900",
+      },
+      "insert": "eval::",
+    },
+    Object {
+      "insert": " ",
+    },
+    Object {
+      "attributes": Object {
+        "color": "#cc9900",
+      },
+      "insert": "template::",
+    },
+    Object {
+      "insert": "
+
+
+",
+    },
+    Object {
+      "attributes": Object {
+        "color": "#b9ca4a",
+      },
+      "insert": "http://www.google.com",
+    },
+    Object {
+      "attributes": Object {
+        "color": "gray",
+      },
+      "insert": "[",
+    },
+    Object {
+      "attributes": Object {
+        "color": "#7aa6da",
+      },
+      "insert": "Google",
+    },
+    Object {
+      "attributes": Object {
+        "color": "gray",
+      },
+      "insert": "]",
+    },
+    Object {
+      "attributes": Object {
+        "color": "#e7c547",
+      },
+      "insert": " \\"this is some more text\\"",
+    },
+    Object {
+      "insert": "
+",
+    },
+    Object {
+      "attributes": Object {
+        "color": "#b9ca4a",
+      },
+      "insert": "https://www.example.com",
+    },
+    Object {
+      "attributes": Object {
+        "color": "gray",
+      },
+      "insert": "[",
+    },
+    Object {
+      "attributes": Object {
+        "color": "#7aa6da",
+      },
+      "insert": "Example",
+    },
+    Object {
+      "attributes": Object {
+        "color": "gray",
+      },
+      "insert": "]",
+    },
+    Object {
+      "insert": "
+",
+    },
+    Object {
+      "attributes": Object {
+        "color": "#b9ca4a",
+      },
+      "insert": "ftp://www.example.com",
+    },
+    Object {
+      "attributes": Object {
+        "color": "gray",
+      },
+      "insert": "[",
+    },
+    Object {
+      "attributes": Object {
+        "color": "#7aa6da",
+      },
+      "insert": "Example",
+    },
+    Object {
+      "attributes": Object {
+        "color": "gray",
+      },
+      "insert": "]",
+    },
+    Object {
+      "insert": "
+",
+    },
+    Object {
+      "attributes": Object {
+        "color": "#b9ca4a",
+      },
+      "insert": "file:///www.example.com",
+    },
+    Object {
+      "attributes": Object {
+        "color": "gray",
+      },
+      "insert": "[",
+    },
+    Object {
+      "attributes": Object {
+        "color": "#7aa6da",
+      },
+      "insert": "Example",
+    },
+    Object {
+      "attributes": Object {
+        "color": "gray",
+      },
+      "insert": "]",
+    },
+    Object {
+      "insert": "
+",
+    },
+    Object {
+      "attributes": Object {
+        "color": "#b9ca4a",
+      },
+      "insert": "http://www.example.com",
+    },
+    Object {
+      "attributes": Object {
+        "color": "gray",
+      },
+      "insert": "[",
+    },
+    Object {
+      "attributes": Object {
+        "color": "#7aa6da",
+      },
+      "insert": "Another Example",
+    },
+    Object {
+      "attributes": Object {
+        "color": "gray",
+      },
+      "insert": "]",
+    },
+    Object {
+      "insert": "
+
+",
+    },
+    Object {
+      "attributes": Object {
+        "color": "#b9ca4a",
+      },
+      "insert": "http://www.example.com",
+    },
+    Object {
+      "insert": "
+
+",
+    },
+    Object {
+      "attributes": Object {
+        "color": "#b9ca4a",
+      },
+      "insert": "something@example.com",
+    },
+    Object {
+      "insert": "
+",
+    },
+    Object {
+      "attributes": Object {
+        "color": "#b9ca4a",
+      },
+      "insert": "mailto:joe.bloggs@foobar.com",
+    },
+    Object {
+      "attributes": Object {
+        "color": "gray",
+      },
+      "insert": "[",
+    },
+    Object {
+      "attributes": Object {
+        "color": "#7aa6da",
+      },
+      "insert": "email Joe Bloggs",
+    },
+    Object {
+      "attributes": Object {
+        "color": "gray",
+      },
+      "insert": "]",
+    },
+    Object {
+      "insert": "
+
+",
+    },
+    Object {
+      "attributes": Object {
+        "color": "#b9ca4a",
+      },
+      "insert": "link:asciidoc",
+    },
+    Object {
+      "attributes": Object {
+        "color": "gray",
+      },
+      "insert": "[",
+    },
+    Object {
+      "attributes": Object {
+        "color": "#7aa6da",
+      },
+      "insert": "This document",
+    },
+    Object {
+      "attributes": Object {
+        "color": "gray",
+      },
+      "insert": "]",
+    },
+    Object {
+      "insert": "
+",
+    },
+    Object {
+      "attributes": Object {
+        "color": "#00ffff",
+      },
+      "insert": ".Thumbnail linked to full image",
+    },
+    Object {
+      "insert": "
+",
+    },
+    Object {
+      "attributes": Object {
+        "color": "#b9ca4a",
+      },
+      "insert": "image:/images/font/640-screen2.gif",
+    },
+    Object {
+      "attributes": Object {
+        "color": "gray",
+      },
+      "insert": "[",
+    },
+    Object {
+      "insert": "
+",
+    },
+    Object {
+      "attributes": Object {
+        "color": "#7aa6da",
+      },
+      "insert": "\\"My screenshot\\",width=128,",
+    },
+    Object {
+      "insert": "
+",
+    },
+    Object {
+      "attributes": Object {
+        "color": "#7aa6da",
+      },
+      "insert": "link=\\"/images/font/640-screen2.gif\\"",
+    },
+    Object {
+      "attributes": Object {
+        "color": "gray",
+      },
+      "insert": "]",
+    },
+    Object {
+      "insert": "
+
+",
+    },
+    Object {
+      "attributes": Object {
+        "color": "#00ffff",
+      },
+      "insert": ".Optional title",
+    },
+    Object {
+      "insert": "
+",
+    },
+    Object {
+      "attributes": Object {
+        "color": "silver",
+      },
+      "insert": "[test configuration block for code]",
+    },
+    Object {
+      "insert": "
+",
+    },
+    Object {
+      "attributes": Object {
+        "color": "silver",
+      },
+      "insert": "----------",
+    },
+    Object {
+      "insert": "
+let blah: number = \\"stuff\\";",
+    },
+    Object {
+      "attributes": Object {
+        "code-block": true,
+      },
+      "insert": "
+
+",
+    },
+    Object {
+      "insert": "function test() {",
+    },
+    Object {
+      "attributes": Object {
+        "code-block": true,
+      },
+      "insert": "
+",
+    },
+    Object {
+      "insert": "  if (test) {",
+    },
+    Object {
+      "attributes": Object {
+        "code-block": true,
+      },
+      "insert": "
+",
+    },
+    Object {
+      "insert": "    for (let i = 0; i < 10; i++) {",
+    },
+    Object {
+      "attributes": Object {
+        "code-block": true,
+      },
+      "insert": "
+",
+    },
+    Object {
+      "insert": "      console.log('blah');",
+    },
+    Object {
+      "attributes": Object {
+        "code-block": true,
+      },
+      "insert": "
+",
+    },
+    Object {
+      "insert": "    }",
+    },
+    Object {
+      "attributes": Object {
+        "code-block": true,
+      },
+      "insert": "
+",
+    },
+    Object {
+      "insert": "  }",
+    },
+    Object {
+      "attributes": Object {
+        "code-block": true,
+      },
+      "insert": "
+",
+    },
+    Object {
+      "insert": "}",
+    },
+    Object {
+      "attributes": Object {
+        "code-block": true,
+      },
+      "insert": "
+",
+    },
+    Object {
+      "attributes": Object {
+        "color": "silver",
+      },
+      "insert": "----------",
+    },
+    Object {
+      "insert": "
+
+",
+    },
+    Object {
+      "attributes": Object {
+        "color": "silver",
+      },
+      "insert": "-------------",
+    },
+    Object {
+      "insert": "
+ More Code",
+    },
+    Object {
+      "attributes": Object {
+        "code-block": true,
+      },
+      "insert": "
+
+",
+    },
+    Object {
+      "attributes": Object {
+        "color": "silver",
+      },
+      "insert": "-------------",
+    },
+    Object {
+      "insert": "
+
+",
+    },
+    Object {
+      "attributes": Object {
+        "color": "silver",
+      },
+      "insert": "----------",
+    },
+    Object {
+      "insert": "
+Code",
+    },
+    Object {
+      "attributes": Object {
+        "code-block": true,
+      },
+      "insert": "
+
+",
+    },
+    Object {
+      "attributes": Object {
+        "color": "silver",
+      },
+      "insert": "----------",
+    },
+    Object {
+      "insert": "
+
+
+",
+    },
+    Object {
+      "attributes": Object {
+        "color": "silver",
+      },
+      "insert": "----------",
+    },
+    Object {
+      "insert": "
+SQL> describe aircraft;",
+    },
+    Object {
+      "attributes": Object {
+        "code-block": true,
+      },
+      "insert": "
+",
+    },
+    Object {
+      "insert": " Name                   Null?  Type",
+    },
+    Object {
+      "attributes": Object {
+        "code-block": true,
+      },
+      "insert": "
+",
+    },
+    Object {
+      "insert": " ----------------------------------------- -------- ----------------------------",
+    },
+    Object {
+      "attributes": Object {
+        "code-block": true,
+      },
+      "insert": "
+",
+    },
+    Object {
+      "insert": " SERIAL_NO                 NOT NULL NUMBER(38)",
+    },
+    Object {
+      "attributes": Object {
+        "code-block": true,
+      },
+      "insert": "
+",
+    },
+    Object {
+      "insert": " MODEL_NO                 NOT NULL VARCHAR2(15)",
+    },
+    Object {
+      "attributes": Object {
+        "code-block": true,
+      },
+      "insert": "
+
+",
+    },
+    Object {
+      "insert": "SQL> describe flight;",
+    },
+    Object {
+      "attributes": Object {
+        "code-block": true,
+      },
+      "insert": "
+",
+    },
+    Object {
+      "insert": " Name                   Null?  Type",
+    },
+    Object {
+      "attributes": Object {
+        "code-block": true,
+      },
+      "insert": "
+",
+    },
+    Object {
+      "insert": " ----------------------------------------- -------- ----------------------------",
+    },
+    Object {
+      "attributes": Object {
+        "code-block": true,
+      },
+      "insert": "
+",
+    },
+    Object {
+      "insert": " NUM                    NOT NULL NUMBER(38)",
+    },
+    Object {
+      "attributes": Object {
+        "code-block": true,
+      },
+      "insert": "
+",
+    },
+    Object {
+      "insert": " ORIGIN                       VARCHAR2(3)",
+    },
+    Object {
+      "attributes": Object {
+        "code-block": true,
+      },
+      "insert": "
+",
+    },
+    Object {
+      "insert": " DEST                        VARCHAR2(3)",
+    },
+    Object {
+      "attributes": Object {
+        "code-block": true,
+      },
+      "insert": "
+",
+    },
+    Object {
+      "insert": " DEP_TIME                      VARCHAR2(5)",
+    },
+    Object {
+      "attributes": Object {
+        "code-block": true,
+      },
+      "insert": "
+",
+    },
+    Object {
+      "insert": " ARR_TIME                      VARCHAR2(5)",
+    },
+    Object {
+      "attributes": Object {
+        "code-block": true,
+      },
+      "insert": "
+
+",
+    },
+    Object {
+      "attributes": Object {
+        "color": "silver",
+      },
+      "insert": "----------",
+    },
+    Object {
+      "insert": "
+
+
+",
+    },
+    Object {
+      "attributes": Object {
+        "color": "#ffd700",
+      },
+      "insert": "test",
+    },
+    Object {
+      "insert": "
+",
+    },
+    Object {
+      "attributes": Object {
+        "color": "#ffd700",
+      },
+      "insert": "----------",
+    },
+    Object {
+      "insert": "
+
+
+
+",
+    },
+    Object {
+      "attributes": Object {
+        "color": "#515a5a",
+      },
+      "insert": "//////////////////////////////",
+    },
+    Object {
+      "insert": "
+
+
+",
+    },
+    Object {
+      "attributes": Object {
+        "color": "#515a5a",
+      },
+      "insert": "This is a comment block",
+    },
+    Object {
+      "insert": "
+",
+    },
+    Object {
+      "attributes": Object {
+        "color": "#515a5a",
+      },
+      "insert": "sdfsdf",
+    },
+    Object {
+      "insert": "
+
+
+",
+    },
+    Object {
+      "attributes": Object {
+        "color": "#515a5a",
+      },
+      "insert": "//////////////////////////////",
+    },
+    Object {
+      "insert": "
+
+between
+
+",
+    },
+    Object {
+      "attributes": Object {
+        "color": "#515a5a",
+      },
+      "insert": "// This is a line comment",
+    },
+    Object {
+      "insert": "
+",
+    },
+    Object {
+      "attributes": Object {
+        "color": "#515a5a",
+      },
+      "insert": " // This is another line comment",
+    },
+    Object {
+      "insert": "
+
+
+",
+    },
+    Object {
+      "attributes": Object {
+        "color": "#e2b228",
+      },
+      "insert": ". ",
+    },
+    Object {
+      "insert": "slkdjfl
+",
+    },
+    Object {
+      "attributes": Object {
+        "color": "#e2b228",
+      },
+      "insert": ".. ",
+    },
+    Object {
+      "insert": "laskdjflkajsdlfkj
+",
+    },
+    Object {
+      "attributes": Object {
+        "color": "#e2b228",
+      },
+      "insert": "... ",
+    },
+    Object {
+      "insert": "alskjdflaksjdf
+",
+    },
+    Object {
+      "attributes": Object {
+        "color": "#e2b228",
+      },
+      "insert": ".... ",
+    },
+    Object {
+      "insert": "asldkfjalksdjflkasjdf
+",
+    },
+    Object {
+      "attributes": Object {
+        "color": "#e2b228",
+      },
+      "insert": ". ",
+    },
+    Object {
+      "insert": "
+",
+    },
+    Object {
+      "attributes": Object {
+        "color": "#e2b228",
+      },
+      "insert": ".. ",
+    },
+    Object {
+      "insert": "
+",
+    },
+    Object {
+      "attributes": Object {
+        "color": "#e2b228",
+      },
+      "insert": "... ",
+    },
+    Object {
+      "insert": "alsdjflaksjdflkajs
+
+",
+    },
+    Object {
+      "attributes": Object {
+        "color": "#e2b228",
+      },
+      "insert": "- ",
+    },
+    Object {
+      "insert": "
+",
+    },
+    Object {
+      "attributes": Object {
+        "color": "#e2b228",
+      },
+      "insert": "* ",
+    },
+    Object {
+      "insert": "
+
+",
+    },
+    Object {
+      "attributes": Object {
+        "color": "#e2b228",
+      },
+      "insert": "** ",
+    },
+    Object {
+      "insert": "
+",
+    },
+    Object {
+      "attributes": Object {
+        "color": "#e2b228",
+      },
+      "insert": "*** ",
+    },
+    Object {
+      "insert": "
+
+",
+    },
+    Object {
+      "attributes": Object {
+        "color": "#e2b228",
+      },
+      "insert": "1. ",
+    },
+    Object {
+      "insert": "
+",
+    },
+    Object {
+      "attributes": Object {
+        "color": "#e2b228",
+      },
+      "insert": "2. ",
+    },
+    Object {
+      "insert": "
+",
+    },
+    Object {
+      "attributes": Object {
+        "color": "#e2b228",
+      },
+      "insert": "3. ",
+    },
+    Object {
+      "insert": "
+",
+    },
+    Object {
+      "attributes": Object {
+        "color": "#e2b228",
+      },
+      "insert": "4. ",
+    },
+    Object {
+      "insert": "
+
+
+",
+    },
+    Object {
+      "attributes": Object {
+        "color": "#e2b228",
+      },
+      "insert": "1. ",
+    },
+    Object {
+      "insert": "alkjsdf lakjsd lfk
+
+",
+    },
+    Object {
+      "attributes": Object {
+        "color": "#e2b228",
+      },
+      "insert": "- ",
+    },
+    Object {
+      "insert": "alksdj flasjd flakjds f
+",
+    },
+    Object {
+      "attributes": Object {
+        "color": "#e2b228",
+      },
+      "insert": "  1. ",
+    },
+    Object {
+      "insert": "laskjd flakjsd flkajd f
+
+",
+    },
+    Object {
+      "attributes": Object {
+        "color": "#e2b228",
+      },
+      "insert": "- ",
+    },
+    Object {
+      "insert": "slk ",
+    },
+    Object {
+      "attributes": Object {
+        "color": "#0087ff",
+      },
+      "insert": "*djflsk*",
+    },
+    Object {
+      "insert": " jdf
+",
+    },
+    Object {
+      "attributes": Object {
+        "color": "#e2b228",
+      },
+      "insert": "  1. ",
+    },
+    Object {
+      "insert": "alksdjflkasjdflkaj sdlkfj
+",
+    },
+    Object {
+      "attributes": Object {
+        "color": "#e2b228",
+      },
+      "insert": "    a. ",
+    },
+    Object {
+      "insert": "alskdjflkajsdlfkja
+",
+    },
+    Object {
+      "attributes": Object {
+        "color": "#e2b228",
+      },
+      "insert": "    b. ",
+    },
+    Object {
+      "insert": "alksjdflkajsdlkfjalsdkfj
+",
+    },
+    Object {
+      "attributes": Object {
+        "color": "#e2b228",
+      },
+      "insert": "  2. ",
+    },
+    Object {
+      "insert": "alksdjflkasjdfkl
+",
+    },
+    Object {
+      "attributes": Object {
+        "color": "#e2b228",
+      },
+      "insert": "  3. ",
+    },
+    Object {
+      "insert": "alskdj ",
+    },
+    Object {
+      "attributes": Object {
+        "color": "#af00ff",
+      },
+      "insert": "_flaksjdflkaj_",
+    },
+    Object {
+      "insert": " sdfkljasldkfjlasdkfj
+",
+    },
+    Object {
+      "attributes": Object {
+        "color": "#e2b228",
+      },
+      "insert": "- ",
+    },
+    Object {
+      "insert": "laskdj ",
+    },
+    Object {
+      "attributes": Object {
+        "color": "#8a8a8a",
+      },
+      "insert": "+flkasj+",
+    },
+    Object {
+      "insert": " dflkaj
+",
+    },
+    Object {
+      "attributes": Object {
+        "color": "#e2b228",
+      },
+      "insert": "  * ",
+    },
+    Object {
+      "insert": "alskdjflaksdjf
+",
+    },
+    Object {
+      "attributes": Object {
+        "color": "#e2b228",
+      },
+      "insert": "  ** ",
+    },
+    Object {
+      "insert": "alksdjflaksdjfklajsdf
+",
+    },
+    Object {
+      "attributes": Object {
+        "color": "#e2b228",
+      },
+      "insert": "  ** ",
+    },
+    Object {
+      "insert": "alksdjflaksdjf
+",
+    },
+    Object {
+      "attributes": Object {
+        "color": "#e2b228",
+      },
+      "insert": "  * ",
+    },
+    Object {
+      "insert": "alksjdflkajsdfklj
+",
+    },
+    Object {
+      "attributes": Object {
+        "color": "#e2b228",
+      },
+      "insert": "- ",
+    },
+    Object {
+      "insert": "laksjdflaksdjflkajsdlfkjklajsdlfkjalsdkf
+
+",
+    },
+    Object {
+      "attributes": Object {
+        "background": "red",
+        "color": "white",
+      },
+      "insert": "TODO",
+    },
+    Object {
+      "attributes": Object {
+        "color": "gray",
+      },
+      "insert": ": ",
+    },
+    Object {
+      "insert": "lorem ipsum
+",
+    },
+    Object {
+      "attributes": Object {
+        "background": "red",
+        "color": "white",
+      },
+      "insert": "FIXME",
+    },
+    Object {
+      "attributes": Object {
+        "color": "gray",
+      },
+      "insert": ": ",
+    },
+    Object {
+      "insert": "lorem ipsum
+",
+    },
+    Object {
+      "attributes": Object {
+        "background": "red",
+        "color": "white",
+      },
+      "insert": "IMPORTANT",
+    },
+    Object {
+      "attributes": Object {
+        "color": "gray",
+      },
+      "insert": ": ",
+    },
+    Object {
+      "insert": "lorem ipsum
+",
+    },
+    Object {
+      "attributes": Object {
+        "background": "red",
+        "color": "white",
+      },
+      "insert": "WARNING",
+    },
+    Object {
+      "attributes": Object {
+        "color": "gray",
+      },
+      "insert": ": ",
+    },
+    Object {
+      "insert": "lorem ipsum
+",
+    },
+    Object {
+      "attributes": Object {
+        "background": "red",
+        "color": "white",
+      },
+      "insert": "TIP",
+    },
+    Object {
+      "attributes": Object {
+        "color": "gray",
+      },
+      "insert": ": ",
+    },
+    Object {
+      "insert": "lorem ipsum
+
+",
+    },
+  ],
+}
+`;
+
+exports[`Use markup bold call with Asciidoc 1`] = `
+Delta {
+  "ops": Array [
+    Object {
+      "insert": "*test*
+",
+    },
+  ],
+}
+`;
+
+exports[`Use markup header 0 call with Asciidoc 1`] = `
+Delta {
+  "ops": Array [
+    Object {
+      "insert": "test
+",
+    },
+  ],
+}
+`;
+
+exports[`Use markup header 1 call with Asciidoc 1`] = `
+Delta {
+  "ops": Array [
+    Object {
+      "insert": "= test
+",
+    },
+  ],
+}
+`;
+
+exports[`Use markup header 2 call with Asciidoc 1`] = `
+Delta {
+  "ops": Array [
+    Object {
+      "insert": "== test
+",
+    },
+  ],
+}
+`;
+
+exports[`Use markup header 3 call with Asciidoc 1`] = `
+Delta {
+  "ops": Array [
+    Object {
+      "insert": "=== test
+",
+    },
+  ],
+}
+`;
+
+exports[`Use markup header 4 call with Asciidoc 1`] = `
+Delta {
+  "ops": Array [
+    Object {
+      "insert": "==== test
+",
+    },
+  ],
+}
+`;
+
+exports[`Use markup header 5 call with Asciidoc 1`] = `
+Delta {
+  "ops": Array [
+    Object {
+      "insert": "===== test
+",
+    },
+  ],
+}
+`;
+
+exports[`Use markup header 6 call with Asciidoc 1`] = `
+Delta {
+  "ops": Array [
+    Object {
+      "insert": "====== test
+",
+    },
+  ],
+}
+`;
+
+exports[`Use markup set call to change the mode to asciidoc 1`] = `
+Object {
+  "content": "test",
+  "custom": Object {
+    "background": "red",
+    "foreground": "yellow",
+  },
+  "dirtyLimit": 20,
+  "followLinks": false,
+  "fontName": "Fira Code",
+  "fontSize": 14,
+  "highlight": "solarized-light",
+  "idleDelay": 2000,
+  "mode": 0,
+  "onChange": [Function],
+  "onClick": [Function],
+  "onClickLink": [Function],
+}
+`;

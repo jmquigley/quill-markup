@@ -7,7 +7,6 @@ require('browser-env')();
 require('./helpers/MutationObserver')(global);
 require('./helpers/getSelection')(global);
 
-import test from 'ava';
 import * as fs from 'fs-extra';
 import * as path from 'path';
 import {join} from 'util.join';
@@ -24,11 +23,11 @@ let quill: any = null;
 
 import {Markup} from '../index';
 
-test.after.always.cb(t => {
-	cleanup(path.basename(__filename), t);
+afterAll((done) => {
+	cleanup(path.basename(__filename), done);
 });
 
-test.beforeEach(t => {
+beforeEach(() => {
 	document.body.innerHTML = data;
 	Quill.register('modules/markup', Markup);
 	quill = new Quill('#editor', {
@@ -38,13 +37,13 @@ test.beforeEach(t => {
 		}
 	});
 
-	t.truthy(quill);
+	expect(quill).toBeDefined();
 });
 
-test('Test adding the markup module to quill', t => {
+test('Test adding the markup module to quill', () => {
 	const markup = quill.getModule('markup');
-	t.truthy(markup);
-	t.truthy(markup.editor);
-	t.truthy(markup.editorKey);
-	t.deepEqual(markup.modes, ['asciidoc', 'markdown', 'restructuredtext', 'text']);
+	expect(markup).toBeDefined();
+	expect(markup.editor).toBeDefined();
+	expect(markup.editorKey).toBeDefined();
+	expect(markup.modes).toEqual(['asciidoc', 'markdown', 'restructuredtext', 'text']);
 });

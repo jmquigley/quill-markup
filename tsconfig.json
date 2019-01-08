@@ -9,7 +9,7 @@
 		"noImplicitAny": true,
 		"noImplicitReturns": true,
 		"noUnusedLocals": true,
-		"noUnusedParameters": true,
+		"noUnusedParameters": false,
 		"skipLibCheck": true,
 		"sourceMap": false,
 		"strictNullChecks": false,
@@ -22,6 +22,7 @@
 		"coverage",
 		"docs",
 		"node_modules",
-		"public"
+		"public",
+		"__tests__"
 	]
 }

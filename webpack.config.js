@@ -16,7 +16,7 @@ const banner = new webpack.BannerPlugin({
 	entryOnly: true
 });
 
-leader(banner.banner);
+leader(banner.options.banner);
 
 const constants = new webpack.DefinePlugin({
 	MARKUP_VERSION: JSON.stringify(pkg.version),
@@ -54,7 +54,7 @@ module.exports = {
 			{
 				test: /\.ts$/,
 				exclude: /node_modules|public/,
-				loader: 'js-output-loader!babel-loader!awesome-typescript-loader'
+				loader: 'babel-loader!awesome-typescript-loader'
 			},
 			{
 				test: /\.css$/,
@@ -80,6 +80,6 @@ module.exports = {
 		banner,
 		constants,
 		new MiniCssExtractPlugin({filename: "styles.css"}),
-		new MinifyPlugin()
+		// new MinifyPlugin()
 	]
 }

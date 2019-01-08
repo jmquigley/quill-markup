@@ -7,7 +7,6 @@ require('browser-env')();
 require('./helpers/MutationObserver')(global);
 require('./helpers/getSelection')(global);
 
-import test from 'ava';
 import * as fs from 'fs-extra';
 import * as path from 'path';
 // import * as sinon from 'sinon';
@@ -26,50 +25,50 @@ let quill: any = null;
 
 import {Markup, MarkupMode} from '../index';
 
-test.after.always.cb(t => {
-	cleanup(path.basename(__filename), t);
+afterAll((done) => {
+	cleanup(path.basename(__filename), done);
 });
 
-test.beforeEach(t => {
+beforeEach(() => {
 	document.body.innerHTML = data;
 	quill = new Quill('#editor', {
 		theme: 'snow'
 	});
 
-	t.truthy(quill);
+	expect(quill).toBeDefined();
 });
 
-test('Create Markup instance with Asciidoc mode', t => {
+test('Create Markup instance with Asciidoc mode', () => {
 	const fixture = new Fixture('asciidoc');
-	t.truthy(fixture);
+	expect(fixture).toBeDefined();
 
 	const txt = fixture.read('file.txt');
-	t.truthy(txt);
+	expect(txt).toBeDefined();
 
 	const markup = new Markup(quill, {
 		content: txt,
 		mode: MarkupMode.asciidoc
 	});
 
-	t.truthy(markup);
-	t.truthy(markup.quill);
-	t.truthy(markup.editor);
+	expect(markup).toBeDefined();
+	expect(markup.quill).toBeDefined();
+	expect(markup.editor).toBeDefined();
 
 	markup.refresh();
 
 	const delta = markup.quill.getContents();
-	t.truthy(delta);
+	expect(delta).toBeDefined();
 	debug('%j', delta);
 
-	t.snapshot(delta);
+	expect(delta).toMatchSnapshot();
 });
 
-test('Use markup set call to change the mode to asciidoc', t => {
+test('Use markup set call to change the mode to asciidoc', () => {
 	const markup = new Markup(quill);
 
-	t.truthy(markup);
-	t.truthy(markup.quill);
-	t.truthy(markup.editor);
+	expect(markup).toBeDefined();
+	expect(markup.quill).toBeDefined();
+	expect(markup.editor).toBeDefined();
 
 	markup.set({
 		content: 'test',
@@ -82,41 +81,41 @@ test('Use markup set call to change the mode to asciidoc', t => {
 		mode: MarkupMode.asciidoc
 	});
 
-	t.truthy(markup.opts);
-	t.snapshot(markup.opts);
+	expect(markup.opts).toBeDefined();
+	expect(markup.opts).toMatchSnapshot();
 });
 
-test('Use markup bold call with Asciidoc', t => {
+test('Use markup bold call with Asciidoc', () => {
 	const markup = new Markup(quill, {
 		content: 'test',
 		mode: MarkupMode.asciidoc
 	});
 
-	t.truthy(markup);
-	t.truthy(markup.quill);
-	t.truthy(markup.editor);
+	expect(markup).toBeDefined();
+	expect(markup.quill).toBeDefined();
+	expect(markup.editor).toBeDefined();
 
 	markup.setBold();
 
 	const delta = markup.quill.getContents();
-	t.truthy(delta);
+	expect(delta).toBeDefined();
 	debug('%j', delta);
 
-	t.snapshot(delta);
+	expect(delta).toMatchSnapshot();
 });
 
 for (const level of ['0', '1', '2', '3', '4', '5', '6']) {
-	test(`Use markup header ${level} call with Asciidoc`, t => {
+	test(`Use markup header ${level} call with Asciidoc`, () => {
 		const markup = new Markup(quill, {content: 'test', mode: MarkupMode.asciidoc});
 
-		t.truthy(markup);
-		t.truthy(markup.quill);
-		t.truthy(markup.editor);
+		expect(markup).toBeDefined();
+		expect(markup.quill).toBeDefined();
+		expect(markup.editor).toBeDefined();
 
 		markup.setHeader(level);
 
 		const delta = markup.quill.getContents();
-		t.truthy(delta);
-		t.snapshot(delta);
+		expect(delta).toBeDefined();
+		expect(delta).toMatchSnapshot();
 	});
 }

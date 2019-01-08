@@ -1,0 +1,842 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Create Markup instance with RestructuredText mode 1`] = `
+Delta {
+  "ops": Array [
+    Object {
+      "attributes": Object {
+        "color": "#ffff00",
+      },
+      "insert": "====",
+    },
+    Object {
+      "insert": "
+",
+    },
+    Object {
+      "attributes": Object {
+        "color": "#ffff00",
+      },
+      "insert": "text",
+    },
+    Object {
+      "insert": "
+",
+    },
+    Object {
+      "attributes": Object {
+        "color": "#ffff00",
+      },
+      "insert": "====",
+    },
+    Object {
+      "insert": "
+lorem ipsum
+
+",
+    },
+    Object {
+      "attributes": Object {
+        "color": "#ffd700",
+      },
+      "insert": "text",
+    },
+    Object {
+      "insert": "
+",
+    },
+    Object {
+      "attributes": Object {
+        "color": "#ffd700",
+      },
+      "insert": "====",
+    },
+    Object {
+      "insert": "
+lorem ipsum
+
+",
+    },
+    Object {
+      "attributes": Object {
+        "color": "#ffaf00",
+      },
+      "insert": "text",
+    },
+    Object {
+      "insert": "
+",
+    },
+    Object {
+      "attributes": Object {
+        "color": "#ffaf00",
+      },
+      "insert": "----",
+    },
+    Object {
+      "insert": "
+lorem ipsum
+
+",
+    },
+    Object {
+      "attributes": Object {
+        "color": "#ff8700",
+      },
+      "insert": "text",
+    },
+    Object {
+      "insert": "
+",
+    },
+    Object {
+      "attributes": Object {
+        "color": "#ff8700",
+      },
+      "insert": "****",
+    },
+    Object {
+      "insert": "
+lorem ipsum
+
+",
+    },
+    Object {
+      "attributes": Object {
+        "color": "#ff5f00",
+      },
+      "insert": "test",
+    },
+    Object {
+      "insert": "
+",
+    },
+    Object {
+      "attributes": Object {
+        "color": "#ff5f00",
+      },
+      "insert": "~~~~",
+    },
+    Object {
+      "insert": "
+lorem ipsum
+
+",
+    },
+    Object {
+      "attributes": Object {
+        "color": "#ff0000",
+      },
+      "insert": "test",
+    },
+    Object {
+      "insert": "
+",
+    },
+    Object {
+      "attributes": Object {
+        "color": "#ff0000",
+      },
+      "insert": "^^^^",
+    },
+    Object {
+      "insert": "
+lorem ipsum
+
+",
+    },
+    Object {
+      "attributes": Object {
+        "color": "#af00ff",
+      },
+      "insert": "*italic*",
+    },
+    Object {
+      "insert": "
+",
+    },
+    Object {
+      "attributes": Object {
+        "color": "#0087ff",
+      },
+      "insert": "**bold**",
+    },
+    Object {
+      "insert": "
+",
+    },
+    Object {
+      "attributes": Object {
+        "color": "gray",
+      },
+      "insert": "\`\`",
+    },
+    Object {
+      "attributes": Object {
+        "color": "#7aa6da",
+      },
+      "insert": "monospace",
+    },
+    Object {
+      "attributes": Object {
+        "color": "gray",
+      },
+      "insert": "\`\`",
+    },
+    Object {
+      "insert": "
+
+
+",
+    },
+    Object {
+      "attributes": Object {
+        "color": "#7aa6da",
+      },
+      "insert": "reference",
+    },
+    Object {
+      "attributes": Object {
+        "color": "gray",
+      },
+      "insert": "_",
+    },
+    Object {
+      "insert": "
+",
+    },
+    Object {
+      "attributes": Object {
+        "color": "gray",
+      },
+      "insert": "\`",
+    },
+    Object {
+      "attributes": Object {
+        "color": "#7aa6da",
+      },
+      "insert": "phrase reference",
+    },
+    Object {
+      "attributes": Object {
+        "color": "gray",
+      },
+      "insert": "\`_",
+    },
+    Object {
+      "insert": "
+",
+    },
+    Object {
+      "attributes": Object {
+        "color": "gray",
+      },
+      "insert": "|",
+    },
+    Object {
+      "attributes": Object {
+        "color": "#7aa6da",
+      },
+      "insert": "substitution reference",
+    },
+    Object {
+      "attributes": Object {
+        "color": "gray",
+      },
+      "insert": "|",
+    },
+    Object {
+      "insert": "
+",
+    },
+    Object {
+      "attributes": Object {
+        "color": "gray",
+      },
+      "insert": "[",
+    },
+    Object {
+      "attributes": Object {
+        "color": "#7aa6da",
+      },
+      "insert": "1",
+    },
+    Object {
+      "attributes": Object {
+        "color": "gray",
+      },
+      "insert": "]_",
+    },
+    Object {
+      "insert": "
+",
+    },
+    Object {
+      "attributes": Object {
+        "color": "gray",
+      },
+      "insert": "[",
+    },
+    Object {
+      "attributes": Object {
+        "color": "#7aa6da",
+      },
+      "insert": "CIT2002",
+    },
+    Object {
+      "attributes": Object {
+        "color": "gray",
+      },
+      "insert": "]_",
+    },
+    Object {
+      "insert": "
+",
+    },
+    Object {
+      "attributes": Object {
+        "color": "gray",
+      },
+      "insert": ".. [",
+    },
+    Object {
+      "attributes": Object {
+        "color": "#7aa6da",
+      },
+      "insert": "*",
+    },
+    Object {
+      "attributes": Object {
+        "color": "gray",
+      },
+      "insert": "] ",
+    },
+    Object {
+      "attributes": Object {
+        "color": "#b9ca4a",
+      },
+      "insert": "This is the first one. ",
+    },
+    Object {
+      "insert": "
+",
+    },
+    Object {
+      "attributes": Object {
+        "color": "gray",
+      },
+      "insert": ".. _",
+    },
+    Object {
+      "attributes": Object {
+        "color": "#7aa6da",
+      },
+      "insert": "Python",
+    },
+    Object {
+      "attributes": Object {
+        "color": "gray",
+      },
+      "insert": ": ",
+    },
+    Object {
+      "attributes": Object {
+        "color": "#b9ca4a",
+      },
+      "insert": "http://www.python.org/",
+    },
+    Object {
+      "insert": "
+",
+    },
+    Object {
+      "attributes": Object {
+        "color": "gray",
+      },
+      "insert": "\`",
+    },
+    Object {
+      "attributes": Object {
+        "color": "#7aa6da",
+      },
+      "insert": "Python ",
+    },
+    Object {
+      "attributes": Object {
+        "color": "gray",
+      },
+      "insert": "<",
+    },
+    Object {
+      "attributes": Object {
+        "color": "#b9ca4a",
+      },
+      "insert": "http://www.python.org/",
+    },
+    Object {
+      "attributes": Object {
+        "color": "gray",
+      },
+      "insert": ">\`_",
+    },
+    Object {
+      "insert": "
+",
+    },
+    Object {
+      "attributes": Object {
+        "color": "gray",
+      },
+      "insert": ".. ",
+    },
+    Object {
+      "attributes": Object {
+        "color": "#7aa6da",
+      },
+      "insert": "image",
+    },
+    Object {
+      "attributes": Object {
+        "color": "gray",
+      },
+      "insert": ":: ",
+    },
+    Object {
+      "attributes": Object {
+        "color": "#b9ca4a",
+      },
+      "insert": "images/ball1.gif",
+    },
+    Object {
+      "insert": "
+",
+    },
+    Object {
+      "attributes": Object {
+        "color": "gray",
+      },
+      "insert": ".. |",
+    },
+    Object {
+      "attributes": Object {
+        "color": "#7aa6da",
+      },
+      "insert": "biohazard| image",
+    },
+    Object {
+      "attributes": Object {
+        "color": "gray",
+      },
+      "insert": ":: ",
+    },
+    Object {
+      "attributes": Object {
+        "color": "#b9ca4a",
+      },
+      "insert": "biohazard.png",
+    },
+    Object {
+      "insert": "
+
+",
+    },
+    Object {
+      "attributes": Object {
+        "color": "#b9ca4a",
+      },
+      "insert": "http://www.example.com",
+    },
+    Object {
+      "insert": "
+",
+    },
+    Object {
+      "attributes": Object {
+        "color": "#b9ca4a",
+      },
+      "insert": "test@example.com",
+    },
+    Object {
+      "insert": "
+
+",
+    },
+    Object {
+      "attributes": Object {
+        "color": "silver",
+      },
+      "insert": "::",
+    },
+    Object {
+      "insert": "
+
+    let blah: number = \\"stuff\\";",
+    },
+    Object {
+      "attributes": Object {
+        "code-block": true,
+      },
+      "insert": "
+
+",
+    },
+    Object {
+      "insert": "    function test() {",
+    },
+    Object {
+      "attributes": Object {
+        "code-block": true,
+      },
+      "insert": "
+",
+    },
+    Object {
+      "insert": "        if (test) {",
+    },
+    Object {
+      "attributes": Object {
+        "code-block": true,
+      },
+      "insert": "
+",
+    },
+    Object {
+      "insert": "            for (let i = 0; i < 10; i++) {",
+    },
+    Object {
+      "attributes": Object {
+        "code-block": true,
+      },
+      "insert": "
+",
+    },
+    Object {
+      "insert": "                console.log('blah');",
+    },
+    Object {
+      "attributes": Object {
+        "code-block": true,
+      },
+      "insert": "
+",
+    },
+    Object {
+      "insert": "            }",
+    },
+    Object {
+      "attributes": Object {
+        "code-block": true,
+      },
+      "insert": "
+",
+    },
+    Object {
+      "insert": "        }",
+    },
+    Object {
+      "attributes": Object {
+        "code-block": true,
+      },
+      "insert": "
+",
+    },
+    Object {
+      "insert": "    }",
+    },
+    Object {
+      "attributes": Object {
+        "code-block": true,
+      },
+      "insert": "
+",
+    },
+    Object {
+      "insert": "
+
+lorem ipsum ",
+    },
+    Object {
+      "attributes": Object {
+        "color": "",
+      },
+      "insert": ":attribute:",
+    },
+    Object {
+      "insert": " and a ",
+    },
+    Object {
+      "attributes": Object {
+        "color": "",
+      },
+      "insert": ":keyword:",
+    },
+    Object {
+      "insert": "
+
+",
+    },
+    Object {
+      "attributes": Object {
+        "color": "gray",
+      },
+      "insert": "| block text",
+    },
+    Object {
+      "insert": "
+",
+    },
+    Object {
+      "attributes": Object {
+        "color": "gray",
+      },
+      "insert": "| block text",
+    },
+    Object {
+      "insert": "
+",
+    },
+    Object {
+      "attributes": Object {
+        "color": "gray",
+      },
+      "insert": "| block text",
+    },
+    Object {
+      "insert": "
+
+",
+    },
+    Object {
+      "attributes": Object {
+        "color": "#e2b228",
+      },
+      "insert": "* ",
+    },
+    Object {
+      "insert": "lorem ipsum 1
+",
+    },
+    Object {
+      "attributes": Object {
+        "color": "#e2b228",
+      },
+      "insert": "* ",
+    },
+    Object {
+      "insert": "lorem ipsum 2
+
+",
+    },
+    Object {
+      "attributes": Object {
+        "color": "#e2b228",
+      },
+      "insert": "- ",
+    },
+    Object {
+      "insert": "lorem ipsum 1
+",
+    },
+    Object {
+      "attributes": Object {
+        "color": "#e2b228",
+      },
+      "insert": "- ",
+    },
+    Object {
+      "insert": "lorem ipsum 2
+
+",
+    },
+    Object {
+      "attributes": Object {
+        "color": "#e2b228",
+      },
+      "insert": "+ ",
+    },
+    Object {
+      "insert": "lorem ipsum 1
+",
+    },
+    Object {
+      "attributes": Object {
+        "color": "#e2b228",
+      },
+      "insert": "+ ",
+    },
+    Object {
+      "insert": "tlorem ipsum 2
+
+",
+    },
+    Object {
+      "attributes": Object {
+        "color": "#e2b228",
+      },
+      "insert": "#. ",
+    },
+    Object {
+      "insert": "lorem ipsum 1
+",
+    },
+    Object {
+      "attributes": Object {
+        "color": "#e2b228",
+      },
+      "insert": "#. ",
+    },
+    Object {
+      "insert": "lorem ipsum 2
+
+",
+    },
+    Object {
+      "attributes": Object {
+        "color": "#e2b228",
+      },
+      "insert": "1. ",
+    },
+    Object {
+      "insert": "lorem ipsum 1
+",
+    },
+    Object {
+      "attributes": Object {
+        "color": "#e2b228",
+      },
+      "insert": "2. ",
+    },
+    Object {
+      "insert": "lorem ipsum 2
+",
+    },
+    Object {
+      "attributes": Object {
+        "color": "#e2b228",
+      },
+      "insert": "3. ",
+    },
+    Object {
+      "insert": "lorem ipsum 3
+",
+    },
+    Object {
+      "attributes": Object {
+        "color": "#e2b228",
+      },
+      "insert": "	a. ",
+    },
+    Object {
+      "insert": "lorem ipsum
+",
+    },
+    Object {
+      "attributes": Object {
+        "color": "#e2b228",
+      },
+      "insert": "	b. ",
+    },
+    Object {
+      "insert": "lorem ipsum
+",
+    },
+    Object {
+      "attributes": Object {
+        "color": "#e2b228",
+      },
+      "insert": "	c. ",
+    },
+    Object {
+      "insert": "lorem ipsum
+
+",
+    },
+    Object {
+      "attributes": Object {
+        "background": "red",
+        "color": "white",
+      },
+      "insert": "TODO",
+    },
+    Object {
+      "attributes": Object {
+        "color": "gray",
+      },
+      "insert": ": ",
+    },
+    Object {
+      "insert": "lorem ipsum
+",
+    },
+    Object {
+      "attributes": Object {
+        "background": "red",
+        "color": "white",
+      },
+      "insert": "FIXME",
+    },
+    Object {
+      "attributes": Object {
+        "color": "gray",
+      },
+      "insert": ": ",
+    },
+    Object {
+      "insert": "lorem ipsum
+",
+    },
+    Object {
+      "attributes": Object {
+        "background": "red",
+        "color": "white",
+      },
+      "insert": "IMPORTANT",
+    },
+    Object {
+      "attributes": Object {
+        "color": "gray",
+      },
+      "insert": ": ",
+    },
+    Object {
+      "insert": "lorem ipsum
+",
+    },
+    Object {
+      "attributes": Object {
+        "background": "red",
+        "color": "white",
+      },
+      "insert": "WARNING",
+    },
+    Object {
+      "attributes": Object {
+        "color": "gray",
+      },
+      "insert": ": ",
+    },
+    Object {
+      "insert": "lorem ipsum
+",
+    },
+    Object {
+      "attributes": Object {
+        "background": "red",
+        "color": "white",
+      },
+      "insert": "TIP",
+    },
+    Object {
+      "attributes": Object {
+        "color": "gray",
+      },
+      "insert": ": ",
+    },
+    Object {
+      "insert": "lorem ipsum
+
+",
+    },
+  ],
+}
+`;

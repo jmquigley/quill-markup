@@ -7,7 +7,6 @@ require('browser-env')();
 require('./helpers/MutationObserver')(global);
 require('./helpers/getSelection')(global);
 
-import test from 'ava';
 import * as fs from 'fs-extra';
 import * as path from 'path';
 import * as sinon from 'sinon';
@@ -20,54 +19,54 @@ const data = fs.readFileSync(join(__dirname, 'fixtures', 'empty-html', 'index.ht
 
 (global as any).Quill = require('quill');
 
-// can't use this before the global require and jsdom initialization
+// can't use expect before the global require and jsdom initialization
 import {Quill} from '../lib/helpers';
 let quill: any = null;
 
 import {Markup, MarkupMode} from '../index';
 
-test.after.always.cb(t => {
-	cleanup(path.basename(__filename), t);
+afterAll((done) => {
+	cleanup(path.basename(__filename), done);
 });
 
-test.beforeEach(t => {
+beforeEach(() => {
 	document.body.innerHTML = data;
 	quill = new Quill('#editor', {
 		theme: 'snow'
 	});
 
-	t.truthy(quill);
+	expect(quill).toBeDefined();
 });
 
-test('Create Markup instance with Text mode', t => {
+test('Create Markup instance with Text mode', () => {
 	const fixture = new Fixture('text');
-	t.truthy(fixture);
+	expect(fixture).toBeDefined();
 
 	const md = fixture.read('file.txt');
-	t.truthy(md);
+	expect(md).toBeDefined();
 
 	const markup = new Markup(quill, {
 		content: md,
 		mode: MarkupMode.text
 	});
 
-	t.truthy(markup);
-	t.truthy(markup.quill);
-	t.truthy(markup.editor);
+	expect(markup).toBeDefined();
+	expect(markup.quill).toBeDefined();
+	expect(markup.editor).toBeDefined();
 
 	const delta = markup.quill.getContents();
-	t.truthy(delta);
+	expect(delta).toBeDefined();
 	debug('%j', delta);
 
-	t.snapshot(delta);
+	expect(delta).toMatchSnapshot();
 });
 
-test('Use markup set call to change the mode', t => {
+test('Use markup set call to change the mode', () => {
 	const markup = new Markup(quill);
 
-	t.truthy(markup);
-	t.truthy(markup.quill);
-	t.truthy(markup.editor);
+	expect(markup).toBeDefined();
+	expect(markup.quill).toBeDefined();
+	expect(markup.editor).toBeDefined();
 
 	markup.set({
 		content: 'test',
@@ -80,124 +79,124 @@ test('Use markup set call to change the mode', t => {
 		mode: MarkupMode.text
 	});
 
-	t.truthy(markup.opts);
-	t.snapshot(markup.opts);
+	expect(markup.opts).toBeDefined();
+	expect(markup.opts).toMatchSnapshot();
 });
 
-test('Use Markup bold call with Text', t => {
+test('Use Markup bold call with Text', () => {
 	const markup = new Markup(quill, {
 		content: 'test',
 		mode: MarkupMode.text
 	});
 
-	t.truthy(markup);
-	t.truthy(markup.quill);
-	t.truthy(markup.editor);
+	expect(markup).toBeDefined();
+	expect(markup.quill).toBeDefined();
+	expect(markup.editor).toBeDefined();
 
 	markup.setBold();
 
 	const delta = markup.quill.getContents();
-	t.truthy(delta);
+	expect(delta).toBeDefined();
 	debug('%j', delta);
 
-	t.snapshot(delta);
+	expect(delta).toMatchSnapshot();
 });
 
 for (const level of ['0', '1', '2', '3', '4', '5', '6']) {
-	test(`Use Markup header ${level} call with Text`, t => {
+	test(`Use Markup header ${level} call with Text`, () => {
 		const markup = new Markup(quill, {content: 'test', mode: MarkupMode.text});
 
-		t.truthy(markup);
-		t.truthy(markup.quill);
-		t.truthy(markup.editor);
+		expect(markup).toBeDefined();
+		expect(markup.quill).toBeDefined();
+		expect(markup.editor).toBeDefined();
 
 		markup.setHeader(level);
 
 		const delta = markup.quill.getContents();
-		t.truthy(delta);
-		t.snapshot(delta);
+		expect(delta).toBeDefined();
+		expect(delta).toMatchSnapshot();
 	});
 }
 
-test('Use markup italic call with Text', t => {
+test('Use markup italic call with Text', () => {
 	const markup = new Markup(quill, {
 		content: 'test',
 		mode: MarkupMode.text
 	});
 
-	t.truthy(markup);
-	t.truthy(markup.quill);
-	t.truthy(markup.editor);
+	expect(markup).toBeDefined();
+	expect(markup.quill).toBeDefined();
+	expect(markup.editor).toBeDefined();
 
 	markup.setItalic();
 
 	const delta = markup.quill.getContents();
-	t.truthy(delta);
+	expect(delta).toBeDefined();
 	debug('%j', delta);
 
-	t.snapshot(delta);
+	expect(delta).toMatchSnapshot();
 });
 
-test('Use markup setMode call with Text', t => {
+test('Use markup setMode call with Text', () => {
 	const markup = new Markup(quill, {
 		content: 'test'
 	});
 
-	t.truthy(markup);
-	t.truthy(markup.quill);
-	t.truthy(markup.editor);
+	expect(markup).toBeDefined();
+	expect(markup.quill).toBeDefined();
+	expect(markup.editor).toBeDefined();
 
 	markup.setMode('markdown');
-	t.is(markup.opts.mode, MarkupMode.markdown);
+	expect(markup.opts.mode).toBe(MarkupMode.markdown);
 	markup.setMode('text');
-	t.is(markup.opts.mode, MarkupMode.text);
+	expect(markup.opts.mode).toBe(MarkupMode.text);
 
 	const delta = markup.quill.getContents();
-	t.truthy(delta);
+	expect(delta).toBeDefined();
 	debug('%j', delta);
 
-	t.snapshot(delta);
+	expect(delta).toMatchSnapshot();
 });
 
-test('Use markup strikethrough call with Text', t => {
+test('Use markup strikethrough call with Text', () => {
 	const markup = new Markup(quill, {
 		content: 'test',
 		mode: MarkupMode.text
 	});
 
-	t.truthy(markup);
-	t.truthy(markup.quill);
-	t.truthy(markup.editor);
+	expect(markup).toBeDefined();
+	expect(markup.quill).toBeDefined();
+	expect(markup.editor).toBeDefined();
 
 	markup.setStrikeThrough();
 
 	const delta = markup.quill.getContents();
-	t.truthy(delta);
+	expect(delta).toBeDefined();
 	debug('%j', delta);
 
-	t.snapshot(delta);
+	expect(delta).toMatchSnapshot();
 });
 
-test('Use markup underline call with Text', t => {
+test('Use markup underline call with Text', () => {
 	const markup = new Markup(quill, {
 		content: 'test',
 		mode: MarkupMode.text
 	});
 
-	t.truthy(markup);
-	t.truthy(markup.quill);
-	t.truthy(markup.editor);
+	expect(markup).toBeDefined();
+	expect(markup.quill).toBeDefined();
+	expect(markup.editor).toBeDefined();
 
 	markup.setUnderline();
 
 	const delta = markup.quill.getContents();
-	t.truthy(delta);
+	expect(delta).toBeDefined();
 	debug('%j', delta);
 
-	t.snapshot(delta);
+	expect(delta).toMatchSnapshot();
 });
 
-test('Click the editor and show that the handler is called', t => {
+test('Click the editor and show that the handler is called', () => {
 	const click = sinon.spy();
 	const clickLink = sinon.spy();
 	const link = '[name](link)';
@@ -210,21 +209,21 @@ test('Click the editor and show that the handler is called', t => {
 		onClickLink: clickLink
 	});
 
-	t.truthy(markup);
-	t.truthy(markup.quill);
-	t.truthy(markup.editor);
+	expect(markup).toBeDefined();
+	expect(markup.quill).toBeDefined();
+	expect(markup.editor).toBeDefined();
 
 	markup.editor.click();
 
-	t.true(click.calledOnce);
-	t.true(click.calledWith(0));
+	expect(click.calledOnce).toBe(true);
+	expect(click.calledWith(0)).toBe(true);
 
-	// There are no links in text mode, so this should show no calls
-	t.false(clickLink.calledOnce);
+	// There are no links in text mode, so expect should show no calls
+	expect(clickLink.calledOnce).toBe(false);
 
 	const delta = markup.quill.getContents();
-	t.truthy(delta);
+	expect(delta).toBeDefined();
 	debug('%j', delta);
 
-	t.snapshot(delta);
+	expect(delta).toMatchSnapshot();
 });
