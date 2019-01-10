@@ -1,3 +1,4 @@
+const TsDeclarationBundlerPlugin = require('ts-declaration-webpack-plugin');
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 const MinifyPlugin = require("babel-minify-webpack-plugin");
 const path = require('path');
@@ -54,7 +55,7 @@ module.exports = {
 			{
 				test: /\.ts$/,
 				exclude: /node_modules|public/,
-				loader: 'babel-loader!awesome-typescript-loader'
+				loader: 'js-output-loader!ts-loader'
 			},
 			{
 				test: /\.css$/,
@@ -80,6 +81,9 @@ module.exports = {
 		banner,
 		constants,
 		new MiniCssExtractPlugin({filename: "styles.css"}),
+		new TsDeclarationBundlerPlugin({
+			name: 'bundle.d.ts'
+		})
 		// new MinifyPlugin()
 	]
 }
