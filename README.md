@@ -11,8 +11,8 @@
 
 ## Requirements
 
-- [Quill](https://quilljs.com/) v1.3.4
-- [Yarn](https://yarnpkg.com/en/) 1.3.2
+- [Quill](https://quilljs.com/) v1.3.6
+- [Yarn](https://yarnpkg.com/en/) 1.12.3
 - [Node](https://nodejs.org/en/) 7.x
 
 
@@ -47,7 +47,7 @@ See the sample application code located in `./public/app.js` and `./public/index
 
 
 ## Overview
-This is a custom [Quill](https://quilljs.com/) module turns the WYSIWYG editor into a a fixed text markup editor (for modes like markdown, restructured text, etc).  It takes advantage of the underlying api for styling, undo/redo, keyboard handling, and syntax highlighting.  It contains the following modes:
+This is a custom [Quill](https://quilljs.com/) module that turns the WYSIWYG editor into a a fixed text markup editor (for modes like markdown, restructured text, etc).  It takes advantage of the underlying api for styling, undo/redo, keyboard handling, and syntax highlighting.  It contains the following text modes:
 
 - [asciidoc](http://powerman.name/doc/asciidoc)
 - [markdown](https://daringfireball.net/projects/markdown/syntax)
@@ -189,7 +189,7 @@ The mode exposes three events as part of the configuration:
 
 - `onChange(text: string)` - Changes that are made to the editor are given as a parameter to this callback.  It is rate limited and will only call this handler every 250ms.
 - `onClick(pos: number)` - When the editor is clicked this callback is invoked.  It is passed the location within the buffer where the click occurred.
-- `onClickLink(link: string)` - A mode that contains links will invoke this callback when one of the links are clicked.  It is passed the string of the link that was pressed.
+- `onClickLink(link: string)` - A mode that contains links will invoke this callback when one of the links are clicked.  It is passed the string of the URI link that was selected.
 
 
 ## Highlight Customization
@@ -230,4 +230,4 @@ The module attributes above contain a key named `.custom`.  This is an object th
 
 ## Testing
 
-Note that some of the testing is limited due to use of JSDOM.  This library, and Quill, rely on `getSelection` to determine positions within the editor.  This function is not available in JSDOM and is a helper stub in this module (see `./test/helpers/getSelection.js`).  Right now I don't see a way to move around within the an instantiated editor within this DOM (to test things like inserting new characters randomly and testing undo/redo).  If any ever uses this and has suggestions on how to overcome this it would be most welcome.
+Note that some of the testing is limited due to the use of JSDOM.  This library, and Quill, rely on `getSelection` to determine positions within the editor.  This function is not available in JSDOM and the tests use a helper stub (see `./__tests__/helpers/getSelection.js`).  Right now I don't see a way to move around within the DOM of this instantiated editor (to test things like inserting new characters randomly and/or testing undo/redo).  If anyone ever uses this plugin and has suggestions on how to overcome this limitation it would be most welcome.
