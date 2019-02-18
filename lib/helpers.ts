@@ -5,7 +5,7 @@
 //
 // import * as q from 'quill';
 
-const debug = require('debug')('helpers');
+const debug = require("debug")("helpers");
 
 /**
  * Retrieves the global instance of Quill.  When Quill is used in a browser, it
@@ -21,19 +21,15 @@ const debug = require('debug')('helpers');
 export function getQuill() {
 	const gQuill = (global as any).Quill;
 	if (!gQuill) {
-		throw new Error('Quill is not loaded in this application');
+		throw new Error("Quill is not loaded in this application");
 	}
 
-	debug('Retrieving global quill instance: %O', gQuill);
+	debug("Retrieving global quill instance: %O", gQuill);
 	return gQuill;
 }
 
 const Quill = getQuill();
-const Delta = Quill.import('delta');
-const Parchment = Quill.import('parchment');
+const Delta = Quill.import("delta");
+const Parchment = Quill.import("parchment");
 
-export {
-	Delta,
-	Parchment,
-	Quill
-};
+export {Delta, Parchment, Quill};

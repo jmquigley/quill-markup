@@ -1,10 +1,10 @@
 {
-	"extends": "tslint:recommended",
+	"extends": ["tslint:recommended", "tslint-config-prettier"],
 	"rules": {
-		"arrow-parens": [true, "ban-single-arg-parens"],
 		"curly": [true, "ignore-same-line"],
-		"indent": [true, "tabs"],
 		"interface-name": [true, "never-prefix"],
+		"jsx-boolean-value": ["never"],
+		"jsx-no-multiline-js": false,
 		"max-line-length": false,
 		"member-ordering": false,
 		"no-bitwise": false,
@@ -14,8 +14,12 @@
 		"no-var-requires": false,
 		"object-literal-shorthand": false,
 		"object-literal-sort-keys": false,
-		"quotemark": [true, "single", "avoid-escape"],
-		"trailing-comma": [true, {"multiline": "never", "singleline": "never"}],
-		"variable-name": [true, "ban-keywords", "check-format", "allow-leading-underscore", "allow-pascal-case"]
+		"variable-name": [
+			true,
+			"ban-keywords",
+			"check-format",
+			"allow-leading-underscore",
+			"allow-pascal-case"
+		]
 	}
 }

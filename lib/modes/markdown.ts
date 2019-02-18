@@ -1,14 +1,13 @@
-'use strict';
+"use strict";
 
-import * as XRegExp from 'xregexp';
-import {BaseMarkupMode} from './base';
+import * as XRegExp from "xregexp";
+import {BaseMarkupMode} from "./base";
 
-const debug = require('debug')('Markdown');
+const debug = require("debug")("Markdown");
 
 export class Markdown extends BaseMarkupMode {
-
 	// > text
-	private _blockquote: RegExp = XRegExp(/^>\s.*/gmi);
+	private _blockquote: RegExp = XRegExp(/^>\s.*/gim);
 
 	// **text**
 	private _bold: RegExp = XRegExp(/(\*{2})[^\*\n]*?\1/gi);
@@ -16,39 +15,41 @@ export class Markdown extends BaseMarkupMode {
 	// ```{language}
 	// {code}
 	// ```
-	protected _code: RegExp = XRegExp(/(^\n[ \t]*```)(.*\s)([^`]*?)(```.*\s)/gmi);
+	protected _code: RegExp = XRegExp(
+		/(^\n[ \t]*```)(.*\s)([^`]*?)(```.*\s)/gim
+	);
 
 	// <!-- comment -->
-	protected _comment: RegExp = XRegExp(/<!--[\S\s]*?-->/gmi);
+	protected _comment: RegExp = XRegExp(/<!--[\S\s]*?-->/gim);
 
 	// # {text}
-	private _h1: RegExp = XRegExp(/^#\s+.*/gmi);
+	private _h1: RegExp = XRegExp(/^#\s+.*/gim);
 
 	// ## {text}
-	private _h2: RegExp = XRegExp(/^#{2}\s+.*/gmi);
+	private _h2: RegExp = XRegExp(/^#{2}\s+.*/gim);
 
 	// ### {text}
-	private _h3: RegExp = XRegExp(/^#{3}\s+.*/gmi);
+	private _h3: RegExp = XRegExp(/^#{3}\s+.*/gim);
 
 	// #### {text}
-	private _h4: RegExp = XRegExp(/^#{4}\s+.*/gmi);
+	private _h4: RegExp = XRegExp(/^#{4}\s+.*/gim);
 
 	// ##### {text}
-	private _h5: RegExp = XRegExp(/^#{5}\s+.*/gmi);
+	private _h5: RegExp = XRegExp(/^#{5}\s+.*/gim);
 
 	// ###### {text}
-	private _h6: RegExp = XRegExp(/^#{6}\s+.*/gmi);
+	private _h6: RegExp = XRegExp(/^#{6}\s+.*/gim);
 
 	// {text}
 	// ======
-	private _h1block: RegExp = XRegExp(/^[^=\s]+(\r\n|\r|\n)==+/gmi);
+	private _h1block: RegExp = XRegExp(/^[^=\s]+(\r\n|\r|\n)==+/gim);
 
 	// {text}
 	// ------
-	private _h2block: RegExp = XRegExp(/^[^-\s]+(\r\n|\r|\n)--+/gmi);
+	private _h2block: RegExp = XRegExp(/^[^-\s]+(\r\n|\r|\n)--+/gim);
 
 	// horizontal rule
-	private _hr: RegExp = XRegExp(/^\-{3,}|^\*{3,}|^_{3,}/gmi);
+	private _hr: RegExp = XRegExp(/^\-{3,}|^\*{3,}|^_{3,}/gim);
 
 	// *text*
 	private _italic: RegExp = XRegExp(/(\*)[^\*\n]*?\1/gi);
@@ -57,19 +58,27 @@ export class Markdown extends BaseMarkupMode {
 	private _link1: RegExp = XRegExp(/(\[)([^\]]*)(\])(?![\[\(])/gi);
 
 	// [text](link) or ![text](link)
-	private _link2: RegExp = XRegExp(/(!?\[)([^\]^\]\[^\]\]]*)(\]\()([^\]\)]*)(\))/gi);
+	private _link2: RegExp = XRegExp(
+		/(!?\[)([^\]^\]\[^\]\]]*)(\]\()([^\]\)]*)(\))/gi
+	);
 
 	// [text][id] or ![text][id]
-	private _link3: RegExp = XRegExp(/(!?\[)([^\]^\]\[^\]\]]*)(\]\[)([^\]]*)(\])/gi);
+	private _link3: RegExp = XRegExp(
+		/(!?\[)([^\]^\]\[^\]\]]*)(\]\[)([^\]]*)(\])/gi
+	);
 
 	// [text]: [url] "title"
-	private _link4: RegExp = XRegExp(/(\[)([^\]^\]\[^\]\]]*)(\]\:\s+)([^\s]+)(\s+)("[^"]*?"){0,1}/gi);
+	private _link4: RegExp = XRegExp(
+		/(\[)([^\]^\]\[^\]\]]*)(\]\:\s+)([^\s]+)(\s+)("[^"]*?"){0,1}/gi
+	);
 
 	// + {text}
 	// - {text}
 	// * {text}
 	// ##. {text}
-	private _list: RegExp = XRegExp(/^\s*(?=([\*\-\+]{1})+)\1*|^\s*(?=(\w+\.))\2*\s(?![ \t]+)/gmi);
+	private _list: RegExp = XRegExp(
+		/^\s*(?=([\*\-\+]{1})+)\1*|^\s*(?=(\w+\.))\2*\s(?![ \t]+)/gim
+	);
 
 	// `text`
 	private _mono: RegExp = XRegExp(/(`{1})(?!\`).+?\1/gi);
@@ -82,7 +91,7 @@ export class Markdown extends BaseMarkupMode {
 
 	constructor(quill: any) {
 		super(quill);
-		debug('creating markdown mode %o', quill);
+		debug("creating markdown mode %o", quill);
 	}
 
 	public highlightInline() {
@@ -90,7 +99,11 @@ export class Markdown extends BaseMarkupMode {
 		this.colorize(this.subText, this._list, this.style.list);
 		this.colorize(this.subText, this._italic, this.style.italic);
 		this.colorize(this.subText, this._bold, this.style.bold);
-		this.colorize(this.subText, this._strikethrough, this.style.strikethrough);
+		this.colorize(
+			this.subText,
+			this._strikethrough,
+			this.style.strikethrough
+		);
 		this.colorize(this.subText, this._underline, this.style.underline);
 		this.colorize(this.subText, this._hr, this.style.hr);
 		this.colorize(this.subText, this._h1, this.style.h1);
@@ -127,42 +140,56 @@ export class Markdown extends BaseMarkupMode {
 	}
 
 	public handleBold() {
-		this.annotateInline(this.selection, '**');
+		this.annotateInline(this.selection, "**");
 	}
 
 	public handleHeader(level: number) {
 		switch (level) {
-			case 1: this.annotateLine(this.line, '#'); break;
-			case 2: this.annotateLine(this.line, '##'); break;
-			case 3: this.annotateLine(this.line, '###'); break;
-			case 4: this.annotateLine(this.line, '####'); break;
-			case 5: this.annotateLine(this.line, '#####'); break;
-			case 6: this.annotateLine(this.line, '######'); break;
+			case 1:
+				this.annotateLine(this.line, "#");
+				break;
+			case 2:
+				this.annotateLine(this.line, "##");
+				break;
+			case 3:
+				this.annotateLine(this.line, "###");
+				break;
+			case 4:
+				this.annotateLine(this.line, "####");
+				break;
+			case 5:
+				this.annotateLine(this.line, "#####");
+				break;
+			case 6:
+				this.annotateLine(this.line, "######");
+				break;
 
 			case 0:
 			default:
-			break;
+				break;
 		}
 	}
 
 	public handleItalic() {
-		this.annotateInline(this.selection, '*');
+		this.annotateInline(this.selection, "*");
 	}
 
 	public handleMono() {
-		if (this.selection.start === this.selection.end || this.selection.multiLine) {
-			this.annotateBlock(this.selection, '```', '```');
+		if (
+			this.selection.start === this.selection.end ||
+			this.selection.multiLine
+		) {
+			this.annotateBlock(this.selection, "```", "```");
 		} else {
-			this.annotateInline(this.selection, '`');
+			this.annotateInline(this.selection, "`");
 		}
 	}
 
 	public handleStrikeThrough() {
-		this.annotateInline(this.selection, '~');
+		this.annotateInline(this.selection, "~");
 	}
 
 	public handleUnderline() {
-		this.annotateInline(this.selection, '_');
+		this.annotateInline(this.selection, "_");
 	}
-
 }

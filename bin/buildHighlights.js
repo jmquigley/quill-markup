@@ -13,26 +13,30 @@
 // Markup to set the current CSS scheme.  There is also a new
 // property on the MarkupOptions.
 //
-'use strict';
+"use strict";
 
-const debug = require('debug')('buildStyles');
-const fs = require('fs-extra');
-const {join} = require('util.join');
-const shell = require('shelljs');
+const debug = require("debug")("buildStyles");
+const fs = require("fs-extra");
+const {join} = require("util.join");
+const shell = require("shelljs");
 
-console.log('Processing CSS highlight styles');
+console.log("Processing CSS highlight styles");
 
-let src = join(process.cwd(), 'node_modules', 'highlight.js', 'styles');
-let dst = join(process.cwd(), 'public', 'highlights');
-let license = join(process.cwd(), 'node_modules', 'highlight.js', 'LICENSE');
+let src = join(process.cwd(), "node_modules", "highlight.js", "styles");
+let dst = join(process.cwd(), "public", "highlights");
+let license = join(process.cwd(), "node_modules", "highlight.js", "LICENSE");
 
 if (fs.existsSync(dst)) {
-	shell.rm('-rf', dst);
+	shell.rm("-rf", dst);
 }
 shell.mkdir(dst);
 
-let files = fs.readdirSync(src)
-	.filter(file => fs.statSync(join(src, file)).isFile() && file.slice(-4) === '.css');
+let files = fs
+	.readdirSync(src)
+	.filter(
+		(file) =>
+			fs.statSync(join(src, file)).isFile() && file.slice(-4) === ".css"
+	);
 
 const styles = {};
 
@@ -40,7 +44,7 @@ for (const filename of files) {
 	const sf = join(src, filename);
 	const df = join(dst, filename);
 
-	debug('copy file %s to %s', sf, df);
+	debug("copy file %s to %s", sf, df);
 	shell.cp(sf, df);
 
 	styles[filename.slice(0, filename.length - 4)] = `highlights/${filename}`;
@@ -48,7 +52,7 @@ for (const filename of files) {
 
 shell.cp(license, dst);
 
-const json = JSON.stringify(styles, null, '\t').replace(/\"/g, '\'');
+const json = JSON.stringify(styles, null, "\t").replace(/\"/g, "'");
 const s = `export const cssHighlights: any = ${json};\n`;
 
-fs.writeFileSync(join(process.cwd(), 'lib', 'highlights.ts'), s);
+fs.writeFileSync(join(process.cwd(), "lib", "highlights.ts"), s);

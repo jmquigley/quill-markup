@@ -1,48 +1,42 @@
-'use strict';
+"use strict";
 
-const mockCssModules = require('mock-css-modules');
-mockCssModules.register(['.style', '.css']);
+import * as fs from "fs-extra";
+import * as path from "path";
+import * as sinon from "sinon";
+import {Fixture} from "util.fixture";
+import {join} from "util.join";
+import {cleanup} from "./helpers";
 
-require('browser-env')();
-require('./helpers/MutationObserver')(global);
-require('./helpers/getSelection')(global);
-
-import * as fs from 'fs-extra';
-import * as path from 'path';
-import * as sinon from 'sinon';
-import {Fixture} from 'util.fixture';
-import {join} from 'util.join';
-import {cleanup} from './helpers';
-
-const debug = require('debug')('markup.test');
-const data = fs.readFileSync(join(__dirname, 'fixtures', 'empty-html', 'index.html')).toString('utf8');
-
-(global as any).Quill = require('quill');
+const debug = require("debug")("markup.test");
 
 // can't use expect before the global require and jsdom initialization
-import {Quill} from '../lib/helpers';
+import {Quill} from "../lib/helpers";
 let quill: any = null;
 
-import {Markup, MarkupMode} from '../index';
+import {Markup, MarkupMode} from "../index";
 
 afterAll((done) => {
 	cleanup(path.basename(__filename), done);
 });
 
 beforeEach(() => {
+	const data = fs
+		.readFileSync(join(__dirname, "fixtures", "empty-html", "index.html"))
+		.toString("utf8");
+
 	document.body.innerHTML = data;
-	quill = new Quill('#editor', {
-		theme: 'snow'
+	quill = new Quill("#editor", {
+		theme: "snow"
 	});
 
 	expect(quill).toBeDefined();
 });
 
-test('Create Markup instance with Markdown mode', () => {
-	const fixture = new Fixture('markdown');
+test("Create Markup instance with Markdown mode", () => {
+	const fixture = new Fixture("markdown");
 	expect(fixture).toBeDefined();
 
-	const md = fixture.read('file.md');
+	const md = fixture.read("file.md");
 	expect(md).toBeDefined();
 
 	const markup = new Markup(quill, {
@@ -58,12 +52,12 @@ test('Create Markup instance with Markdown mode', () => {
 
 	const delta = markup.quill.getContents();
 	expect(delta).toBeDefined();
-	debug('%j', delta);
+	debug("%j", delta);
 
 	expect(delta).toMatchSnapshot();
 });
 
-test('Use markup set call to change the mode', () => {
+test("Use markup set call to change the mode", () => {
 	const markup = new Markup(quill);
 
 	expect(markup).toBeDefined();
@@ -71,12 +65,12 @@ test('Use markup set call to change the mode', () => {
 	expect(markup.editor).toBeDefined();
 
 	markup.set({
-		content: 'test',
+		content: "test",
 		custom: {
-			background: 'red',
-			foreground: 'yellow'
+			background: "red",
+			foreground: "yellow"
 		},
-		fontName: 'Consolas',
+		fontName: "Consolas",
 		fontSize: 14,
 		mode: MarkupMode.markdown
 	});
@@ -85,9 +79,9 @@ test('Use markup set call to change the mode', () => {
 	expect(markup.opts).toMatchSnapshot();
 });
 
-test('Use markup bold call with Markdown', () => {
+test("Use markup bold call with Markdown", () => {
 	const markup = new Markup(quill, {
-		content: 'test',
+		content: "test",
 		mode: MarkupMode.markdown
 	});
 
@@ -99,14 +93,17 @@ test('Use markup bold call with Markdown', () => {
 
 	const delta = markup.quill.getContents();
 	expect(delta).toBeDefined();
-	debug('%j', delta);
+	debug("%j", delta);
 
 	expect(delta).toMatchSnapshot();
 });
 
-for (const level of ['0', '1', '2', '3', '4', '5', '6']) {
+for (const level of ["0", "1", "2", "3", "4", "5", "6"]) {
 	test(`Use markup header ${level} call with Markdown`, () => {
-		const markup = new Markup(quill, {content: 'test', mode: MarkupMode.markdown});
+		const markup = new Markup(quill, {
+			content: "test",
+			mode: MarkupMode.markdown
+		});
 
 		expect(markup).toBeDefined();
 		expect(markup.quill).toBeDefined();
@@ -120,9 +117,9 @@ for (const level of ['0', '1', '2', '3', '4', '5', '6']) {
 	});
 }
 
-test('Use markup italic call with Markdown', () => {
+test("Use markup italic call with Markdown", () => {
 	const markup = new Markup(quill, {
-		content: 'test',
+		content: "test",
 		mode: MarkupMode.markdown
 	});
 
@@ -134,14 +131,14 @@ test('Use markup italic call with Markdown', () => {
 
 	const delta = markup.quill.getContents();
 	expect(delta).toBeDefined();
-	debug('%j', delta);
+	debug("%j", delta);
 
 	expect(delta).toMatchSnapshot();
 });
 
-test('Use markup setMode call with Markdown', () => {
+test("Use markup setMode call with Markdown", () => {
 	const markup = new Markup(quill, {
-		content: 'test'
+		content: "test"
 	});
 
 	expect(markup).toBeDefined();
@@ -149,19 +146,19 @@ test('Use markup setMode call with Markdown', () => {
 	expect(markup.editor).toBeDefined();
 
 	expect(markup.opts.mode).toBe(MarkupMode.text);
-	markup.setMode('markdown');
+	markup.setMode("markdown");
 	expect(markup.opts.mode).toBe(MarkupMode.markdown);
 
 	const delta = markup.quill.getContents();
 	expect(delta).toBeDefined();
-	debug('%j', delta);
+	debug("%j", delta);
 
 	expect(delta).toMatchSnapshot();
 });
 
-test('Use markup strikethrough call with Markdown', () => {
+test("Use markup strikethrough call with Markdown", () => {
 	const markup = new Markup(quill, {
-		content: 'test',
+		content: "test",
 		mode: MarkupMode.markdown
 	});
 
@@ -173,14 +170,14 @@ test('Use markup strikethrough call with Markdown', () => {
 
 	const delta = markup.quill.getContents();
 	expect(delta).toBeDefined();
-	debug('%j', delta);
+	debug("%j", delta);
 
 	expect(delta).toMatchSnapshot();
 });
 
-test('Use markup underline call with Markdown', () => {
+test("Use markup underline call with Markdown", () => {
 	const markup = new Markup(quill, {
-		content: 'test',
+		content: "test",
 		mode: MarkupMode.markdown
 	});
 
@@ -192,15 +189,15 @@ test('Use markup underline call with Markdown', () => {
 
 	const delta = markup.quill.getContents();
 	expect(delta).toBeDefined();
-	debug('%j', delta);
+	debug("%j", delta);
 
 	expect(delta).toMatchSnapshot();
 });
 
-test('Click the editor and show that the handler is called', () => {
+test("Click the editor and show that the handler is called", () => {
 	const click = sinon.spy();
 	const clickLink = sinon.spy();
-	const link = '[name](link)';
+	const link = "[name](link)";
 
 	const markup = new Markup(quill, {
 		content: link,
@@ -223,7 +220,7 @@ test('Click the editor and show that the handler is called', () => {
 
 	const delta = markup.quill.getContents();
 	expect(delta).toBeDefined();
-	debug('%j', delta);
+	debug("%j", delta);
 
 	expect(delta).toMatchSnapshot();
 });

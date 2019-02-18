@@ -20,20 +20,20 @@
  * @module Markup
  */
 
-'use strict';
+"use strict";
 
-import {union} from 'lodash';
-import {getFontList} from 'util.fontlist';
-import {line as getLine, Section} from 'util.section';
-import {Quill} from './helpers';
-import {cssHighlights} from './highlights';
+import {union} from "lodash";
+import {getFontList} from "util.fontlist";
+import {line as getLine, Section} from "util.section";
+import {Quill} from "./helpers";
+import {cssHighlights} from "./highlights";
 import {
 	Asciidoc,
 	BaseMarkupMode,
 	Markdown,
 	RestructuredText,
 	Text
-} from './modes';
+} from "./modes";
 
 export type EventCallback = (val: any) => void;
 
@@ -64,13 +64,13 @@ export interface MarkupOptions {
 }
 
 const defaultOptions: MarkupOptions = {
-	content: '',
+	content: "",
 	custom: {},
 	dirtyLimit: 20,
-	fontName: 'Fira Code',
+	fontName: "Fira Code",
 	fontSize: 12,
 	followLinks: false,
-	highlight: 'solarized-light',
+	highlight: "solarized-light",
 	idleDelay: 2000,
 	mode: MarkupMode.text,
 	onChange: nilEvent,
@@ -78,12 +78,11 @@ const defaultOptions: MarkupOptions = {
 	onClickLink: nilEvent
 };
 
-require('./styles.css');
+require("./styles.css");
 
-const debug = require('debug')('markup');
+const debug = require("debug")("markup");
 
 export class Markup {
-
 	// As the document is modified the number of characters that are changed
 	// is counted.  When a "dirty" limit is reached and the user is idle then
 	// a full rescan of the document block elements will occur.  The smaller
@@ -105,15 +104,11 @@ export class Markup {
 	// A reference to the DOM editor node
 	private _editor: HTMLElement;
 
-	private _fonts: string[] = [
-		'Fira Code',
-		'Inconsolata',
-		'Source Code Pro'
-	];
+	private _fonts: string[] = ["Fira Code", "Inconsolata", "Source Code Pro"];
 	private _line: Section = {
 		start: 0,
 		end: 0,
-		text: '',
+		text: "",
 		multiLine: false
 	};
 	private _modes: any = {};
@@ -123,63 +118,62 @@ export class Markup {
 	private _quill: any;
 
 	constructor(quill: any, opts: MarkupOptions = {}) {
-		debug('Initializing markup module');
+		debug("Initializing markup module");
 
 		this._quill = quill;
 		this._opts = Object.assign({}, defaultOptions, opts);
 		this._editor = quill.container;
 
-		debug('quill (local): %o', quill);
-		debug('Quill (global): %o', Quill);
-		debug('Editor id: %s', this.editorKey);
+		debug("quill (local): %o", quill);
+		debug("Quill (global): %o", Quill);
+		debug("Editor id: %s", this.editorKey);
 
 		this._modes[MarkupMode.asciidoc] = new Asciidoc(quill);
 		this._modes[MarkupMode.markdown] = new Markdown(quill);
 		this._modes[MarkupMode.restructuredtext] = new RestructuredText(quill);
 		this._modes[MarkupMode.text] = new Text(quill);
 
-		debug('modes: %O', this._modes);
+		debug("modes: %O", this._modes);
 
 		this._fonts = union(this._fonts, getFontList());
-		debug('available fonts: %O', this.fonts);
+		debug("available fonts: %O", this.fonts);
 
 		// bind all potential callbacks to the class.
 		[
-			'handleClick',
-			'handleEditorChange',
-			'handlePaste',
-			'handleTextChange',
-			'resetInactivityTimer',
-			'markIdle',
-			'redo',
-			'refresh',
-			'set',
-			'setBold',
-			'setContent',
-			'setItalic',
-			'setFont',
-			'setFontSize',
-			'setHeader',
-			'setMode',
-			'setMono',
-			'setStrikeThrough',
-			'setUnderline',
-			'undo'
-		]
-		.forEach((fn: string) => {
+			"handleClick",
+			"handleEditorChange",
+			"handlePaste",
+			"handleTextChange",
+			"resetInactivityTimer",
+			"markIdle",
+			"redo",
+			"refresh",
+			"set",
+			"setBold",
+			"setContent",
+			"setItalic",
+			"setFont",
+			"setFontSize",
+			"setHeader",
+			"setMode",
+			"setMono",
+			"setStrikeThrough",
+			"setUnderline",
+			"undo"
+		].forEach((fn: string) => {
 			this[fn] = this[fn].bind(this);
 		});
 
-		quill.on('editor-change', this.handleEditorChange);
-		quill.on('text-change', this.handleTextChange);
+		quill.on("editor-change", this.handleEditorChange);
+		quill.on("text-change", this.handleTextChange);
 
-		this._editor.addEventListener('paste', this.handlePaste);
-		this._editor.addEventListener('click', this.handleClick);
+		this._editor.addEventListener("paste", this.handlePaste);
+		this._editor.addEventListener("click", this.handleClick);
 
-		window.addEventListener('load', this.resetInactivityTimer);
-		document.addEventListener('mousemove', this.resetInactivityTimer);
-		document.addEventListener('click', this.resetInactivityTimer);
-		document.addEventListener('keydown', this.resetInactivityTimer);
+		window.addEventListener("load", this.resetInactivityTimer);
+		document.addEventListener("mousemove", this.resetInactivityTimer);
+		document.addEventListener("click", this.resetInactivityTimer);
+		document.addEventListener("keydown", this.resetInactivityTimer);
 
 		this.set(opts);
 	}
@@ -206,8 +200,8 @@ export class Markup {
 
 	get modes() {
 		return Object.keys(MarkupMode)
-			.map(key => MarkupMode[key])
-			.filter(it => typeof it === 'string');
+			.map((key) => MarkupMode[key])
+			.filter((it) => typeof it === "string");
 	}
 
 	get opts() {
@@ -277,33 +271,36 @@ export class Markup {
 	 * is ignored.
 	 */
 	public set(opts: MarkupOptions) {
-
 		this._opts = Object.assign({}, defaultOptions, this._opts, opts);
-		debug('options: %o', this._opts);
+		debug("options: %o", this._opts);
 
 		this._processor = this._modes[this._opts.mode];
-		debug('using processor: %o', this._processor);
+		debug("using processor: %o", this._processor);
 
 		this._dirtyLimit = this._opts.dirtyLimit;
 		this._idleDelay = this._opts.idleDelay;
 
 		this._processor.style = Object.assign(
 			{
-				foreground: 'black',
-				background: 'white'
+				foreground: "black",
+				background: "white"
 			},
-			(this._opts.mode === MarkupMode.text) ? {} : require('./highlighting.json'),
+			this._opts.mode === MarkupMode.text
+				? {}
+				: require("./highlighting.json"),
 			this._opts.custom
 		);
-		debug('current highlighting colors: %o', this._processor.style);
+		debug("current highlighting colors: %o", this._processor.style);
 
 		this.setContent(this._opts.content);
 		this.setFont(this._opts.fontName);
 		this.setFontSize(this._opts.fontSize);
 		this.setHighlight(this._opts.highlight);
 
-		this._editor.style['color'] = this._processor.style.foreground;
-		this._editor.style['background-color'] = this._processor.style.background;
+		this._editor.style["color"] = this._processor.style.foreground;
+		this._editor.style[
+			"background-color"
+		] = this._processor.style.background;
 
 		this._line = getLine(this._opts.content, 0);
 		this._processor.refreshFull();
@@ -337,7 +334,7 @@ export class Markup {
 			fontName = this._fonts[0];
 		}
 
-		debug('setting font: %s', fontName);
+		debug("setting font: %s", fontName);
 		this._opts.fontName = fontName;
 		this._editor.style.fontFamily = fontName;
 	}
@@ -348,9 +345,9 @@ export class Markup {
 	 * will resolve to `##px`.
 	 */
 	public setFontSize(fontSize: number) {
-		debug('setting font size: %spx', fontSize);
+		debug("setting font size: %spx", fontSize);
 		this._opts.fontSize = fontSize;
-		this._editor.style['font-size'] = `${fontSize}px`;
+		this._editor.style["font-size"] = `${fontSize}px`;
 	}
 
 	/**
@@ -362,18 +359,18 @@ export class Markup {
 	}
 
 	public setHighlight(name: string) {
-		debug('setting highlight: %s', name);
+		debug("setting highlight: %s", name);
 
 		if (name in cssHighlights) {
-			const oldlink = document.getElementById('highlights');
-			const newlink = document.createElement('link');
+			const oldlink = document.getElementById("highlights");
+			const newlink = document.createElement("link");
 
-			newlink.setAttribute('id', 'highlights');
-			newlink.setAttribute('rel', 'stylesheet');
-			newlink.setAttribute('type', 'text/css');
-			newlink.setAttribute('href', cssHighlights[name]);
+			newlink.setAttribute("id", "highlights");
+			newlink.setAttribute("rel", "stylesheet");
+			newlink.setAttribute("type", "text/css");
+			newlink.setAttribute("href", cssHighlights[name]);
 
-			const head = document.getElementsByTagName('head').item(0);
+			const head = document.getElementsByTagName("head").item(0);
 			if (oldlink) {
 				head.replaceChild(newlink, oldlink);
 			} else {
@@ -395,10 +392,10 @@ export class Markup {
 	 * @param mode {string} the name of the mode to set
 	 */
 	public setMode(mode: string) {
-		debug('setting mode: %s', mode);
+		debug("setting mode: %s", mode);
 
 		if (!(mode in MarkupMode)) {
-			mode = 'text';
+			mode = "text";
 		}
 
 		this.set({
@@ -456,7 +453,6 @@ export class Markup {
 		if (this._opts.followLinks) {
 			const pos: number = this._processor.pos;
 			for (const it of this._processor.links) {
-
 				if (pos >= it.link.start && pos <= it.link.end) {
 					this._opts.onClickLink(it.link);
 					break;
@@ -472,7 +468,7 @@ export class Markup {
 	 */
 	private handleEditorChange(eventName: string, ...args: any[]) {
 		// debug('handleEditorChange: %s, %o', eventName, args);
-		if (eventName === 'selection-change') {
+		if (eventName === "selection-change") {
 			const range = args[0];
 			if (range) {
 				this._processor.range = range;
@@ -504,9 +500,9 @@ export class Markup {
 	 * idle if the keyboard is idle)
 	 */
 	private handleTextChange(delta?: any, old?: any, source?: string) {
-		delta = old = delta;  // stupid but satifies the linter
+		delta = old = delta; // stupid but satifies the linter
 
-		if (source === 'user' && this._dirtyCount++ > this._dirtyLimit) {
+		if (source === "user" && this._dirtyCount++ > this._dirtyLimit) {
 			this._dirtyIdle = true;
 		}
 
@@ -519,7 +515,10 @@ export class Markup {
 					this._processor.refreshFull();
 					this._paste = false;
 				} else {
-					this._processor.handleChange(this._line.start, this._line.end);
+					this._processor.handleChange(
+						this._line.start,
+						this._line.end
+					);
 				}
 
 				this._opts.onChange(this._processor.text);

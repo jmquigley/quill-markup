@@ -1,18 +1,17 @@
-'use strict';
+"use strict";
 
-import * as XRegExp from 'xregexp';
-import {BaseMarkupMode} from './base';
+import * as XRegExp from "xregexp";
+import {BaseMarkupMode} from "./base";
 
-const debug = require('debug')('RestructuredText');
+const debug = require("debug")("RestructuredText");
 
 export class RestructuredText extends BaseMarkupMode {
-
 	// :text:
-	private _attribute: RegExp = XRegExp(/:.+?:/gmi);
+	private _attribute: RegExp = XRegExp(/:.+?:/gim);
 
 	// | text
 	// | text
-	private _blockquote: RegExp = XRegExp(/^\|.*/gmi);
+	private _blockquote: RegExp = XRegExp(/^\|.*/gim);
 
 	// **text**
 	private _bold: RegExp = XRegExp(/(\*{2})[^\*\n]*?\1/gi);
@@ -22,7 +21,7 @@ export class RestructuredText extends BaseMarkupMode {
 	//     {code}
 	// \n
 	// \n
-	private _code: RegExp = XRegExp(/(::)(\n *\n)([\S\s]*?)(^\n\n)/gmi);
+	private _code: RegExp = XRegExp(/(::)(\n *\n)([\S\s]*?)(^\n\n)/gim);
 
 	// *text*
 	private _italic: RegExp = XRegExp(/(\*)[^\*\n]*?\1/gi);
@@ -31,25 +30,29 @@ export class RestructuredText extends BaseMarkupMode {
 	// `text`_
 	// |text|
 	// [text]_
-	private _link1: RegExp = XRegExp(/([\[_|`]*)(.*?)([_|`\]]+)/gmi);
+	private _link1: RegExp = XRegExp(/([\[_|`]*)(.*?)([_|`\]]+)/gim);
 
 	// _text
-	private _link2: RegExp = XRegExp(/(_)(\w+)()/gmi);
+	private _link2: RegExp = XRegExp(/(_)(\w+)()/gim);
 
 	// .. [text] link/text
 	// .. _text: link
 	// .. image:: link
 	// .. |text| text:: link
-	private _link3: RegExp = XRegExp(/(\.\.[ ]+[\[_|]{0,1})(.+?)([\]:]+ *)(.*)/gmi);
+	private _link3: RegExp = XRegExp(
+		/(\.\.[ ]+[\[_|]{0,1})(.+?)([\]:]+ *)(.*)/gim
+	);
 
 	// `text <link>`_
-	private _link4: RegExp = XRegExp(/( *`)(.+?)(<)(.+?)(>`_)/gmi);
+	private _link4: RegExp = XRegExp(/( *`)(.+?)(<)(.+?)(>`_)/gim);
 
 	// + {text}
 	// - {text}
 	// * {text}
 	// ##. {text}
-	private _list: RegExp = XRegExp(/^\s*(?=([\*\-\+])+)\1* |^\s*(?=((\w+|#)\.))\2*\s(?![ \t]+)/gmi);
+	private _list: RegExp = XRegExp(
+		/^\s*(?=([\*\-\+])+)\1* |^\s*(?=((\w+|#)\.))\2*\s(?![ \t]+)/gim
+	);
 
 	// ``text``
 	private _mono: RegExp = XRegExp(/(`{2})(?!\`).+?\1/gi);
@@ -57,31 +60,31 @@ export class RestructuredText extends BaseMarkupMode {
 	// ====
 	// text
 	// ====
-	private _h1: RegExp = XRegExp(/(^={3,}(\r\n|\r|\n))(.*(\r\n|\r|\n))\1/gmi);
+	private _h1: RegExp = XRegExp(/(^={3,}(\r\n|\r|\n))(.*(\r\n|\r|\n))\1/gim);
 	// {text}
 
 	// ======
-	private _h2: RegExp = XRegExp(/^(\r\n|\r|\n)^[^=\s]+(\r\n|\r|\n)==+/gmi);
+	private _h2: RegExp = XRegExp(/^(\r\n|\r|\n)^[^=\s]+(\r\n|\r|\n)==+/gim);
 
 	// {text}
 	// ------
-	private _h3: RegExp = XRegExp(/^(\r\n|\r|\n)^[^-\s]+(\r\n|\r|\n)--+/gmi);
+	private _h3: RegExp = XRegExp(/^(\r\n|\r|\n)^[^-\s]+(\r\n|\r|\n)--+/gim);
 
 	// {text}
 	// ******
-	private _h4: RegExp = XRegExp(/^(\r\n|\r|\n)^[^\*\s]+(\r\n|\r|\n)\*\*+/gmi);
+	private _h4: RegExp = XRegExp(/^(\r\n|\r|\n)^[^\*\s]+(\r\n|\r|\n)\*\*+/gim);
 
 	// {text}
 	// ~~~~~~
-	private _h5: RegExp = XRegExp(/^(\r\n|\r|\n)^[^~\s]+(\r\n|\r|\n)~~+/gmi);
+	private _h5: RegExp = XRegExp(/^(\r\n|\r|\n)^[^~\s]+(\r\n|\r|\n)~~+/gim);
 
 	// {text}
 	// ^^^^^^
-	private _h6: RegExp = XRegExp(/^(\r\n|\r|\n)^[^\^\s]+(\r\n|\r|\n)\^\^+/gmi);
+	private _h6: RegExp = XRegExp(/^(\r\n|\r|\n)^[^\^\s]+(\r\n|\r|\n)\^\^+/gim);
 
 	constructor(quill: any) {
 		super(quill);
-		debug('creating RestructuredText mode %o', quill);
+		debug("creating RestructuredText mode %o", quill);
 	}
 
 	public highlightInline() {
@@ -120,13 +123,15 @@ export class RestructuredText extends BaseMarkupMode {
 	}
 
 	public handleBold() {
-		this.annotateInline(this.selection, '**');
+		this.annotateInline(this.selection, "**");
 	}
 
-	public handleHeader(level: number = 0) { level = level; }
+	public handleHeader(level: number = 0) {
+		level = level;
+	}
 
 	public handleItalic() {
-		this.annotateInline(this.selection, '*');
+		this.annotateInline(this.selection, "*");
 	}
 
 	public handleMono() {}

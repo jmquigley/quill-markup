@@ -1,21 +1,21 @@
-'use strict';
+"use strict";
 
-import {BinaryTree, Comparator, SortedList} from 'util.ds';
-import {Match, matches} from 'util.matches';
-import {rstrip} from 'util.rstrip';
+import {BinaryTree, Comparator, SortedList} from "util.ds";
+import {Match, matches} from "util.matches";
+import {rstrip} from "util.rstrip";
 import {
 	line as getLine,
 	nl,
 	Section,
 	section as getSection,
 	word as getWord
-} from 'util.section';
-import * as XRegExp from 'xregexp';
-import {Delta} from '../helpers';
+} from "util.section";
+import * as XRegExp from "xregexp";
+import {Delta} from "../helpers";
 
-const debug = require('debug')('base');
-const hash = require('hash.js');
-const ccount = require('ccount');
+const debug = require("debug")("base");
+const hash = require("hash.js");
+const ccount = require("ccount");
 
 enum ParseType {
 	BLOCK,
@@ -38,7 +38,6 @@ const cmp: Comparator<MatchData> = (o1: MatchData, o2: MatchData): number => {
 };
 
 export abstract class BaseMarkupMode {
-
 	private static readonly INLINE_SIZE: 40;
 
 	protected _blocksDirty: boolean = false;
@@ -46,7 +45,10 @@ export abstract class BaseMarkupMode {
 	protected _blockID: BinaryTree<string> = new BinaryTree<string>();
 	protected _delta: any = new Delta();
 	protected _end: number;
-	protected _links: BinaryTree<MatchData> = new BinaryTree<MatchData>(null, cmp);
+	protected _links: BinaryTree<MatchData> = new BinaryTree<MatchData>(
+		null,
+		cmp
+	);
 	protected _pos: number = 0;
 	protected _quill: any;
 	protected _range: any;
@@ -56,13 +58,17 @@ export abstract class BaseMarkupMode {
 	protected _text: string;
 
 	// TODO: FIXME:
-	protected _admonition: RegExp = XRegExp(/^(\s*)(TODO|FIXME|IMPORTANT|WARNING|TIP|CAUTION)(:\s+)/gmi);
+	protected _admonition: RegExp = XRegExp(
+		/^(\s*)(TODO|FIXME|IMPORTANT|WARNING|TIP|CAUTION)(:\s+)/gim
+	);
 
 	// blank line
-	protected _blank: RegExp = XRegExp(/^(\r\n|\n|\r)*/gmi);
+	protected _blank: RegExp = XRegExp(/^(\r\n|\n|\r)*/gim);
 
 	// example@example.com
-	protected _email: RegExp = XRegExp(/[a-z0-9!#$%&'*+\/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+\/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?/gi);
+	protected _email: RegExp = XRegExp(
+		/[a-z0-9!#$%&'*+\/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+\/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?/gi
+	);
 
 	// $$
 	// {formula}
@@ -75,34 +81,41 @@ export abstract class BaseMarkupMode {
 	// \\[
 	// {formula}
 	// \\]
-	protected _formulaBlock: RegExp = XRegExp(/^(\${2})[^\1]*?\1|^(\\{2}\()[^(\\\))]*?\\{2}\)|^(\\{2}\[)[^(\\\])]*?\\{2}\]/gmi);
+	protected _formulaBlock: RegExp = XRegExp(
+		/^(\${2})[^\1]*?\1|^(\\{2}\()[^(\\\))]*?\\{2}\)|^(\\{2}\[)[^(\\\])]*?\\{2}\]/gim
+	);
 
 	// ${formula}$
 	// \({formula}\)
 	// \[{formula}\]
-	protected _formulaInline: RegExp = XRegExp(/(\$(?!$))[^\$^\n]+\1|(\\\()[^(\\\)\n)]*?\\\)|(\\\[)[^(\\\]\n)]*?\\\]/gi);
+	protected _formulaInline: RegExp = XRegExp(
+		/(\$(?!$))[^\$^\n]+\1|(\\\()[^(\\\)\n)]*?\\\)|(\\\[)[^(\\\]\n)]*?\\\]/gi
+	);
 
 	// a valid URL
 	// protected _url: RegExp = XRegExp(/(\s*)(\w*?:.+?[]]\\|\w*?:.+?)([\[\s]+)/gi);
-	protected _url: RegExp = XRegExp(/([ \t]*)((?:https?|ftp|file|mailto|gopher|link|anchor|xref|image):\/{0,3}[^\[\s]*)(\[|\1)([^\]\n]*?)(\]|\n)([ \t]+"[^"]*?"){0,1}/gi);
+	protected _url: RegExp = XRegExp(
+		/([ \t]*)((?:https?|ftp|file|mailto|gopher|link|anchor|xref|image):\/{0,3}[^\[\s]*)(\[|\1)([^\]\n]*?)(\]|\n)([ \t]+"[^"]*?"){0,1}/gi
+	);
 
 	// [[{name}|{reference}]
-	protected _wiki: RegExp = XRegExp(/(\[\[)([^|\]^\]]+)(\|{0,1})([^\]^\]]*){0,1}(\]\])/gi);
+	protected _wiki: RegExp = XRegExp(
+		/(\[\[)([^|\]^\]]+)(\|{0,1})([^\]^\]]*){0,1}(\]\])/gi
+	);
 
 	constructor(quill: any) {
 		this._quill = quill;
 
 		[
-			'annotateBlock',
-			'annotateLine',
-			'annotateInline',
-			'processBlockTokens',
-			'processInlineTokens',
-			'processLinkTokens',
-			'processCodeTokens',
-			'processInlineGroupTokens'
-		]
-		.forEach((fn: string) => {
+			"annotateBlock",
+			"annotateLine",
+			"annotateInline",
+			"processBlockTokens",
+			"processInlineTokens",
+			"processLinkTokens",
+			"processCodeTokens",
+			"processInlineGroupTokens"
+		].forEach((fn: string) => {
 			this[fn] = this[fn].bind(this);
 		});
 	}
@@ -163,7 +176,10 @@ export abstract class BaseMarkupMode {
 	get selection(): Section {
 		let word: Section = null;
 		if (this.range && this.range.length > 0) {
-			const text: string = this.text.substring(this.range.index, this.range.index + this.range.length);
+			const text: string = this.text.substring(
+				this.range.index,
+				this.range.index + this.range.length
+			);
 
 			word = {
 				start: this.range.index,
@@ -248,19 +264,29 @@ export abstract class BaseMarkupMode {
 	 * @param [endChevron] {string} the string that will be placed on the end
 	 * of the block.
 	 */
-	public annotateBlock(selection: Section, startChevron: string, endChevron?: string) {
+	public annotateBlock(
+		selection: Section,
+		startChevron: string,
+		endChevron?: string
+	) {
 		let delta: any = null;
 
 		if (selection) {
 			this._delta.ops.length = 0;
-			debug('annotating block: "%o" with "%s":"%s"', selection, startChevron, endChevron);
+			debug(
+				'annotating block: "%o" with "%s":"%s"',
+				selection,
+				startChevron,
+				endChevron
+			);
 
-			let xnl: string = '';
+			let xnl: string = "";
 			if (selection.multiLine) {
 				xnl = nl;
 			}
 
-			this._delta.retain(selection.start)
+			this._delta
+				.retain(selection.start)
 				.insert(`${xnl}${nl}${startChevron}${nl}`)
 				.retain(selection.text.length);
 
@@ -270,7 +296,9 @@ export abstract class BaseMarkupMode {
 
 			if (this._delta.ops.length > 0) {
 				delta = this.quill.updateContents(this._delta);
-				this.quill.setSelection(selection.end + startChevron.length + (2 + xnl.length * 2));
+				this.quill.setSelection(
+					selection.end + startChevron.length + (2 + xnl.length * 2)
+				);
 			}
 		}
 
@@ -289,9 +317,15 @@ export abstract class BaseMarkupMode {
 	public annotateInline(selection: Section, chevron: string) {
 		if (selection && selection.text) {
 			this._delta.ops.length = 0;
-			debug('annotating inline: "%o" with "%s", %O', selection, chevron, this);
+			debug(
+				'annotating inline: "%o" with "%s", %O',
+				selection,
+				chevron,
+				this
+			);
 
-			this._delta.retain(selection.start)
+			this._delta
+				.retain(selection.start)
 				.insert(chevron)
 				.retain(selection.text.length)
 				.insert(chevron);
@@ -316,14 +350,25 @@ export abstract class BaseMarkupMode {
 	 * @param [spacer] {string} a string appended to the end of the first
 	 * chevron.  It is a single space by default.  Used when created headers.
 	 */
-	public annotateLine(selection: Section, startChevron: string, endChevron?: string, spacer: string = ' ') {
+	public annotateLine(
+		selection: Section,
+		startChevron: string,
+		endChevron?: string,
+		spacer: string = " "
+	) {
 		let delta: any = null;
 
 		if (selection) {
 			this._delta.ops.length = 0;
-			debug('annotating line: "%o" with "%s":"%s"', selection, startChevron, endChevron);
+			debug(
+				'annotating line: "%o" with "%s":"%s"',
+				selection,
+				startChevron,
+				endChevron
+			);
 
-			this._delta.retain(selection.start)
+			this._delta
+				.retain(selection.start)
 				.insert(`${startChevron}${spacer}`)
 				.retain(selection.text.length);
 
@@ -335,7 +380,9 @@ export abstract class BaseMarkupMode {
 
 			if (this._delta.ops.length > 0) {
 				delta = this.quill.updateContents(this._delta);
-				this.quill.setSelection(selection.end + startChevron.length + endWidth + 1);
+				this.quill.setSelection(
+					selection.end + startChevron.length + endWidth + 1
+				);
 			}
 		}
 
@@ -350,7 +397,12 @@ export abstract class BaseMarkupMode {
 	 * @return {Delta} the Delta created by this change
 	 */
 	public codify(text: string, re: RegExp) {
-		return this.processRegex(text, re, this.processCodeTokens, ParseType.BLOCK);
+		return this.processRegex(
+			text,
+			re,
+			this.processCodeTokens,
+			ParseType.BLOCK
+		);
 	}
 
 	/**
@@ -366,7 +418,13 @@ export abstract class BaseMarkupMode {
 	 * @return {Delta} the Delta created by this change
 	 */
 	public colorize(text: string, re: RegExp, color: string) {
-		return this.processRegex(text, re, this.processInlineTokens, ParseType.INLINE, {color: color});
+		return this.processRegex(
+			text,
+			re,
+			this.processInlineTokens,
+			ParseType.INLINE,
+			{color: color}
+		);
 	}
 
 	/**
@@ -387,7 +445,13 @@ export abstract class BaseMarkupMode {
 	 * @return {Delta} the Delta created by this change
 	 */
 	public colorizeGroup(text: string, re: RegExp, styling: any) {
-		return this.processRegex(text, re, this.processInlineGroupTokens, ParseType.INLINE, styling);
+		return this.processRegex(
+			text,
+			re,
+			this.processInlineGroupTokens,
+			ParseType.INLINE,
+			styling
+		);
 	}
 
 	/**
@@ -402,7 +466,13 @@ export abstract class BaseMarkupMode {
 	 * @return {Delta} the Delta created by this change
 	 */
 	public colorizeBlock(text: string, re: RegExp, color: string) {
-		return this.processRegex(text, re, this.processBlockTokens, ParseType.BLOCK, {color: color});
+		return this.processRegex(
+			text,
+			re,
+			this.processBlockTokens,
+			ParseType.BLOCK,
+			{color: color}
+		);
 	}
 
 	/**
@@ -422,7 +492,13 @@ export abstract class BaseMarkupMode {
 	 * @return {Delta} the delta structure created
 	 */
 	public colorizeLink(text: string, re: RegExp, styling: any = {}) {
-		return this.processRegex(text, re, this.processLinkTokens, ParseType.INLINE, styling);
+		return this.processRegex(
+			text,
+			re,
+			this.processLinkTokens,
+			ParseType.INLINE,
+			styling
+		);
 	}
 
 	/**
@@ -439,7 +515,7 @@ export abstract class BaseMarkupMode {
 		this._end = end;
 		this._start = start;
 		this._subText = this.text.substring(start, end);
-		this.quill.removeFormat(start, end - start, 'silent');
+		this.quill.removeFormat(start, end - start, "silent");
 		this.clearBlockDetails();
 		this.highlightInline();
 		this.highlightBlock();
@@ -449,7 +525,7 @@ export abstract class BaseMarkupMode {
 	 * Scans the known block elements within the document and reapplies the formatting.
 	 */
 	public refreshBlock() {
-		debug('refreshBlock');
+		debug("refreshBlock");
 
 		if (this._blocks.length > 0 && this._blocksDirty) {
 			const arr = this._blocks.array;
@@ -458,7 +534,11 @@ export abstract class BaseMarkupMode {
 				this._start = arr[i];
 				this._end = arr[i + 1];
 
-				this.quill.removeFormat(this._start, this._end - this._start, 'silent');
+				this.quill.removeFormat(
+					this._start,
+					this._end - this._start,
+					"silent"
+				);
 				this.highlightBlock();
 			}
 
@@ -474,7 +554,7 @@ export abstract class BaseMarkupMode {
 	 * is placed in the control, or when a paste occurs.
 	 */
 	public refreshFull() {
-		debug('refreshFull');
+		debug("refreshFull");
 		this._blockID.clear();
 		this.handleChange(0, this.text.length);
 	}
@@ -485,14 +565,17 @@ export abstract class BaseMarkupMode {
 	 * are not part of a block.
 	 */
 	public refreshInline() {
-		debug('refreshInline');
+		debug("refreshInline");
 
 		this.validatePosition();
 
-		const section: Section = getSection(this.text, this.pos, BaseMarkupMode.INLINE_SIZE);
+		const section: Section = getSection(
+			this.text,
+			this.pos,
+			BaseMarkupMode.INLINE_SIZE
+		);
 
 		if (this._blocks.length > 0) {
-
 			// This is the list of blocks that reside within the refresh region
 			const arr = this.getBlocks(section.start, section.end);
 			this._start = section.start;
@@ -504,7 +587,11 @@ export abstract class BaseMarkupMode {
 
 			for (let i = 1; i < arr.length; i += 2) {
 				this._subText = this.text.substring(this._start, this._end);
-				this.quill.removeFormat(this._start, this._end - this._start + 1, 'silent');
+				this.quill.removeFormat(
+					this._start,
+					this._end - this._start + 1,
+					"silent"
+				);
 				this.highlightInline();
 				this._start = arr[i] + 1;
 				this._end = arr[i + 1] - 1;
@@ -562,7 +649,8 @@ export abstract class BaseMarkupMode {
 		for (const match of tokens) {
 			this.saveBlockDetails(match);
 
-			this._delta.retain(match.start - offset)
+			this._delta
+				.retain(match.start - offset)
 				.retain(match.end - match.start + 1, {color: styling.color});
 			offset = match.end + 1;
 		}
@@ -578,22 +666,30 @@ export abstract class BaseMarkupMode {
 
 			// starting fence
 			if (match.result[1]) {
-				this._delta.retain(match.result[1].length, {color: this.style.fence});
+				this._delta.retain(match.result[1].length, {
+					color: this.style.fence
+				});
 			}
 
 			// language name
 			if (match.result[2]) {
-				this._delta.retain(match.result[2].length, {color: this.style.language});
+				this._delta.retain(match.result[2].length, {
+					color: this.style.language
+				});
 			}
 
 			// code block
 			if (match.result[3]) {
-				this._delta.retain(match.result[3].length, {'code-block': true});
+				this._delta.retain(match.result[3].length, {
+					"code-block": true
+				});
 			}
 
 			// ending fence
 			if (match.result[4]) {
-				this._delta.retain(match.result[4].length, {color: this.style.fence});
+				this._delta.retain(match.result[4].length, {
+					color: this.style.fence
+				});
 			}
 
 			offset = match.end + 1;
@@ -604,7 +700,8 @@ export abstract class BaseMarkupMode {
 		let offset: number = 0;
 
 		for (const match of tokens) {
-			this._delta.retain(match.start - offset)
+			this._delta
+				.retain(match.start - offset)
 				.retain(match.end - match.start + 1, {color: styling.color});
 			offset = match.end + 1;
 		}
@@ -613,19 +710,24 @@ export abstract class BaseMarkupMode {
 	private processInlineGroupTokens(tokens: Match[], styling: any) {
 		let offset: number = 0;
 
-		styling = Object.assign({
-			color: this.style.foreground,
-			background: this.style.background,
-			refColor: this.style.foreground,
-			refBackground: this.style.background
-		}, styling);
+		styling = Object.assign(
+			{
+				color: this.style.foreground,
+				background: this.style.background,
+				refColor: this.style.foreground,
+				refBackground: this.style.background
+			},
+			styling
+		);
 
 		for (const match of tokens) {
 			this._delta.retain(match.start - offset);
 
 			// left chevron grouping
 			if (match.result[1]) {
-				this._delta.retain(match.result[1].length, {color: this.style.chevron});
+				this._delta.retain(match.result[1].length, {
+					color: this.style.chevron
+				});
 			}
 
 			// token name
@@ -638,7 +740,9 @@ export abstract class BaseMarkupMode {
 
 			// center chevron grouping
 			if (match.result[3]) {
-				this._delta.retain(match.result[3].length, {color: this.style.chevron});
+				this._delta.retain(match.result[3].length, {
+					color: this.style.chevron
+				});
 			}
 
 			// reference name
@@ -651,7 +755,9 @@ export abstract class BaseMarkupMode {
 
 			// right chevron grouping
 			if (match.result[5]) {
-				this._delta.retain(match.result[5].length, {color: this.style.chevron});
+				this._delta.retain(match.result[5].length, {
+					color: this.style.chevron
+				});
 			}
 
 			offset = match.end + 1;
@@ -661,11 +767,14 @@ export abstract class BaseMarkupMode {
 	private processLinkTokens(tokens: Match[], styling: any) {
 		let offset: number = 0;
 
-		styling = Object.assign({
-			linkName: this.style.linkName,
-			link: this.style.link,
-			linkTitle: this.style.linkTitle
-		}, styling);
+		styling = Object.assign(
+			{
+				linkName: this.style.linkName,
+				link: this.style.link,
+				linkTitle: this.style.linkTitle
+			},
+			styling
+		);
 
 		for (const match of tokens) {
 			this._delta.retain(match.start - offset);
@@ -677,32 +786,44 @@ export abstract class BaseMarkupMode {
 
 			// left paren/bracket
 			if (match.result[1]) {
-				this._delta.retain(match.result[1].length, {color: this.style.chevron});
+				this._delta.retain(match.result[1].length, {
+					color: this.style.chevron
+				});
 			}
 
 			// link name
 			if (match.result[2]) {
-				this._delta.retain(match.result[2].length, {color: styling.linkName});
+				this._delta.retain(match.result[2].length, {
+					color: styling.linkName
+				});
 			}
 
 			// right paren/bracket group
 			if (match.result[3]) {
-				this._delta.retain(match.result[3].length, {color: this.style.chevron});
+				this._delta.retain(match.result[3].length, {
+					color: this.style.chevron
+				});
 			}
 
 			// link url/reference
 			if (match.result[4]) {
-				this._delta.retain(match.result[4].length, {color: styling.link});
+				this._delta.retain(match.result[4].length, {
+					color: styling.link
+				});
 			}
 
 			// left paren/bracket group
 			if (match.result[5]) {
-				this._delta.retain(match.result[5].length, {color: this.style.chevron});
+				this._delta.retain(match.result[5].length, {
+					color: this.style.chevron
+				});
 			}
 
 			// optional title
 			if (match.result[6]) {
-				this._delta.retain(match.result[6].length, {color: styling.linkTitle});
+				this._delta.retain(match.result[6].length, {
+					color: styling.linkTitle
+				});
 			}
 
 			offset = match.end + 1;
@@ -724,7 +845,13 @@ export abstract class BaseMarkupMode {
 	 * is just passed through to the handler function.
 	 * @return {Delta} the delta object generate from the regex matches.
 	 */
-	private processRegex(text: string, re: RegExp, fn: any, parseType: ParseType, styling?: any) {
+	private processRegex(
+		text: string,
+		re: RegExp,
+		fn: any,
+		parseType: ParseType,
+		styling?: any
+	) {
 		this._delta.ops.length = 0;
 		const tokens = matches(text, re);
 
@@ -738,7 +865,7 @@ export abstract class BaseMarkupMode {
 			fn(tokens, styling);
 
 			if (this._delta.ops.length > 0) {
-				return this.quill.updateContents(this._delta, 'silent');
+				return this.quill.updateContents(this._delta, "silent");
 			}
 		}
 
@@ -767,7 +894,10 @@ export abstract class BaseMarkupMode {
 		this._blocks.insert(match.start);
 		this._blocks.insert(match.end + 1);
 
-		const blockHash = hash.sha256().update(match.text).digest('hex');
+		const blockHash = hash
+			.sha256()
+			.update(match.text)
+			.digest("hex");
 
 		if (!this._blockID.contains(blockHash)) {
 			this._blocksDirty = true;
@@ -784,10 +914,10 @@ export abstract class BaseMarkupMode {
 	 */
 	private validatePosition() {
 		if (this.pos < 0) {
-			this.quill.setSelection(0, 0, 'silent');
+			this.quill.setSelection(0, 0, "silent");
 			this.pos = 0;
 		} else if (this.pos >= this.quill.length) {
-			this.quill.setSelection(this.quill.length - 1, 0, 'silent');
+			this.quill.setSelection(this.quill.length - 1, 0, "silent");
 			this.pos = this.quill.length - 1;
 		}
 	}

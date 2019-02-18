@@ -1,106 +1,113 @@
-'use strict';
+"use strict";
 
-import * as XRegExp from 'xregexp';
-import {BaseMarkupMode} from './base';
+import * as XRegExp from "xregexp";
+import {BaseMarkupMode} from "./base";
 
-const debug = require('debug')('Asciidoc');
+const debug = require("debug")("Asciidoc");
 
 export class Asciidoc extends BaseMarkupMode {
-
 	// {attribute}
-	private _attribute: RegExp = XRegExp(/{[^}]*?}|\[.*\]#+[^#]*?#+|:.*?:/gmi);
+	private _attribute: RegExp = XRegExp(/{[^}]*?}|\[.*\]#+[^#]*?#+|:.*?:/gim);
 
 	// *test*
-	private _bold: RegExp = XRegExp(/(\*)[^\*\n]*?\1/gmi);
+	private _bold: RegExp = XRegExp(/(\*)[^\*\n]*?\1/gim);
 
 	// -----------
 	// code section
 	// -----------
-	protected _code: RegExp = XRegExp(/(^(?:\r|\n|\r\n)^[ \t]*-{4,})(.*(?:\r|\n|\r\n))([\S\s]*?)(^[ \t]*-{4,}$)/gmi);
+	protected _code: RegExp = XRegExp(
+		/(^(?:\r|\n|\r\n)^[ \t]*-{4,})(.*(?:\r|\n|\r\n))([\S\s]*?)(^[ \t]*-{4,}$)/gim
+	);
 
-	protected _codeSection: RegExp = XRegExp(/(^\[.*?\](?:\r|\n|\r\n)^-+)(.*(?:\r|\n|\r\n))([\S\s]*?)(^[ \t]*-+$)/gmi);
+	protected _codeSection: RegExp = XRegExp(
+		/(^\[.*?\](?:\r|\n|\r\n)^-+)(.*(?:\r|\n|\r\n))([\S\s]*?)(^[ \t]*-+$)/gim
+	);
 
 	// comment
-	protected _comment: RegExp = XRegExp(/^\s*\/\/.*/gmi);
+	protected _comment: RegExp = XRegExp(/^\s*\/\/.*/gim);
 
 	// ////
 	// comment block
 	// ////
-	protected _commentBlock: RegExp = XRegExp(/^[ \t]*(\/{4,})[\S\s]*(\/{4}$)/gmi);
+	protected _commentBlock: RegExp = XRegExp(
+		/^[ \t]*(\/{4,})[\S\s]*(\/{4}$)/gim
+	);
 
 	// = {text}
-	private _h1: RegExp = XRegExp(/^=\s+.*/gmi);
+	private _h1: RegExp = XRegExp(/^=\s+.*/gim);
 
 	// == {text}
-	private _h2: RegExp = XRegExp(/^={2}\s+.*/gmi);
+	private _h2: RegExp = XRegExp(/^={2}\s+.*/gim);
 
 	// === {text}
-	private _h3: RegExp = XRegExp(/^={3}\s+.*/gmi);
+	private _h3: RegExp = XRegExp(/^={3}\s+.*/gim);
 
 	// ==== {text}
-	private _h4: RegExp = XRegExp(/^={4}\s+.*/gmi);
+	private _h4: RegExp = XRegExp(/^={4}\s+.*/gim);
 
 	// ===== {text}
-	private _h5: RegExp = XRegExp(/^={5}\s+.*/gmi);
+	private _h5: RegExp = XRegExp(/^={5}\s+.*/gim);
 
 	// ====== {text}
-	private _h6: RegExp = XRegExp(/^={6}\s+.*/gmi);
+	private _h6: RegExp = XRegExp(/^={6}\s+.*/gim);
 
 	// {text}
 	// ======
-	private _h1block: RegExp = XRegExp(/^[^=\s]+(\r\n|\r|\n)==+/gmi);
+	private _h1block: RegExp = XRegExp(/^[^=\s]+(\r\n|\r|\n)==+/gim);
 
 	// {text}
 	// ------
-	private _h2block: RegExp = XRegExp(/^[^-\s]+(\r\n|\r|\n)--+/gmi);
+	private _h2block: RegExp = XRegExp(/^[^-\s]+(\r\n|\r|\n)--+/gim);
 
 	// {text}
 	// ~~~~~~
-	private _h3block: RegExp = XRegExp(/^[^~\s]+(\r\n|\r|\n)~~+/gmi);
+	private _h3block: RegExp = XRegExp(/^[^~\s]+(\r\n|\r|\n)~~+/gim);
 
 	// {text}
 	// ^^^^^^
-	private _h4block: RegExp = XRegExp(/^[^\^\s]+(\r\n|\r|\n)\^\^+/gmi);
+	private _h4block: RegExp = XRegExp(/^[^\^\s]+(\r\n|\r|\n)\^\^+/gim);
 
 	// {text}
 	// ++++++
-	private _h5block: RegExp = XRegExp(/^[^\+\s]+(\r\n|\r|\n)\+\++/gmi);
+	private _h5block: RegExp = XRegExp(/^[^\+\s]+(\r\n|\r|\n)\+\++/gim);
 
 	// {text}
 	// ######
-	private _h6block: RegExp = XRegExp(/^[^#\s]+(\r\n|\r|\n)##+/gmi);
+	private _h6block: RegExp = XRegExp(/^[^#\s]+(\r\n|\r|\n)##+/gim);
 
 	// _test_
-	private _italic: RegExp = XRegExp(/(\_)[^\_\n]*?\1/gmi);
+	private _italic: RegExp = XRegExp(/(\_)[^\_\n]*?\1/gim);
 
 	// keywords for this mode
-	private _keyword: RegExp = XRegExp(/\w+::/gmi);
+	private _keyword: RegExp = XRegExp(/\w+::/gim);
 
 	// [text]
-	private _link1: RegExp = XRegExp(/(\[)([^\]]*)(\])(?![\[\(])/gmi);
+	private _link1: RegExp = XRegExp(/(\[)([^\]]*)(\])(?![\[\(])/gim);
 
 	// . {text}
 	// + {text}
 	// - {text}
 	// * {text}
 	// ##. {text}
-	private _list: RegExp = XRegExp(/^\s*(?=([\*\-\+\.])+)\1* |^\s*(?=(\w+\.))\2*\s(?![ \t]+)/gmi);
+	private _list: RegExp = XRegExp(
+		/^\s*(?=([\*\-\+\.])+)\1* |^\s*(?=(\w+\.))\2*\s(?![ \t]+)/gim
+	);
 
 	// +test+ or `test`
-	private _mono: RegExp = XRegExp(/(\+)[^\+\n]*?\1|(`)[^`\n]*?\2/gmi);
+	private _mono: RegExp = XRegExp(/(\+)[^\+\n]*?\1|(`)[^`\n]*?\2/gim);
 
 	// .text to end of line
-	private _option: RegExp = XRegExp(/^[ \t]*\.(?![\s.]).+/gmi);
+	private _option: RegExp = XRegExp(/^[ \t]*\.(?![\s.]).+/gim);
 
 	// [line-through]#test#
-	private _strikethrough: RegExp = XRegExp(/\[line-through\]#[^#]*?#/gmi);
+	private _strikethrough: RegExp = XRegExp(/\[line-through\]#[^#]*?#/gim);
 
 	// [underline]#test#
-	private _underline: RegExp = XRegExp(/\[underline\]#[^#]*?#/gmi);
+	private _underline: RegExp = XRegExp(/\[underline\]#[^#]*?#/gim);
 
 	constructor(quill: any) {
 		super(quill);
-		debug('creating asciidoc mode %o', quill);
+		debug("creating asciidoc mode %o", quill);
 	}
 
 	public highlightInline() {
@@ -114,7 +121,11 @@ export class Asciidoc extends BaseMarkupMode {
 		this.colorize(this.subText, this._italic, this.style.italic);
 		this.colorize(this.subText, this._mono, this.style.mono);
 		this.colorize(this.subText, this._underline, this.style.underline);
-		this.colorize(this.subText, this._strikethrough, this.style.strikethrough);
+		this.colorize(
+			this.subText,
+			this._strikethrough,
+			this.style.strikethrough
+		);
 		this.colorize(this.subText, this._list, this.style.list);
 
 		this.colorize(this.subText, this._h1, this.style.h1);
@@ -150,41 +161,56 @@ export class Asciidoc extends BaseMarkupMode {
 	}
 
 	public handleBold() {
-		this.annotateInline(this.selection, '*');
+		this.annotateInline(this.selection, "*");
 	}
 
 	public handleHeader(level: number) {
 		switch (level) {
-			case 1: this.annotateLine(this.line, '='); break;
-			case 2: this.annotateLine(this.line, '=='); break;
-			case 3: this.annotateLine(this.line, '==='); break;
-			case 4: this.annotateLine(this.line, '===='); break;
-			case 5: this.annotateLine(this.line, '====='); break;
-			case 6: this.annotateLine(this.line, '======'); break;
+			case 1:
+				this.annotateLine(this.line, "=");
+				break;
+			case 2:
+				this.annotateLine(this.line, "==");
+				break;
+			case 3:
+				this.annotateLine(this.line, "===");
+				break;
+			case 4:
+				this.annotateLine(this.line, "====");
+				break;
+			case 5:
+				this.annotateLine(this.line, "=====");
+				break;
+			case 6:
+				this.annotateLine(this.line, "======");
+				break;
 
 			case 0:
 			default:
-			break;
+				break;
 		}
 	}
 
 	public handleItalic() {
-		this.annotateInline(this.selection, '_');
+		this.annotateInline(this.selection, "_");
 	}
 
 	public handleMono() {
-		if (this.selection.start === this.selection.end || this.selection.multiLine) {
-			this.annotateBlock(this.selection, '----', '----');
+		if (
+			this.selection.start === this.selection.end ||
+			this.selection.multiLine
+		) {
+			this.annotateBlock(this.selection, "----", "----");
 		} else {
-			this.annotateInline(this.selection, '+');
+			this.annotateInline(this.selection, "+");
 		}
 	}
 
 	public handleStrikeThrough(): void {
-		this.annotateLine(this.selection, '[line-through]#', '#', '');
+		this.annotateLine(this.selection, "[line-through]#", "#", "");
 	}
 
 	public handleUnderline(): void {
-		this.annotateLine(this.selection, '[underline]#', '#', '');
+		this.annotateLine(this.selection, "[underline]#", "#", "");
 	}
 }

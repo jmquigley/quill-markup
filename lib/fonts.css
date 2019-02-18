@@ -1,14 +1,17 @@
 @font-face {
-	font-family: 'Fira Code';
-	src: local('FiraCode'), local('FiraCode-Regular'), url('./fonts/FiraCode.ttf');
+	font-family: "Fira Code";
+	src: local("FiraCode"), local("FiraCode-Regular"),
+		url("./fonts/FiraCode.ttf");
 }
 
 @font-face {
-	font-family: 'Inconsolata';
-	src: local('Inconsolata'), local('Inconsolata-Regular'), url('./fonts/Inconsolata.ttf');
+	font-family: "Inconsolata";
+	src: local("Inconsolata"), local("Inconsolata-Regular"),
+		url("./fonts/Inconsolata.ttf");
 }
 
 @font-face {
-	font-family: 'Source Code Pro';
-	src: local('SourceCodePro'), local('SourceCodePro-Regular') url('./fonts/SourceCodePro.ttf');
+	font-family: "Source Code Pro";
+	src: local("SourceCodePro"),
+		local("SourceCodePro-Regular") url("./fonts/SourceCodePro.ttf");
 }

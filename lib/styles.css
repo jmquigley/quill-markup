@@ -1,4 +1,4 @@
-@import url('./fonts.css');
+@import url("./fonts.css");
 
 #editor {
 	width: 100%;
@@ -8,7 +8,7 @@
 input,
 textarea,
 [contenteditable] {
-  caret-color: currentColor !important;
+	caret-color: currentColor !important;
 }
 
 #toolbar {

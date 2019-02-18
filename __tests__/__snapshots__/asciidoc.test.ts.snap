@@ -5,7 +5,7 @@ Delta {
   "ops": Array [
     Object {
       "attributes": Object {
-        "color": "",
+        "color": "magenta",
       },
       "insert": ":tags:",
     },
@@ -266,27 +266,9 @@ this is ",
     },
     Object {
       "attributes": Object {
-        "color": "gray",
+        "color": "magenta",
       },
-      "insert": "[",
-    },
-    Object {
-      "attributes": Object {
-        "color": "#7aa6da",
-      },
-      "insert": "red",
-    },
-    Object {
-      "attributes": Object {
-        "color": "gray",
-      },
-      "insert": "]",
-    },
-    Object {
-      "attributes": Object {
-        "color": "",
-      },
-      "insert": "#this is a span of text#",
+      "insert": "[red]#this is a span of text#",
     },
     Object {
       "insert": "

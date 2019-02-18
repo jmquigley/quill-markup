@@ -39,6 +39,7 @@ jspm_packages
 tmp-unit-test-data
 .awcache
 
+*.tgz
 *.map
 *.js
 *.js.map
@@ -50,7 +51,6 @@ tmp-unit-test-data
 !public/app.js
 !test/helpers/getSelection.js
 !test/helpers/MutationObserver.js
-!bin/**
 public/highlights
 public/*.ttf
 public/styles.css

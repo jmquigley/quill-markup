@@ -557,7 +557,7 @@ lorem ipsum ",
     },
     Object {
       "attributes": Object {
-        "color": "",
+        "color": "magenta",
       },
       "insert": ":attribute:",
     },
@@ -566,7 +566,7 @@ lorem ipsum ",
     },
     Object {
       "attributes": Object {
-        "color": "",
+        "color": "magenta",
       },
       "insert": ":keyword:",
     },
