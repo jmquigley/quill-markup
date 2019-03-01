@@ -19,8 +19,9 @@
 	"main": "./public/bundle.js",
 	"types": "./public/bundle.d.ts",
 	"files": [
-		"public/bundle.*",
+		"public/*.css",
 		"public/*.ttf",
+		"public/bundle.*",
 		"public/highlights"
 	],
 	"devDependencies": {
