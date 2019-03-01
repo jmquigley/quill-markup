@@ -1,4 +1,3 @@
-require("browser-env")();
 require("./helpers/MutationObserver")(global);
 require("./helpers/getSelection")(global);
 

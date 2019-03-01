@@ -1,4 +1,3 @@
-const TsDeclarationBundlerPlugin = require("ts-declaration-webpack-plugin");
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 const MinifyPlugin = require("babel-minify-webpack-plugin");
 const path = require("path");
@@ -16,7 +15,7 @@ const banner = new webpack.BannerPlugin({
 		`Mode: ${mode}` +
 		"\n" +
 		"https://www.npmjs.com/package/quill-markup\n" +
-		"Copyright (c) 2017, James Quigley\n",
+		"Copyright (c) 2019, James Quigley\n",
 	entryOnly: true
 });
 
@@ -28,13 +27,9 @@ const constants = new webpack.DefinePlugin({
 });
 
 module.exports = {
-	mode: `${mode}`,
+	mode,
 	performance: {hints: false},
-	optimization: {
-		minimize: false
-	},
 	entry: [path.resolve(__dirname, "index.ts")],
-	target: "web",
 	output: {
 		path: path.resolve(__dirname, "public"),
 		filename: "bundle.js",
@@ -61,13 +56,17 @@ module.exports = {
 	resolveLoader: {
 		modules: [path.join(__dirname, "node_modules")]
 	},
-	devtool: "source-map",
 	module: {
 		rules: [
 			{
 				test: /\.ts$/,
 				exclude: /node_modules|public/,
-				loader: "js-output-loader!ts-loader"
+				use: {
+					loader: "babel-loader",
+					options: {
+						babelrc: true
+					}
+				}
 			},
 			{
 				test: /\.css$/,
@@ -93,9 +92,6 @@ module.exports = {
 		banner,
 		constants,
 		new MiniCssExtractPlugin({filename: "styles.css"}),
-		new TsDeclarationBundlerPlugin({
-			name: "bundle.d.ts"
-		})
-		// new MinifyPlugin()
+		new MinifyPlugin()
 	]
 };

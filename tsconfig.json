@@ -12,11 +12,11 @@
 		"noUnusedLocals": true,
 		"noUnusedParameters": false,
 		"removeComments": false,
-		"skipLibCheck": true,
 		"sourceMap": true,
 		"strictNullChecks": false,
 		"suppressImplicitAnyIndexErrors": true,
 		"module": "commonjs",
+		"moduleResolution": "node",
 		"target": "es6"
 	},
 	"exclude": [

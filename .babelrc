@@ -1,14 +1,14 @@
 {
-	"presets": ["@babel/preset-env", "@babel/preset-typescript"],
-	"sourceMaps": "inline",
+	"presets": ["@babel/env", "@babel/typescript"],
 	"plugins": [
 		[
-			"@babel/plugin-transform-runtime",
+			"@babel/transform-runtime",
 			{
 				"helpers": false,
 				"regenerator": true,
 				"useESModules": true
 			}
-		]
+		],
+		["@babel/proposal-class-properties", {"loose": true}]
 	]
 }
