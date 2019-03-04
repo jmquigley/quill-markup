@@ -34,14 +34,14 @@ module.exports = {
 	optimization: {
 		minimize: false
 	},
-	entry: [path.resolve(__dirname, "index.js")],
+	entry: [path.resolve(__dirname, "index.ts")],
 	output: {
 		path: path.resolve(__dirname, "public"),
 		filename: "bundle.js",
 		libraryTarget: "umd"
 	},
 	resolve: {
-		extensions: [".js", ".css"],
+		extensions: [".ts", ".js", ".css"],
 		alias: {
 			lodash: path.resolve(
 				__dirname,
@@ -65,8 +65,8 @@ module.exports = {
 	module: {
 		rules: [
 			{
-				test: /\.js$/,
-				exclude: /node_modules|public/,
+				test: /\.ts$/,
+				exclude: /node_modules|public|.*\.d.ts/,
 				loader: "babel-loader"
 			},
 			{
