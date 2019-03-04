@@ -3,6 +3,8 @@ const MinifyPlugin = require("babel-minify-webpack-plugin");
 const path = require("path");
 const {leader} = require("util.leader");
 const webpack = require("webpack");
+const BundleAnalyzerPlugin = require("webpack-bundle-analyzer")
+	.BundleAnalyzerPlugin;
 const pkg = require("./package.json");
 
 let mode = process.env.NODE_ENV || "development";
@@ -29,28 +31,32 @@ const constants = new webpack.DefinePlugin({
 module.exports = {
 	mode,
 	performance: {hints: false},
-	entry: [path.resolve(__dirname, "index.ts")],
+	optimization: {
+		minimize: false
+	},
+	entry: [path.resolve(__dirname, "index.js")],
 	output: {
 		path: path.resolve(__dirname, "public"),
 		filename: "bundle.js",
 		libraryTarget: "umd"
 	},
 	resolve: {
-		extensions: [".ts", ".js", ".css"],
+		extensions: [".js", ".css"],
 		alias: {
 			lodash: path.resolve(
 				__dirname,
 				"node_modules",
 				"lodash",
 				"lodash.min.js"
-			),
-			quill: path.resolve(
-				__dirname,
-				"node_modules",
-				"quill",
-				"dist",
-				"quill.min.js"
 			)
+		}
+	},
+	externals: {
+		quill: {
+			root: "Quill",
+			commonjs2: "quill",
+			commonjs: "quill",
+			amd: "quill"
 		}
 	},
 	resolveLoader: {
@@ -59,14 +65,9 @@ module.exports = {
 	module: {
 		rules: [
 			{
-				test: /\.ts$/,
+				test: /\.js$/,
 				exclude: /node_modules|public/,
-				use: {
-					loader: "babel-loader",
-					options: {
-						babelrc: true
-					}
-				}
+				loader: "babel-loader"
 			},
 			{
 				test: /\.css$/,
@@ -92,6 +93,10 @@ module.exports = {
 		banner,
 		constants,
 		new MiniCssExtractPlugin({filename: "styles.css"}),
-		new MinifyPlugin()
+		new MinifyPlugin(),
+		new BundleAnalyzerPlugin({
+			analyzerMode: "static",
+			reportFilename: "bundle.report.html"
+		})
 	]
 };
