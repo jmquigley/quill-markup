@@ -10,12 +10,12 @@ import {
 	section as getSection,
 	word as getWord
 } from "util.section";
-import * as XRegExp from "xregexp";
 import {Delta} from "../helpers";
 
+const ccount = require("ccount");
 const debug = require("debug")("base");
 const hash = require("hash.js");
-const ccount = require("ccount");
+const XRegExp = require("xregexp");
 
 enum ParseType {
 	BLOCK,

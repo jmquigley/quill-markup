@@ -1,9 +1,9 @@
 "use strict";
 
-import * as XRegExp from "xregexp";
 import {BaseMarkupMode} from "./base";
 
 const debug = require("debug")("Asciidoc");
+const XRegExp = require("xregexp");
 
 export class Asciidoc extends BaseMarkupMode {
 	// {attribute}

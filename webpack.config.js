@@ -1,5 +1,4 @@
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
-const MinifyPlugin = require("babel-minify-webpack-plugin");
 const path = require("path");
 const {leader} = require("util.leader");
 const webpack = require("webpack");
@@ -31,17 +30,14 @@ const constants = new webpack.DefinePlugin({
 module.exports = {
 	mode,
 	performance: {hints: false},
-	optimization: {
-		minimize: false
-	},
-	entry: [path.resolve(__dirname, "index.ts")],
+	entry: [path.resolve(__dirname, "index.js")],
 	output: {
 		path: path.resolve(__dirname, "public"),
 		filename: "bundle.js",
 		libraryTarget: "umd"
 	},
 	resolve: {
-		extensions: [".ts", ".js", ".css"],
+		extensions: [".js", ".css"],
 		alias: {
 			lodash: path.resolve(
 				__dirname,
@@ -65,7 +61,7 @@ module.exports = {
 	module: {
 		rules: [
 			{
-				test: /\.ts$/,
+				test: /\.js$/,
 				exclude: /node_modules|public|.*\.d.ts/,
 				loader: "babel-loader"
 			},
@@ -93,7 +89,6 @@ module.exports = {
 		banner,
 		constants,
 		new MiniCssExtractPlugin({filename: "styles.css"}),
-		new MinifyPlugin(),
 		new BundleAnalyzerPlugin({
 			analyzerMode: "static",
 			reportFilename: "bundle.report.html"

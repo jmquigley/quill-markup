@@ -48,7 +48,7 @@ See the sample application code located in `./public/app.js` and `./public/index
 
 
 ## Overview
-This is a custom [Quill](https://quilljs.com/) module that turns the WYSIWYG editor into a a fixed text markup editor (for modes like markdown, restructured text, etc).  It takes advantage of the underlying api for styling, undo/redo, keyboard handling, and syntax highlighting.  It contains the following text modes:
+This is a custom [Quill](https://quilljs.com/) module that turns the WYSIWYG editor into a a fixed text markup editor (for modes like [markdown](https://daringfireball.net/projects/markdown/), [restructuredtext](http://docutils.sourceforge.net/rst.html), etc).  It takes advantage of the underlying api for styling, undo/redo, keyboard handling, and syntax highlighting.  It contains the following text modes:
 
 - [asciidoc](http://powerman.name/doc/asciidoc)
 - [markdown](https://daringfireball.net/projects/markdown/syntax)
@@ -136,6 +136,21 @@ The CSS style sheets for the module and for the syntax highlighting are included
 - `./public/highlights/*.css`
 
 The module will look for these files from the root of the site serving them.  The CSS files are provided by [highlight.js](https://highlightjs.org/).
+
+Also note the the plugin does NOT provide the [quill module](http://docutils.sourceforge.net/rst.html) when serving it from a page.  The script references need to be added the HTML page.
+
+```html
+<script
+	type="text/javascript"
+	src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.6/highlight.min.js"
+></script>
+<script
+	type="text/javascript"
+	src="https://cdnjs.cloudflare.com/ajax/libs/quill/1.3.6/quill.min.js"
+></script>
+```
+
+An example of this can be found in the demo app located in `./public/index.html`.
 
 
 ## API
