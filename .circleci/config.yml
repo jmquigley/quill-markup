@@ -3,21 +3,20 @@
 # Check https://circleci.com/docs/2.0/language-javascript/ for more details
 #
 version: 2
+
+defaults: &defaults
+    working_directory: ~/repo
+    docker:
+        - image: circleci/node
+
 jobs:
     build:
-        docker:
-            - image: circleci/node
-
-        working_directory: ~/repo
-
+        <<: *defaults
         steps:
             - checkout
-
-            # Download and cache dependencies
             - restore_cache:
                   keys:
                       - v1-dependencies-{{ checksum "package.json" }}
-                      # fallback to using the latest cache if no exact match is found
                       - v1-dependencies-
 
             - run: yarn all
@@ -28,3 +27,39 @@ jobs:
                   key: v1-dependencies-{{ checksum "package.json" }}
 
             - run: yarn coverage
+
+            - persist_to_workspace:
+                  root: ~/repo
+                  paths: .
+
+    deploy:
+        <<: *defaults
+        steps:
+            - attach_workspace:
+                  at: ~/repo
+            - run:
+                  name: Authenticate with registry
+                  command: |
+                      npm set init.author.name "${NPM_USER}"
+                      npm set init.author.email "${NPM_EMAIL}"
+                      printf "//registry.npmjs.org/:_authToken=${NPM_TOKEN}\npackage-lock=false" > ~/repo/.npmrc
+            - run:
+                  name: Publish package
+                  command: npm publish
+
+workflows:
+    version: 2
+    build-deploy:
+        jobs:
+            - build:
+                  filters:
+                      tags:
+                          only: /.*/
+            - deploy:
+                  requires:
+                      - build
+                  filters:
+                      tags:
+                          only: /^v\d+\.\d+\.\d+(-[\.\w]+)?/
+                      branches:
+                          ignore: /.*/

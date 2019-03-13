@@ -3,9 +3,8 @@
 import * as fs from "fs-extra";
 import * as path from "path";
 import * as sinon from "sinon";
-import {Fixture} from "util.fixture";
+import {cleanup, Fixture} from "util.fixture";
 import {join} from "util.join";
-import {cleanup} from "./helpers";
 
 const debug = require("debug")("markup.test");
 
@@ -16,7 +15,7 @@ let quill: any = null;
 import {Markup, MarkupMode} from "../index";
 
 afterAll((done) => {
-	cleanup(path.basename(__filename), done);
+	cleanup({done, message: path.basename(__filename)});
 });
 
 beforeEach(() => {

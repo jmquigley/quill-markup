@@ -2,8 +2,8 @@
 
 import * as fs from "fs-extra";
 import * as path from "path";
+import {cleanup} from "util.fixture";
 import {join} from "util.join";
-import {cleanup} from "./helpers";
 
 // const debug = require('debug')('markup.test');
 
@@ -14,7 +14,7 @@ let quill: any = null;
 import {Markup} from "../index";
 
 afterAll((done) => {
-	cleanup(path.basename(__filename), done);
+	cleanup({done, message: path.basename(__filename)});
 });
 
 beforeEach(() => {
