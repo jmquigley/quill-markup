@@ -1,8 +1,7 @@
-"use strict";
+const debug = require("debug")("quill-markup.markdown");
 
 import {BaseMarkupMode} from "./base";
 
-const debug = require("debug")("Markdown");
 const XRegExp = require("xregexp");
 
 export class Markdown extends BaseMarkupMode {

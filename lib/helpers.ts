@@ -5,7 +5,7 @@
 //
 // import * as q from 'quill';
 
-const debug = require("debug")("helpers");
+const debug = require("debug")("quill-markup.helpers");
 
 /**
  * Retrieves the global instance of Quill.  When Quill is used in a browser, it

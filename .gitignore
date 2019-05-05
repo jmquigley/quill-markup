@@ -55,3 +55,4 @@ tmp-unit-test-data
 public/highlights
 public/*.ttf
 public/styles.css
+tsconfig.tsbuildinfo

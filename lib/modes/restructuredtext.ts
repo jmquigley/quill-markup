@@ -1,8 +1,7 @@
-"use strict";
+const debug = require("debug")("quill-markup.restructuredtext");
 
 import {BaseMarkupMode} from "./base";
 
-const debug = require("debug")("RestructuredText");
 const XRegExp = require("xregexp");
 
 export class RestructuredText extends BaseMarkupMode {

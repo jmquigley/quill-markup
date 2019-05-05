@@ -1,8 +1,7 @@
-"use strict";
+const debug = require("debug")("quill-markup.asciidoc");
 
 import {BaseMarkupMode} from "./base";
 
-const debug = require("debug")("Asciidoc");
 const XRegExp = require("xregexp");
 
 export class Asciidoc extends BaseMarkupMode {

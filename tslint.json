@@ -1,5 +1,8 @@
 {
 	"extends": ["tslint:recommended", "tslint-config-prettier"],
+	"linterOptions": {
+		"exclude": ["./public/**", "node_modules/**", "./**/*.d.ts"]
+	},
 	"rules": {
 		"curly": [true, "ignore-same-line"],
 		"interface-name": [true, "never-prefix"],

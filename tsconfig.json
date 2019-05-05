@@ -5,6 +5,7 @@
 		"alwaysStrict": true,
 		"declaration": true,
 		"experimentalDecorators": true,
+		"incremental": true,
 		"inlineSourceMap": false,
 		"lib": ["DOM", "ESNext"],
 		"noImplicitAny": true,
@@ -17,7 +18,7 @@
 		"suppressImplicitAnyIndexErrors": true,
 		"module": "ESNext",
 		"moduleResolution": "node",
-		"target": "es6"
+		"target": "ESNext"
 	},
 	"exclude": [
 		"./lib/formats/**/*.js",

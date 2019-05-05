@@ -1,4 +1,4 @@
-"use strict";
+const debug = require("debug")("quill-markup.base");
 
 import {BinaryTree, Comparator, SortedList} from "util.ds";
 import {Match, matches} from "util.matches";
@@ -13,7 +13,6 @@ import {
 import {Delta} from "../helpers";
 
 const ccount = require("ccount");
-const debug = require("debug")("base");
 const hash = require("hash.js");
 const XRegExp = require("xregexp");
 

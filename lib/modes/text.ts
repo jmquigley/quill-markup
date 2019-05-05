@@ -1,8 +1,6 @@
-"use strict";
+const debug = require("debug")("quill-markup.text");
 
 import {BaseMarkupMode} from "./base";
-
-const debug = require("debug")("Text");
 
 export class Text extends BaseMarkupMode {
 	constructor(quill: any) {

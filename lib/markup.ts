@@ -20,7 +20,7 @@
  * @module Markup
  */
 
-"use strict";
+const debug = require("debug")("quill-markup.markup");
 
 import {union} from "lodash";
 import {getFontList} from "util.fontlist";
@@ -79,8 +79,6 @@ const defaultOptions: MarkupOptions = {
 };
 
 require("./styles.css");
-
-const debug = require("debug")("markup");
 
 export class Markup {
 	// As the document is modified the number of characters that are changed

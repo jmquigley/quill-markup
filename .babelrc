@@ -10,5 +10,6 @@
 			}
 		],
 		["@babel/proposal-class-properties", {"loose": true}]
-	]
+	],
+	"comments": false
 }
