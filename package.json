@@ -80,7 +80,7 @@
 		"typescript": "^3.4.5",
 		"util.ds": "^0.0.56",
 		"util.fixture": "0.0.72",
-		"util.fontlist": "^0.0.17",
+		"util.fontlist": "^0.0.18",
 		"util.join": "^0.0.25",
 		"util.leader": "^0.0.44",
 		"util.matches": "^0.0.13",

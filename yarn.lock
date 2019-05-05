@@ -8217,10 +8217,10 @@ util.fixture@0.0.72:
     util.wait "0.0.37"
     uuid "^3.3.2"
 
-util.fontlist@^0.0.17:
-  version "0.0.17"
-  resolved "https://registry.yarnpkg.com/util.fontlist/-/util.fontlist-0.0.17.tgz#5149390ec2501afcee5b53fdf8d233fcaa9c592c"
-  integrity sha512-ZrxoPvvPKEGRtHxatK9RCTAPR1rzgFHVQiNOhvViUP/+m5Ci1Mjrco2YKF9QGKgPr0mOPOImIxLftVDbYGPBFw==
+util.fontlist@^0.0.18:
+  version "0.0.18"
+  resolved "https://registry.yarnpkg.com/util.fontlist/-/util.fontlist-0.0.18.tgz#2657f4cbb944d6ead79b4e8dec2badc4b12cea92"
+  integrity sha512-LWQ1GWUXB4IlsJlS6PcnS+IVXT2ecf9yMaldlmmIrdayqXZ25NEhestv0cIndqc1MlGHFqThlg6M9CCp1Lq3jQ==
 
 util.home@0.0.31:
   version "0.0.31"
