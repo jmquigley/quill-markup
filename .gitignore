@@ -39,6 +39,17 @@ jspm_packages
 tmp-unit-test-data
 .awcache
 
+.git
+build
+coverage
+dist
+docs
+highlights
+vendor
+
+*.min.js
+!jest.config.js
+!jest.setup.js
 *.report.html
 *.tgz
 *.map

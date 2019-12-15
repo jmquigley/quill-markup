@@ -5,7 +5,7 @@ hljs.configure({
 });
 
 let keybindings = {
-	tab: {
+	"tab": {
 		key: 9,
 		handler: function(range) {
 			this.quill.insertText(range.index, "    ");

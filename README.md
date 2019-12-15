@@ -2,19 +2,18 @@
 
 > A markup highlighting module for the [Quill](https://quilljs.com/) text editor
 
-[![build](https://circleci.com/gh/jmquigley/quill-markup/tree/master.svg?style=shield)](https://circleci.com/gh/jmquigley/quill-markup/tree/master)
+[![build](https://github.com/jmquigley/quill-markup/workflows/build/badge.svg)](https://github.com/jmquigley/quill-markup/actions)
 [![analysis](https://img.shields.io/badge/analysis-tslint-9cf.svg)](https://palantir.github.io/tslint/)
 [![code style: prettier](https://img.shields.io/badge/code_style-prettier-ff69b4.svg?style=flat-square)](https://github.com/prettier/prettier)
 [![testing](https://img.shields.io/badge/testing-jest-blue.svg)](https://facebook.github.io/jest/)
 [![NPM](https://img.shields.io/npm/v/quill-markup.svg)](https://www.npmjs.com/package/quill-markup)
-[![coverage](https://coveralls.io/repos/github/jmquigley/quill-markup/badge.svg?branch=master)](https://coveralls.io/github/jmquigley/quill-markup?branch=master)
 
 
 ## Requirements
 
 - [Quill](https://quilljs.com/) v1.3.6
 - [Yarn](https://yarnpkg.com/en/) 1.13.0
-- [Node](https://nodejs.org/en/) 7.x
+- [Node](https://nodejs.org/en/) 10.x
 
 
 ## Installation

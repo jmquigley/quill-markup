@@ -1,8 +1,0 @@
-{
-    "arrowParens": "always",
-    "bracketSpacing": false,
-    "endOfLine": "lf",
-    "jsxSingleQuote": true,
-    "tabWidth": 4,
-    "useTabs": true
-}

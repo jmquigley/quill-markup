@@ -1,0 +1,27 @@
+name: build
+
+on:
+    push:
+        branches:
+            - master
+
+jobs:
+    build:
+        env:
+            YARN_VERSION: 1.21.0
+
+        runs-on: ubuntu-latest
+
+        strategy:
+            matrix:
+                node-version: [10.x, 12.x]
+
+        steps:
+            - uses: actions/checkout@master
+            - name: Use Node.js ${{ matrix.node-version }}
+              uses: actions/setup-node@v1
+              with:
+                  version: ${{ matrix.node-version }}
+            - run: npm install -g yarn@${YARN_VERSION}
+            - run: npm config set scripts-prepend-node-path true
+            - run: yarn all
